@@ -2,19 +2,16 @@
 version: 2.1
 orbs: 
   codecov: codecov/codecov@3.2.3
-
-workflow:
-  upload-to-codecov:
-    jobs:
-      build:
-        docker:
-          - image: cirrusci/flutter
-        steps:
-          - checkout
-          - run: flutter doctor
-          - run: flutter test
-          - run: flutter build apk --release
-          - store_artifacts:
-              path: build/app/outputs/flutter-apk/app-release.apk
-          - codecov/upload
+jobs:
+  build:
+    docker:
+      - image: cirrusci/flutter
+    steps:
+      - checkout
+      - run: flutter doctor
+      - run: flutter test
+      - run: flutter build apk --release
+      - store_artifacts:
+          path: build/app/outputs/flutter-apk/app-release.apk
+      - codecov/upload
       
