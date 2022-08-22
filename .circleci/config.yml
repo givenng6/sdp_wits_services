@@ -1,5 +1,7 @@
 
 version: 2.1
+orbs: 
+  codecov: codecov/codecov@3.2.3
 jobs:
   build:
     docker:
@@ -11,3 +13,6 @@ jobs:
       - run: flutter build apk --release
       - store_artifacts:
           path: build/app/outputs/flutter-apk/app-release.apk
+      - codecov/upload:
+          file: coverage/Icov.info
+      
