@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './DashAppBar.dart';
 
 class Dashboard extends StatefulWidget{
   const Dashboard({Key? key}) : super(key: key);
@@ -12,7 +13,11 @@ class _Dashboard extends State<Dashboard>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Text('Dashboard'),
+      body: Column(
+        children: [
+          DashAppBar()
+        ],
+      ),
     );
   }
 }

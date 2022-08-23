@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../AppBar.dart';
 
 class Dining extends StatefulWidget{
   const Dining({Key? key}) : super(key: key);
@@ -12,7 +13,11 @@ class _Dining extends State<Dining>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Text('Dining'),
+      body:  Column(
+        children: const [
+          MyAppBar()
+        ],
+      ),
     );
   }
 }

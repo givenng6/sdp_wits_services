@@ -20,12 +20,10 @@ class _Home extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Home"),
-      ),
       body: _screens.elementAt(_screenIndex),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _screenIndex,
+        selectedItemColor:  const Color(0xff003b5c),
         onTap: _onNavigate,
         type: BottomNavigationBarType.fixed,
         items: const [

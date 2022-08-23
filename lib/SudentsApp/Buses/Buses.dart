@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
+import '../AppBar.dart';
 
-class Menu extends StatefulWidget{
-  const Menu({Key? key}) : super(key: key);
+class Buses extends StatefulWidget{
+  const Buses({Key? key}) : super(key: key);
 
   @override
-  State<Menu> createState() => _Menu();
+  State<Buses> createState() => _Buses();
 }
 
-class _Menu extends State<Menu>{
+class _Buses extends State<Buses>{
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Text('Menu'),
+      body: Column(
+        children: const [
+          MyAppBar()
+        ],
+      ),
     );
   }
 }

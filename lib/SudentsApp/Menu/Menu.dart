@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class Buses extends StatefulWidget{
-  const Buses({Key? key}) : super(key: key);
+class Menu extends StatefulWidget{
+  const Menu({Key? key}) : super(key: key);
 
   @override
-  State<Buses> createState() => _Buses();
+  State<Menu> createState() => _Menu();
 }
 
-class _Buses extends State<Buses>{
+class _Menu extends State<Menu>{
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Text('Buses'),
+      body: Text('Menu'),
     );
   }
 }
