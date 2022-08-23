@@ -6,6 +6,7 @@ class DashAppBar extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     return Container(
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 5),
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(0, 45, 0, 15),
       decoration: const BoxDecoration(
