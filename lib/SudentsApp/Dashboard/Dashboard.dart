@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './DashAppBar.dart';
+import './Widgets/BusWidget.dart';
 
 class Dashboard extends StatefulWidget{
   const Dashboard({Key? key}) : super(key: key);
@@ -15,7 +16,8 @@ class _Dashboard extends State<Dashboard>{
     return Scaffold(
       body: Column(
         children: [
-          DashAppBar()
+          DashAppBar(),
+          BusWidget()
         ],
       ),
     );
