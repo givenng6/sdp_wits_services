@@ -29,7 +29,7 @@ class _DiningWidget extends State<DiningWidget>{
           Row(
             children: [
               Icon(Icons.restaurant_menu, color: Colors.white,),
-              Text("Dining Services",
+              Text("Dining Menu",
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)
             ],
           ),
