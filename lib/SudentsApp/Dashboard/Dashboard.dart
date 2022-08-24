@@ -82,7 +82,7 @@ class _Dashboard extends State<Dashboard>{
   Widget _getIcon(String title){
     switch (title){
       case 'Campus Health':
-        return Icon(Icons.health_and_safety, color: Colors.redAccent, size: 19,);
+        return Icon(Icons.health_and_safety, color: Colors.red, size: 19,);
         break;
       case 'Events':
         return Icon(Icons.event, color: Colors.white, size: 19,);
