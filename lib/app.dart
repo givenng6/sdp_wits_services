@@ -31,7 +31,7 @@ class _App extends State<App> {
               child: ElevatedButton(
                 onPressed: () {
                   String btn = 'SignInAsStudent';
-                  AuthService().signInWithGoogle(btn);
+                  AuthService().signInWithGoogle(btn, context);
                 },
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all<Color>(const Color(0xff115571)),
@@ -51,7 +51,7 @@ class _App extends State<App> {
               child: ElevatedButton(
                 onPressed: () {
                   String btn = 'SignInAsStaff';
-                  AuthService().signInWithGoogle(btn);
+                  AuthService().signInWithGoogle(btn, context);
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color(0xff115571)),
