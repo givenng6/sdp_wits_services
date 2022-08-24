@@ -4,6 +4,7 @@ import './Widgets/BusWidget.dart';
 import './Widgets/DiningWidget.dart';
 import './Widgets/ProtectionWidget.dart';
 import './Widgets/EventsWidget.dart';
+import './Widgets/HealthWidget.dart';
 
 class Dashboard extends StatefulWidget{
   const Dashboard({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class Dashboard extends StatefulWidget{
 class _Dashboard extends State<Dashboard>{
 
   // list of dashboard widgets to show to user...
-  List<Widget> _cards = [BusWidget(), DiningWidget(), ProtectionWidget(), EventsWidget()];
+  List<Widget> _cards = [BusWidget(), DiningWidget(), ProtectionWidget(), EventsWidget(), HealthWidget()];
 
   @override
   Widget build(BuildContext context){
