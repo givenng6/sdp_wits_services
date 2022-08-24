@@ -66,6 +66,8 @@ flutter:
     - assets/logo.png
     - assets/hall.jpg
     - assets/food.jpg
+    - assets/control.jpg
+    - assets/events.jpg
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import './DashAppBar.dart';
 import './Widgets/BusWidget.dart';
 import './Widgets/DiningWidget.dart';
+import './Widgets/ProtectionWidget.dart';
+import './Widgets/EventsWidget.dart';
 
 class Dashboard extends StatefulWidget{
   const Dashboard({Key? key}) : super(key: key);
@@ -12,24 +14,24 @@ class Dashboard extends StatefulWidget{
 
 class _Dashboard extends State<Dashboard>{
 
+  // list of dashboard widgets to show to user...
+  List<Widget> _cards = [BusWidget(), DiningWidget(), ProtectionWidget(), EventsWidget()];
+
   @override
   Widget build(BuildContext context){
     return Scaffold(
       body: Column(
         children: [
           DashAppBar(),
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Text("My Dashboard", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-                BusWidget(),
-                DiningWidget(),
-
-              ],
-            ),
-
-          ),
-
+          Text("My Dashboard", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
+          Expanded(
+              child:
+              ListView.builder(
+                itemCount: _cards.length,
+                physics: BouncingScrollPhysics(),
+                itemBuilder: (context, index){
+                  return _cards[index];
+                }),)
         ],
       ),
     );

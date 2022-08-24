@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class BusWidget extends StatefulWidget{
+class EventsWidget extends StatefulWidget{
 
   @override
-  State<BusWidget> createState()=> _BusWidget();
+  State<EventsWidget> createState()=> _EventsWidget();
 }
 
-class _BusWidget extends State<BusWidget>{
+class _EventsWidget extends State<EventsWidget>{
 
   @override
   Widget build(BuildContext context){
@@ -19,7 +19,7 @@ class _BusWidget extends State<BusWidget>{
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0),
         image: DecorationImage(
-            image: AssetImage('assets/hall.jpg'),
+            image: AssetImage('assets/events.jpg'),
             fit: BoxFit.cover
         ),
       ),
@@ -28,8 +28,8 @@ class _BusWidget extends State<BusWidget>{
         children: [
           Row(
             children: [
-              Icon(Icons.bus_alert, color: Colors.white,),
-              Text("Bus Services",
+              Icon(Icons.event, color: Colors.white,),
+              Text("Events",
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)
             ],
           ),
