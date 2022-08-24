@@ -11,7 +11,6 @@ class _DiningWidget extends State<DiningWidget>{
   @override
   Widget build(BuildContext context){
     return Container(
-      height: 300,
       width: double.infinity,
       padding: EdgeInsets.all(12),
       margin: EdgeInsets.all(12),
@@ -33,7 +32,29 @@ class _DiningWidget extends State<DiningWidget>{
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)
             ],
           ),
+          MealWidget("Highfield Dining Hall", "Lunch", "11:00 - 14:00", "Dr G Mathebula"),
+        ],
+      ),
+    );
+  }
 
+
+  Widget MealWidget(String DHName, String date, String time, String person){
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
+      padding: EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: Color(0x80ffffff),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(DHName, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
+          Text("Meal: " + date, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.yellowAccent)),
+          Text("Time: " + time, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.yellowAccent)),
+          Text("Personnel: " + person, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.yellowAccent)),
         ],
       ),
     );
