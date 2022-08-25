@@ -46,7 +46,7 @@ class _Dashboard extends State<Dashboard>{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Suggestions:", style: TextStyle(fontSize: 12),),
+          Text("Suggestions:"),
           //Text("My Dashboard", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
