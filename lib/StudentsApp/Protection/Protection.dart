@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../AppBar.dart';
+import '../UtilityWidgets.dart';
 
 class Protection extends StatefulWidget{
   const Protection({Key? key}) : super(key: key);
@@ -9,13 +9,14 @@ class Protection extends StatefulWidget{
 }
 
 class _Protection extends State<Protection>{
+  UtilityWidget utilityWidget = new UtilityWidget();
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       body:  Column(
-        children: const [
-          MyAppBar()
+        children: [
+          utilityWidget.AppBar("Campus Control"),
         ],
       ),
     );
