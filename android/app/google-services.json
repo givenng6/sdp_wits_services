@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "147092371359",
+    "project_id": "wits-services-ea5cf",
+    "storage_bucket": "wits-services-ea5cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:147092371359:android:1c3cfc9ee9f3a6b04dafaa",
+        "android_client_info": {
+          "package_name": "com.example.sdp_wits_services"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "147092371359-3vimbvq3ss26sjrk6uebmkhi5slf2595.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sdp_wits_services",
+            "certificate_hash": "bda4a0c72b5c213c59738ba8b915505adb65897f"
+          }
+        },
+        {
+          "client_id": "147092371359-5s4460b7oe5t6383190m5crdmmsele5q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sdp_wits_services",
+            "certificate_hash": "2ed9aab8c384448aff397ff8229de97ee8a1ccaf"
+          }
+        },
+        {
+          "client_id": "147092371359-v1bsc0kb26lrpsaqggo2dk3ks8st8i8h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi_Mkh33Qjsms3Uc9FF9vjQpLxxAySA4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "147092371359-v1bsc0kb26lrpsaqggo2dk3ks8st8i8h.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "147092371359-9somdua737n68b04fnucqvb2l2k2tlj9.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.studentsApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
