@@ -1,7 +1,14 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'Firebase/auth_service.dart';
 import 'app.dart';
+<<<<<<< HEAD
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+=======
+import 'Firebase/firebase_options.dart';
+import './StudentsApp/Home/Home.dart';
+>>>>>>> b5b747311c9caf9658c40c71556a359250beca5d
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,7 +28,7 @@ class Main extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: App(),
+      home: Home()//AuthService().handleAuthState(),
     );
   }
 }

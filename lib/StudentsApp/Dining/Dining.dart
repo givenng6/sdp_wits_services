@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../AppBar.dart';
+import '../UtilityWidgets.dart';
 
 class Dining extends StatefulWidget{
   const Dining({Key? key}) : super(key: key);
@@ -9,13 +9,14 @@ class Dining extends StatefulWidget{
 }
 
 class _Dining extends State<Dining>{
+  UtilityWidget utilityWidget = new UtilityWidget();
 
   @override
   Widget build(BuildContext context){
     return Scaffold(
       body:  Column(
-        children: const [
-          MyAppBar()
+        children: [
+        utilityWidget.AppBar("Dining Services"),
         ],
       ),
     );
