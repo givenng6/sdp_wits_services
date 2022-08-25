@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'Firebase/auth_service.dart';
 import 'app.dart';
 import 'Firebase/firebase_options.dart';
+import './StudentsApp/Home/Home.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ class Main extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: AuthService().handleAuthState(),
+      home: Home()//AuthService().handleAuthState(),
     );
   }
 }

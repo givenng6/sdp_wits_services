@@ -52,9 +52,9 @@ class _DiningWidget extends State<DiningWidget>{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(DHName, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-          Text("Meal: " + date, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.yellowAccent)),
-          Text("Time: " + time, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.yellowAccent)),
-          Text("Personnel: " + person, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.yellowAccent)),
+          Text("Meal: " + date, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text("Time: " + time, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text("Personnel: " + person, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
         ],
       ),
     );

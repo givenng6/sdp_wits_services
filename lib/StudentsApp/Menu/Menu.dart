@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import './MenuAppBar.dart';
 
 class Menu extends StatefulWidget{
   const Menu({Key? key}) : super(key: key);
@@ -12,7 +13,11 @@ class _Menu extends State<Menu>{
   @override
   Widget build(BuildContext context){
     return Scaffold(
-      body: Text('Menu'),
+      body: Column(
+        children: [
+          MenuAppBar(),
+        ],
+      ),
     );
   }
 }
