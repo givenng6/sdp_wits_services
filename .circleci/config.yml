@@ -1,8 +1,7 @@
 version: 2.1
 orbs:
   flutter: circleci/flutter@1.1.0
-  node: circleci/node@5.0.2
-  coveralls: coveralls/coveralls@1.0.6
+  codecov: codecov/codecov@3.1.1
 jobs:
   build:
     docker:
@@ -11,5 +10,4 @@ jobs:
       - checkout
       - run: flutter doctor
       - run: flutter test --coverage
-      - run: sudo apt-get install npm
-      - coveralls/upload
+      - codecov/upload
