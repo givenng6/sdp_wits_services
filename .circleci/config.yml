@@ -6,8 +6,8 @@ orbs:
 jobs:
   build:
     docker:
-      - image: circleci/node:10.0.0
       - image: cirrusci/flutter
+      - image: circleci/node:10.0.0
     steps:
       - checkout
       - run: flutter doctor
