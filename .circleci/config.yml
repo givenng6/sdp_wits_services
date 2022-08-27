@@ -7,9 +7,9 @@ jobs:
   build:
     docker:
       - image: cirrusci/flutter
-      - image: circleci/node:10.0.0
     steps:
       - checkout
       - run: flutter doctor
       - run: flutter test --coverage
+      - run: sudo apt-get install npm
       - coveralls/upload
