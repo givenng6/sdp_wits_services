@@ -11,5 +11,4 @@ jobs:
       - checkout
       - run: flutter doctor
       - run: flutter test --coverage
-      - run: sudo apt install npm
       - coveralls/upload
