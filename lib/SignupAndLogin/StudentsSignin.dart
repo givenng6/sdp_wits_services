@@ -33,13 +33,13 @@ class StudentsLoginScreen extends StatelessWidget {
     });
   }
 
-  Future<String> _recoverPassword(String name) {
+  Future<String?> _recoverPassword(String name) {
     debugPrint('Name: $name');
     return Future.delayed(loginTime).then((_) {
       if (!users.containsKey(name)) {
         return 'User not exists';
       }
-      return '';
+      return null;
     });
   }
 
