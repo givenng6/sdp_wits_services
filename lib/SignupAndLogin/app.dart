@@ -14,10 +14,19 @@ class _App extends State<App> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
+      body: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/uni4.jpeg'),
+            fit: BoxFit.cover
+          )
+        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            const Image(image: AssetImage('assets/logo.png')),
             Container(
                 width: 300,
                 height: 55,
@@ -33,7 +42,7 @@ class _App extends State<App> {
                     ),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentsLoginScreen()));
-                    }, child: const Text("Sign In As A Student"))),
+                    }, child: const Text("Continue as Student", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xff7393B3))))),
             Container(
                 width: 300,
                 height: 55,
@@ -49,7 +58,7 @@ class _App extends State<App> {
                     ),
                     onPressed: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) => const StaffLoginScreen()));
-                    }, child: const Text("Sign In As Staff")))
+                    }, child: const Text("Continue as Staff", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xff7393B3)),)))
           ],
         ),
       ),
