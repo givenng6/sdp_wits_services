@@ -19,7 +19,7 @@ class _App extends State<App> {
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage('assets/uni4.jpeg'),
+            image: AssetImage('assets/uni.jpeg'),
             fit: BoxFit.cover
           )
         ),
