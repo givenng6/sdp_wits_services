@@ -1,10 +1,11 @@
 version: '2.1'
 orbs:
-  codecov: codecov/codecov@3.1.1
+  coveralls: coveralls/coveralls@1.0.6
   flutter: circleci/flutter@1.1.0
 jobs:
   build-project:
     docker:
+      - image: 'circleci/node:10.0.0'
       - image: cirrusci/flutter
     steps:
       - checkout
@@ -15,4 +16,4 @@ workflows:
     jobs:
       - build-project:
           post-steps:
-            - codecov/upload
+            - coveralls/upload
