@@ -5,11 +5,14 @@ orbs:
   node: circleci/node@5.0.2
 jobs:
   build-project:
+    executor: node/default
     docker:
       - image: cirrusci/flutter
       - image: 'circleci/node:10.0.0'
     steps:
       - checkout
+      - node/install-packages:
+          pkg-manager: npm
       - run: flutter doctor
       - run: flutter test --coverage
 workflows:
