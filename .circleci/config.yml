@@ -1,23 +1,10 @@
-version: '2.1'
-orbs:
-  coveralls: coveralls/coveralls@1.0.6
-  flutter: circleci/flutter@1.1.0
-  node: circleci/node@5.0.2
+version: 2.1
+
 jobs:
-  build-project:
-    executor: node/default
+  build:
     docker:
       - image: cirrusci/flutter
-      - image: 'circleci/node:10.0.0'
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
       - run: flutter doctor
       - run: flutter test --coverage
-workflows:
-  upload-to-codecov:
-    jobs:
-      - build-project:
-          post-steps:
-            - coveralls/upload
