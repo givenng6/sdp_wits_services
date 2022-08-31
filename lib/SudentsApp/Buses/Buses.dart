@@ -9,7 +9,7 @@ class Buses extends StatefulWidget {
 }
 
 class _Buses extends State<Buses> {
-  UtilityWidget utilityWidget = new UtilityWidget();
+  UtilityWidget utilityWidget = UtilityWidget();
 
   @override
   Widget build(BuildContext context) {

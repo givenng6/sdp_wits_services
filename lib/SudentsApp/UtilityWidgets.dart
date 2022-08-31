@@ -8,8 +8,8 @@ class UtilityWidget {
     // display the circular badge...
     String char = username[0].toUpperCase();
     return Container(
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.fromLTRB(0, 0, 5, 0),
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
       height: 45,
       width: 45,
       alignment: Alignment.center,
@@ -18,7 +18,7 @@ class UtilityWidget {
         color: Colors.blueGrey,
       ),
       child: Text(char,
-          style: TextStyle(
+          style: const TextStyle(
               fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25)),
     );
   }
@@ -35,7 +35,7 @@ class UtilityWidget {
             Text(
               title,
               style:
-                  TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
             )
           ],
         ));
@@ -43,32 +43,37 @@ class UtilityWidget {
 
   Widget BottomSheet() {
     return Container(
-      //height: 400,
       width: double.infinity,
-      padding: EdgeInsets.all(12),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.all(12),
+      decoration: const BoxDecoration(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       child: Column(
+        crossAxisAlignment:  CrossAxisAlignment.center,
         children: [
           _BottomSheetIcon(),
-          Text(
+          const Text(
             "Bus Services",
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
           ),
-          Text("Overview"),
+          const Text("Overview"),
+          Container(
+            height: 280,
+            width: double.infinity,
+            child: Text("The over view here"),
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     "Not Now",
                     style: TextStyle(
                         color: Color(0xff003b5c), fontWeight: FontWeight.bold),
                   )),
               TextButton(
                   onPressed: () {},
-                  child: Text(
+                  child: const Text(
                     "Subscribe",
                     style: TextStyle(
                         color: Colors.red, fontWeight: FontWeight.bold),
@@ -84,12 +89,12 @@ class UtilityWidget {
     return Container(
       width: 75,
       height: 75,
-      padding: EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         color: Colors.blueGrey,
         borderRadius: BorderRadius.circular(50.0),
       ),
-      child: Icon(
+      child: const Icon(
         Icons.bus_alert,
         color: Colors.white,
         size: 30,

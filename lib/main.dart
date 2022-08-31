@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'SignupAndLogin/app.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'SudentsApp/Home/Home.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
