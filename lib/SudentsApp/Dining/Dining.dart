@@ -11,14 +11,25 @@ class Dining extends StatefulWidget {
 class _Dining extends State<Dining> {
   UtilityWidget utilityWidget = new UtilityWidget();
 
+  bool subscribed = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          utilityWidget.AppBar("Dining Services"),
-        ],
-      ),
-    );
+    if(subscribed){
+      return Scaffold(
+        body: Column(
+          children: [
+            utilityWidget.AppBar("Dining Services"),
+          ],
+        ),
+      );
+    }else{
+      return Scaffold(
+        body: Column(
+            mainAxisAlignment:  MainAxisAlignment.center,
+            children: [utilityWidget.NotSubscribed("Dining Services", subscribed),]
+        ),
+      );
+    }
   }
 }

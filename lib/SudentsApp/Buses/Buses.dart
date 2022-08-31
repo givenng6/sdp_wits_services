@@ -11,22 +11,27 @@ class Buses extends StatefulWidget {
 class _Buses extends State<Buses> {
   UtilityWidget utilityWidget = UtilityWidget();
 
+  //
+  bool subscribed = false;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          utilityWidget.AppBar("Bus Services"),
-          OutlinedButton(
-            child: Text("Press"),
-            onPressed: () {
-              showModalBottomSheet(
-                  context: context,
-                  builder: (context) => utilityWidget.BottomSheet());
-            },
-          )
-        ],
-      ),
-    );
+    if(subscribed){
+      return Scaffold(
+        body: Column(
+          children: [
+            utilityWidget.AppBar("Bus Services"),
+          ],
+        ),
+      );
+    }else{
+      return Scaffold(
+        body: Column(
+          mainAxisAlignment:  MainAxisAlignment.center,
+          children: [utilityWidget.NotSubscribed("Bus Services", subscribed),]
+        ),
+      );
+    }
+
   }
 }

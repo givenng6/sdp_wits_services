@@ -41,64 +41,27 @@ class UtilityWidget {
         ));
   }
 
-  Widget BottomSheet() {
-    return Container(
+  Widget NotSubscribed(String title, bool subscribe) {
+    return  Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      decoration: const BoxDecoration(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
       child: Column(
-        crossAxisAlignment:  CrossAxisAlignment.center,
-        children: [
-          _BottomSheetIcon(),
-          const Text(
-            "Bus Services",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-          ),
-          const Text("Overview"),
-          Container(
-            height: 280,
-            width: double.infinity,
-            child: Text("The over view here"),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "Not Now",
-                    style: TextStyle(
-                        color: Color(0xff003b5c), fontWeight: FontWeight.bold),
-                  )),
-              TextButton(
-                  onPressed: () {},
-                  child: const Text(
-                    "Subscribe",
-                    style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
-                  ))
-            ],
-          )
-        ],
+          crossAxisAlignment:  CrossAxisAlignment.center,
+          children:[
+            Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+            const Text("To access this service you must be subscribed"),
+            OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                primary: Colors.red,
+              ),
+              onPressed: (){
+                subscribe = true;
+                print(subscribe);
+              },
+                child: const Text("Subscribe", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.red),))
+          ]
       ),
     );
   }
 
-  Widget _BottomSheetIcon() {
-    return Container(
-      width: 75,
-      height: 75,
-      padding: const EdgeInsets.all(12.0),
-      decoration: BoxDecoration(
-        color: Colors.blueGrey,
-        borderRadius: BorderRadius.circular(50.0),
-      ),
-      child: const Icon(
-        Icons.bus_alert,
-        color: Colors.white,
-        size: 30,
-      ),
-    );
-  }
+
 }

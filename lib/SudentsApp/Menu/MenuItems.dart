@@ -8,12 +8,13 @@ class MenuItems extends StatefulWidget {
 
 class _MenuItems extends State<MenuItems> {
   List<Department> cardNames = [
-    Department(title: "Protection", icon: Icons.directions_car_filled_outlined),
+
     Department(title: "Buses", icon: Icons.directions_bus),
-    Department(title: "Events", icon: Icons.event),
-    Department(title: "Dining Hall", icon: Icons.restaurant),
+    Department(title: "Dining Services", icon: Icons.restaurant),
+    Department(title: "Protection", icon: Icons.security),
+    Department(title: "Campus Health", icon: Icons.health_and_safety),
     Department(title: "CCDU", icon: Icons.psychology_outlined),
-    Department(title: "Campus Health", icon: Icons.healing_outlined),
+    Department(title: "Events", icon: Icons.event),
   ];
 
   @override
@@ -38,14 +39,14 @@ class _MenuItems extends State<MenuItems> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            cardNames[index].title,
-                            style: TextStyle(color: Colors.black, fontSize: 30),
-                          ),
                           Icon(
                             cardNames[index].icon,
                             size: 50,
-                            color: Colors.blue,
+                            color: Color(0xff003b5c),
+                          ),
+                          Text(
+                            cardNames[index].title,
+                            style: TextStyle(color: Color(0xff003b5c), fontSize: 20),
                           ),
                         ],
                       ),
