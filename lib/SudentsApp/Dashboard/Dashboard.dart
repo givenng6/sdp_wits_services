@@ -7,7 +7,8 @@ import './Widgets/EventsWidget.dart';
 import './Widgets/HealthWidget.dart';
 
 class Dashboard extends StatefulWidget{
-  const Dashboard({Key? key}) : super(key: key);
+  String username;
+  Dashboard({Key? key, required this.username}) : super(key: key);
 
   @override
   State<Dashboard> createState() => _Dashboard();
@@ -25,6 +26,7 @@ class _Dashboard extends State<Dashboard>{
         children: [
           DashAppBar(),
           DashHeader(),
+          Text(widget.username),
           Expanded(
               child:
               ListView.builder(

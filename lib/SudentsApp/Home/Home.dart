@@ -6,16 +6,20 @@ import '../Dashboard/Dashboard.dart';
 import '../Protection/Protection.dart';
 
 class Home extends StatefulWidget {
+  // required data
+  String username, email;
+  Home({Key? key, required this.username, required this.email}) : super(key: key);
+
   @override
   State<Home> createState() => _Home();
 }
 
 class _Home extends State<Home> {
 
+  bool sub = true;
   // var to keep track of the screen to show...
   int _screenIndex = 0;
-  final List<Widget> _screens = [const Dashboard(), const Buses(), const Dining(), const Protection(), const Menu()];
-
+  final List<Widget> _screens = [Dashboard(username: "The username"), Buses(sub: false), const Dining(), const Protection(), const Menu()];
 
   @override
   Widget build(BuildContext context) {
