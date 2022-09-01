@@ -18,6 +18,9 @@ bool? verified;
 // Uri to the API
 String uri = "http://10.0.1.55:8000/";
 
+// data to send
+String d_username = "", d_email = "", d_uid = "";
+
 class StudentsLoginScreen extends StatelessWidget {
   const StudentsLoginScreen({Key? key}) : super(key: key);
 
@@ -40,6 +43,12 @@ class StudentsLoginScreen extends StatelessWidget {
 
     valid = json['status'];
     verified = json['verified'];
+
+    if(valid == 'valid'){
+      d_username = json['username'];
+      d_email = json['email'];
+      d_uid = json['uid'];
+    }
 
     return Future.delayed(loginTime).then((_) {
       if (valid! == "invalid") {
@@ -121,7 +130,7 @@ class StudentsLoginScreen extends StatelessWidget {
         } else if (whereFrom! == "login" && valid! == "valid" && verified!) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => Home()),
+              MaterialPageRoute(builder: (BuildContext context) => Home(username: d_username, email: d_email)),
               (Route<dynamic> route) => false);
         }
       },
