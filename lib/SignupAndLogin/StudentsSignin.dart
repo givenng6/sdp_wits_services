@@ -5,14 +5,8 @@ import 'package:sdp_wits_services/SudentsApp/Home/Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const users = {
-  'dribbble@gmail.com': '12345',
-  'a@test.com': '12345',
-  'hunter@gmail.com': 'hunter',
-};
-
 String? whereFrom;
-String? valid = "valid";
+String? valid;
 bool? verified;
 
 // Uri to the API
@@ -77,8 +71,7 @@ class StudentsLoginScreen extends StatelessWidget {
 
   Future<String?> _recoverPassword(String name) async {
     debugPrint('Name: $name');
-    var result =
-        await http.post(Uri.parse("${uri}auth/reset/"),
+    await http.post(Uri.parse("${uri}auth/reset/"),
             headers: <String, String>{
               "Accept": "application/json",
               "Content-Type": "application/json; charset=UTF-8",
@@ -111,14 +104,15 @@ class StudentsLoginScreen extends StatelessWidget {
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
-        if ((whereFrom! == "signup" && valid! == "valid") ||
-            (whereFrom! == "login" && valid! == "valid" && !verified!)) {
+        if ((whereFrom == "signup" && valid == "valid") ||
+            (whereFrom == "login" && valid == "valid" && !verified!)) {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => const VerificationMessage()),
-              (Route<dynamic> route) => false);
-        } else if (whereFrom! == "login" && valid! == "valid" && verified!) {
+                  builder: (BuildContext context) => const VerificationMessage(kind: "student")),
+              (Route<dynamic> route) => false,
+          );
+        } else if (whereFrom == "login" && valid == "valid" && verified!) {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (BuildContext context) => Home()),

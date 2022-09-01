@@ -6,11 +6,6 @@ import '../StaffApp/StaffPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const users = {
-  'a@test.com': '12345',
-  'hunter@gmail.com': 'hunter',
-};
-
 String? whereFrom;
 String? valid;
 bool? verified;
@@ -77,7 +72,7 @@ class StaffLoginScreen extends StatelessWidget {
 
   Future<String?> _recoverPassword(String name) async{
     debugPrint('Name: $name');
-    var result = await http.post(
+    await http.post(
         Uri.parse("${uri}auth/reset/"),
         headers: <String, String>{
           "Accept": "application/json",
@@ -87,10 +82,7 @@ class StaffLoginScreen extends StatelessWidget {
           "email": name,
         })
     );
-    var json = jsonDecode(result.body);
-    // String status = json['status'];
     return Future.delayed(loginTime).then((_) {
-      // return 'If your account exists email has been sent!';
       return null;
     });
   }
@@ -118,13 +110,13 @@ class StaffLoginScreen extends StatelessWidget {
         if((whereFrom! == "signup" && valid! == "valid") || (whereFrom! == "login" && valid! == "valid" && !verified!)){
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => VerificationMessage()),
+              MaterialPageRoute(builder: (BuildContext context) => const VerificationMessage(kind: 'staff',)),
                   (Route<dynamic> route) => false);
         }
         else if(whereFrom! == "login" && valid! == "valid" && verified!){
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => StaffPage()),
+              MaterialPageRoute(builder: (BuildContext context) => const StaffPage()),
                   (Route<dynamic> route) => false);
         }
       },

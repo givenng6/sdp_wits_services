@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:sdp_wits_services/SignupAndLogin/StaffSignin.dart';
 
 import 'StudentsSignin.dart';
 
 class VerificationMessage extends StatefulWidget {
-  const VerificationMessage({Key? key}) : super(key: key);
+  final String kind;
+  const VerificationMessage({Key? key, required this.kind}) : super(key: key);
 
   @override
   State<VerificationMessage> createState() => _VerificationMessageState();
@@ -28,10 +30,16 @@ class _VerificationMessageState extends State<VerificationMessage> {
                 child: Column(
                   children: [
                     Center(child: Text(message)),
-                    Spacer(),
+                    const Spacer(),
                     ElevatedButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentsLoginScreen()));
-                    }, child: Text('Go Back To Login'))
+                      if(widget.kind == "student"){
+                        debugPrint("Going to students login screen");
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentsLoginScreen()));
+                      }else if(widget.kind == "staff"){
+                        debugPrint("Going to staff login screen");
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const StaffLoginScreen()));
+                      }
+                    }, child: const Text('Go Back To Login'))
                   ],
                 )),
           ),
