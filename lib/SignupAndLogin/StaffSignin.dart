@@ -15,6 +15,9 @@ String? whereFrom;
 String? valid;
 bool? verified;
 
+// Uri to the API
+String uri = "http://10.0.1.55:8000/";
+
 class StaffLoginScreen extends StatelessWidget {
   const StaffLoginScreen({Key? key}) : super(key: key);
 
@@ -24,7 +27,7 @@ class StaffLoginScreen extends StatelessWidget {
     whereFrom = "login";
     debugPrint('Name: ${data.name}, Password: ${data.password}');
     var result = await http.post(
-        Uri.parse("http://192.168.137.217:8000/auth/login/"),
+        Uri.parse("${uri}auth/login/"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
@@ -52,7 +55,7 @@ class StaffLoginScreen extends StatelessWidget {
     whereFrom = "signup";
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
     var result = await http.post(
-        Uri.parse("http://192.168.137.217:8000/auth/signUp/"),
+        Uri.parse("${uri}auth/signUp/"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
@@ -75,7 +78,7 @@ class StaffLoginScreen extends StatelessWidget {
   Future<String?> _recoverPassword(String name) async{
     debugPrint('Name: $name');
     var result = await http.post(
-        Uri.parse("http://192.168.137.217:8000/auth/reset/"),
+        Uri.parse("${uri}auth/reset/"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
