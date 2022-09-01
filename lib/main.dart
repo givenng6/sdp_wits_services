@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sdp_wits_services/SignupAndLogin/verification_message.dart';
 import 'SignupAndLogin/app.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,7 +23,7 @@ class Main extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Home(),
+      home: const App(),
     );
   }
 }
