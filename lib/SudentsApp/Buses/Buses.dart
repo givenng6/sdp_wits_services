@@ -61,15 +61,11 @@ class _Buses extends State<Buses> {
             :
             OutlinedButton(
                 style: OutlinedButton.styleFrom(
-                  primary: Colors.red,
-                ),
+                  primary: Colors.red                ),
                 onPressed: (){
                   setState(() {
                     loader = true;
-                    Future<String> status = addSub("2381410@students.wits.ac.za", "Campus Control");
-                    if(status == 'sent'){
-                      subscribed = true;
-                    }
+                    addSub("2381410@students.wits.ac.za", "Campus Control");
                   });
                 },
                 child: const Text("Subscribe", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.red),))
@@ -78,9 +74,8 @@ class _Buses extends State<Buses> {
     );
   }
 
-  Future<String> addSub(String email, String service) async{
-    var result =
-        await http.post(Uri.parse("${uri}db/addSub/"),
+  Future<void> addSub(String email, String service) async{
+        var response = await http.post(Uri.parse("${uri}db/addSub/"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
@@ -89,8 +84,13 @@ class _Buses extends State<Buses> {
           "email": email,
           "service": service
         }));
-    var res = jsonDecode(result.body);
 
-    return res['status'] as String;
+        var data = jsonEncode(response.body);
+        await Future.delayed(const Duration(seconds: 2), (){
+          setState(() {
+            loader = false;
+            subscribed = true;
+          });
+        });
   }
 }
