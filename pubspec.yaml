@@ -37,6 +37,7 @@ dependencies:
   firebase_core: ^1.21.0
   flutter_login: ^4.0.0
   http: ^0.13.5
+  loading_indicator: ^3.1.0
 
 dev_dependencies:
   
