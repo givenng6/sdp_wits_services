@@ -9,24 +9,30 @@ import 'dart:convert';
 String uri = "http://10.0.1.55:8000/";
 
 class Buses extends StatefulWidget {
-  bool sub;
+  List<bool> sub;
   Buses({Key? key, required this.sub}) : super(key: key);
 
   @override
-  State<Buses> createState() => _Buses();
+  State<Buses> createState() => _Buses(sub);
 }
 
 class _Buses extends State<Buses> {
-  UtilityWidget utilityWidget = UtilityWidget();
-
-  //
-  bool subscribed = false;
+  // init state variables...
+  List<bool> subscribed = [false];
   bool loader = false;
+  String email = "2381410@students.wits.ac.za";
+  String service = "buses";
+
+  _Buses(List<bool> sub){
+    subscribed = sub;
+  }
+
+  UtilityWidget utilityWidget = UtilityWidget();
 
   @override
   Widget build(BuildContext context) {
       return Scaffold(
-        body: subscribed ?  Column(
+        body: subscribed[0] ?  Column(
           children: [
             utilityWidget.AppBar("Bus Services"),
           ],
@@ -65,7 +71,7 @@ class _Buses extends State<Buses> {
                 onPressed: (){
                   setState(() {
                     loader = true;
-                    addSub("2381410@students.wits.ac.za", "Campus Control");
+                    addSub(email, service);
                   });
                 },
                 child: const Text("Subscribe", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.red),))
@@ -75,7 +81,7 @@ class _Buses extends State<Buses> {
   }
 
   Future<void> addSub(String email, String service) async{
-        var response = await http.post(Uri.parse("${uri}db/addSub/"),
+        await http.post(Uri.parse("${uri}db/addSub/"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
@@ -85,11 +91,10 @@ class _Buses extends State<Buses> {
           "service": service
         }));
 
-        var data = jsonEncode(response.body);
         await Future.delayed(const Duration(seconds: 2), (){
           setState(() {
             loader = false;
-            subscribed = true;
+            subscribed[0] = true;
           });
         });
   }
