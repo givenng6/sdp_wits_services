@@ -11,15 +11,22 @@ class Home extends StatefulWidget {
   Home({Key? key, required this.username, required this.email}) : super(key: key);
 
   @override
-  State<Home> createState() => _Home();
+  State<Home> createState() => _Home(username, email);
 }
 
 class _Home extends State<Home> {
+  // init var
+  String username = "", email = "";
+  List<Widget> _screens = [];
+  List<bool> sub = [false];
 
-  bool sub = true;
+  // constructor...
+  _Home(this.username, this.email){
+  _screens = [Dashboard(username: username), Buses(sub: sub), const Dining(), const Protection(), const Menu()];
+  }
+
   // var to keep track of the screen to show...
   int _screenIndex = 0;
-  final List<Widget> _screens = [Dashboard(username: "The username"), Buses(sub: false), const Dining(), const Protection(), const Menu()];
 
   @override
   Widget build(BuildContext context) {
