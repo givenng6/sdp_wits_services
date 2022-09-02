@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:sdp_wits_services/SignupAndLogin/verification_message.dart';
-
 import '../StaffApp/StaffPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -18,50 +16,65 @@ class StaffLoginScreen extends StatelessWidget {
 
   Duration get loginTime => const Duration(milliseconds: 2250);
 
-  Future<String?> _authUser(LoginData data) async{
+  Future<String?> _authUser(LoginData data) async {
     whereFrom = "login";
     debugPrint('Name: ${data.name}, Password: ${data.password}');
-    var result = await http.post(
-        Uri.parse("${uri}auth/login/"),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-        body: jsonEncode(<String, String>{
-          "email"   : data.name,
-          "password": data.password,
-        })
-    );
-    var json = jsonDecode(result.body);
 
-    valid = json['status'];
-    verified = json['verified'];
+    for (int i = 0; i < data.name.length; i++) {
+      if (data.name[i] == '@') {
+        String emailExtension = data.name.substring(i, data.name.length);
+        if (emailExtension == '@students.wits.ac.za') {
+          return Future.delayed(loginTime).then((_) {
+            return 'Come On, Really?\n You Know You Should Login As A Student';
+          });
+        } else if (emailExtension == '@wits.ac.za') {
+          var result = await http.post(Uri.parse("${uri}auth/login/"),
+              headers: <String, String>{
+                "Accept": "application/json",
+                "Content-Type": "application/json; charset=UTF-8",
+              },
+              body: jsonEncode(<String, String>{
+                "email": data.name,
+                "password": data.password,
+              }));
+          var json = jsonDecode(result.body);
 
-    return Future.delayed(loginTime).then((_) {
-      if (valid! == "invalid") {
-        return 'Email or password incorrect';
+          valid = json['status'];
+          verified = json['verified'];
+
+          return Future.delayed(loginTime).then((_) {
+            if (valid == "valid" && !verified!) {
+              return "Account Is Not Verified\n A Verification Link Has Been Sent To Your Email Account. "
+                  "Also Check In Your SPAM Emails Too";
+            } else if (valid! == "invalid") {
+              return 'Email or password incorrect';
+            }
+            return null;
+          });
+        } else {
+          return Future.delayed(loginTime).then((_) {
+            return 'You Should Use Your Wits Stuff Email To Login';
+          });
+        }
       }
-      return null;
-    });
+    }
+    return null;
   }
 
-  Future<String?> _signupUser(SignupData data) async{
+  Future<String?> _signupUser(SignupData data) async {
     String username = data.additionalSignupData!['username']!;
-    whereFrom = "signup";
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    var result = await http.post(
-        Uri.parse("${uri}auth/signUp/"),
+    var result = await http.post(Uri.parse("${uri}auth/signUp/"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(<String, String>{
-          "email"   : data.name as String,
+          "email": data.name as String,
           "password": data.password as String,
-          "kind"    : "staff",
+          "kind": "staff",
           "username": username,
-        })
-    );
+        }));
     var json = jsonDecode(result.body);
     valid = json['status'] as String;
     debugPrint(json['status']);
@@ -70,18 +83,16 @@ class StaffLoginScreen extends StatelessWidget {
     });
   }
 
-  Future<String?> _recoverPassword(String name) async{
+  Future<String?> _recoverPassword(String name) async {
     debugPrint('Name: $name');
-    await http.post(
-        Uri.parse("${uri}auth/reset/"),
+    await http.post(Uri.parse("${uri}auth/reset/"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(<String, String>{
           "email": name,
-        })
-    );
+        }));
     return Future.delayed(loginTime).then((_) {
       return null;
     });
@@ -90,7 +101,7 @@ class StaffLoginScreen extends StatelessWidget {
   String? _nameValidator(String? name) {
     debugPrint('Name: $name');
     String? error;
-    if (name == null || name == ""){
+    if (name == null || name == "") {
       error = "Username is required";
     }
     return error;
@@ -107,20 +118,17 @@ class StaffLoginScreen extends StatelessWidget {
       onLogin: _authUser,
       onSignup: _signupUser,
       onSubmitAnimationCompleted: () {
-        if((whereFrom! == "signup" && valid! == "valid") || (whereFrom! == "login" && valid! == "valid" && !verified!)){
+        if (valid! == "valid" && verified!) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => const VerificationMessage(kind: 'staff',)),
-                  (Route<dynamic> route) => false);
-        }
-        else if(whereFrom! == "login" && valid! == "valid" && verified!){
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) => const StaffPage()),
-                  (Route<dynamic> route) => false);
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const StaffPage()),
+              (Route<dynamic> route) => false);
         }
       },
       onRecoverPassword: _recoverPassword,
+      loginAfterSignUp: false,
+      scrollable: true,
       additionalSignupFields: [
         UserFormField(
           keyName: 'username',
@@ -130,11 +138,13 @@ class StaffLoginScreen extends StatelessWidget {
         ),
       ],
       messages: LoginMessages(
-          recoverPasswordDescription:
-          "We will send a link to the email account.",
-          recoverPasswordSuccess: 'If your account exists email has been sent!',
-          additionalSignUpFormDescription:
-          "Enter your username in this form to complete signup"),
+        recoverPasswordDescription: "We will send a link to the email account.",
+        recoverPasswordSuccess: 'If your account exists email has been sent!',
+        additionalSignUpFormDescription:
+            "Enter your username in this form to complete signup",
+        signUpSuccess: "A verification link has been sent."
+            "\nCHECK IN YOUR SPAM EMAILS TOO!!!",
+      ),
     );
   }
 }

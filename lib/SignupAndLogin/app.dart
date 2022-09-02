@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
-import '../SudentsApp/Home/Home.dart';
 import 'StaffSignin.dart';
 
 class App extends StatefulWidget {
@@ -41,7 +40,7 @@ class _App extends State<App> {
                         )
                     ),
                     onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const StudentsLoginScreen()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => StudentsLoginScreen()));
                     }, child: const Text("Continue as Student", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: Color(0xff7393B3))))),
             Container(
                 width: 300,
