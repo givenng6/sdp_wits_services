@@ -1,30 +1,50 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import '../Buses/Buses.dart';
 import '../Menu/Menu.dart';
 import '../Dining/Dining.dart';
 import '../Dashboard/Dashboard.dart';
 import '../Protection/Protection.dart';
 
-
+// Uri to the API
+String uri = "http://10.0.1.55:8000/";
 class Home extends HookWidget {
   // init var
   String username = "", email = "";
   List<Widget> _screens = [];
-  List<bool> sub = [false, false];
 
   //constructor...
   Home(this.email, this.username, {Key? key}) : super(key: key);
 
-  // var to keep track of the screen to show...
-
-
   @override
   Widget build(BuildContext context) {
+    var subs = useState([]);
+    var isFetching = useState(true);
 
-    _screens = [Dashboard(username: username), Buses(), Dining(), Protection(), const Menu()];
+    useEffect(() {
+      Future<void> getSubs() async{
+        await http.post(Uri.parse("${uri}db/getSub/"),
+            headers: <String, String>{
+              "Accept": "application/json",
+              "Content-Type": "application/json; charset=UTF-8",
+            },
+            body: jsonEncode(<String, String>{
+              "email": email,
+            })).then((value) {
+          var json = jsonDecode(value.body);
+          subs.value = json["subs"];
+          isFetching.value = false;
+        });
+
+      }
+     getSubs();
+    }, []);
 
 
+
+    _screens = [Dashboard(isFetching, subs), Buses(), Dining(), Protection(), const Menu()];
     final screenIndex = useState(0);
 
     void _onNavigate(int index){

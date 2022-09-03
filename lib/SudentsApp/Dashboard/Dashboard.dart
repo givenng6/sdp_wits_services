@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import './DashAppBar.dart';
 import './Widgets/BusWidget.dart';
 import './Widgets/DiningWidget.dart';
@@ -6,32 +8,54 @@ import './Widgets/ProtectionWidget.dart';
 import './Widgets/EventsWidget.dart';
 import './Widgets/HealthWidget.dart';
 
-class Dashboard extends StatefulWidget{
-  String username;
-  Dashboard({Key? key, required this.username}) : super(key: key);
 
-  @override
-  State<Dashboard> createState() => _Dashboard();
-}
-
-class _Dashboard extends State<Dashboard>{
+class Dashboard extends HookWidget{
 
   // list of dashboard widgets to show to user...
-  List<Widget> _cards = [BusWidget(), DiningWidget(), ProtectionWidget(), EventsWidget(), HealthWidget()];
+  List<Widget> _cards = [];
+
+  var isFetching = useState(true);
+  var subs = useState([]);
+  Dashboard(this.isFetching, this.subs, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
+
+    for(String service in subs.value){
+      switch (service){
+        case 'bus_service':
+          _cards.add(BusWidget());
+          break;
+        case 'dining_service':
+          _cards.add(DiningWidget());
+          break;
+        case 'campus_control':
+          _cards.add(ProtectionWidget());
+          break;
+        case 'events':
+          _cards.add(EventsWidget());
+          break;
+        case 'health':
+          _cards.add(HealthWidget());
+          break;
+      }
+    }
     return Scaffold(
       body: Column(
         children: [
-          DashAppBar(),
+          const DashAppBar(),
           DashHeader(),
-          Text(widget.username),
           Expanded(
-              child:
+              child: isFetching.value ?
+              const LoadingIndicator(
+                indicatorType: Indicator.ballPulse,
+                colors: [Colors.blueGrey],
+                strokeWidth: 2,
+              )
+              :
               ListView.builder(
                 itemCount: _cards.length,
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index){
                   return _cards[index];
                 }),)
