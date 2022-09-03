@@ -111,7 +111,7 @@ class StudentsLoginScreen extends StatelessWidget {
     debugPrint('Name: $name');
     String? error;
     if (name == null || name == "") {
-      error = "Username is required";
+      error = "Username is required!";
     }
     return error;
   }

@@ -62,14 +62,49 @@ void main() {
       await tester.tap(find.text('SIGNUP'));
       await tester.pumpAndSettle();
       expect(invalidEmail, findsOneWidget);
+      await Future.delayed(const Duration(seconds: 1));
       final passwordIsTooShort = find.text('Password is too short!');
       expect(passwordIsTooShort, findsOneWidget);
-      await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
-      await Future.delayed(const Duration(seconds: 1));
-
-      await Future.delayed(const Duration(seconds: 1));
-      await tester.tap(find.text('LOGIN'));
+      // await tester.tap(find.text('LOGIN'));
       await tester.pumpAndSettle();
+      await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.enterText(findPasswordTextField(), '1234567890');
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.enterText(findConfirmPasswordTextField(), '1234567890');
+      await tester.pumpAndSettle();
+      // FocusScope.of(context).unfocus();
+      FocusManager.instance.primaryFocus?.unfocus();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.tap(find.text('SIGNUP'))
+      ;await tester.pumpAndSettle();
+
+      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+      final enterUsernameToCompleteSignup = find.text('Enter your username in this form to complete signup');
+      await tester.tap(find.text('SUBMIT'));
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      expect(enterUsernameToCompleteSignup, findsOneWidget);
+      final username = find.text('Username');
+      expect(username, findsOneWidget);
+      final usernameIsRequired = find.text('Username is required!');
+      expect(usernameIsRequired, findsOneWidget);
+      final submit = find.text('SUBMIT');
+      expect(submit, findsOneWidget);
+      final back = find.text('BACK');
+      expect(back, findsOneWidget);
+      await tester.enterText(findNthField(0), 'Nathi');
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.tap(find.text('BACK'));
+      await tester.pumpAndSettle();
+      expect(find.text('Email'), findsOneWidget);
     });
 
     testWidgets("continue as staff", (tester) async {
@@ -120,9 +155,44 @@ void main() {
       final passwordIsTooShort = find.text('Password is too short!');
       expect(passwordIsTooShort, findsOneWidget);
 
-      await Future.delayed(const Duration(seconds: 1));
-      await tester.tap(find.text('LOGIN'));
       await tester.pumpAndSettle();
+      await tester.enterText(findNameTextField(), 'a2375736@wits.ac.za');
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.enterText(findPasswordTextField(), '1234567890');
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.enterText(findConfirmPasswordTextField(), '1234567890');
+      await tester.pumpAndSettle();
+      FocusManager.instance.primaryFocus?.unfocus();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.tap(find.text('SIGNUP'))
+      ;await tester.pumpAndSettle();
+
+      await Future.delayed(const Duration(seconds: 3));
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
+      final enterUsernameToCompleteSignup = find.text('Enter your username in this form to complete signup');
+      await tester.tap(find.text('SUBMIT'));
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      expect(enterUsernameToCompleteSignup, findsOneWidget);
+      final username = find.text('Username');
+      expect(username, findsOneWidget);
+      final usernameIsRequired = find.text('Username is required!');
+      expect(usernameIsRequired, findsOneWidget);
+      final submit = find.text('SUBMIT');
+      expect(submit, findsOneWidget);
+      final back = find.text('BACK');
+      expect(back, findsOneWidget);
+      await tester.enterText(findNthField(0), 'Nathi');
+      await tester.pumpAndSettle();
+      await Future.delayed(const Duration(seconds: 1));
+      await tester.tap(find.text('BACK'));
+      await tester.pumpAndSettle();
+      expect(find.text('Email'), findsOneWidget);
 
       await Future.delayed(const Duration(seconds: 2));
     });
