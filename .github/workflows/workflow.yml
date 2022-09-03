@@ -1,11 +1,48 @@
-name: test-my-app
-on: [push, workflow_dispatch]
+name: Run integration tests
+on: push
+
 jobs:
-  drive:
-    runs-on: ubuntu-latest
+  integration-tests:
+    name: Running tests on macOS-latest
+    runs-on: macOS-latest
+    strategy:
+      fail-fast: false
     steps:
-    - uses: actions/checkout@master
-    - uses: subosito/flutter-action@v1
-    - run: flutter pub get
-    - run:  flutter test integration_test --coverage
-    - uses: codecov/codecov-action@v1
+      - name: Checkout code
+        uses: actions/checkout@master
+      - name: Setup Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+      - name: Setup Flutter (stable)
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Install Android SDK
+        uses: malinskiy/action-android/install-sdk@release/0.1.2
+      - run: echo $ANDROID_HOME
+      - run: sdkmanager --install "ndk;23.1.7779620"
+      - run: sdkmanager --install "build-tools;30.0.3"
+      - run: flutter pub get
+      - uses: malinskiy/action-android/emulator-run-cmd@release/0.1.2
+        with:
+          cmd: flutter test integration_test --coverage
+          api: 31
+          cmdOptions: -no-snapshot-save -noaudio -no-boot-anim -cores 2 -memory 3072 -no-window
+          tag: google_apis
+          abi: x86_64
+      - uses: codecov/codecov-action@v1
+
+
+# name: test-my-app
+# on: [push, workflow_dispatch]
+# jobs:
+#   drive:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@master
+#     - uses: subosito/flutter-action@v1
+#     - run: flutter pub get
+#     - run: flutter test --coverage
+#     - uses: codecov/codecov-action@v1
