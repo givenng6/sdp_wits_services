@@ -22,7 +22,9 @@ class _App extends State<App> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            const Image(image: AssetImage('assets/logo.png')),
+            Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                child: const Image(image: AssetImage('assets/white_logo_nb.png'))),
             Container(
                 width: 300,
                 height: 55,

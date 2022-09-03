@@ -119,6 +119,7 @@ class StudentsLoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlutterLogin(
+      key: const Key('loginPage'),
       title: 'Wits Services',
       theme: LoginTheme(
         primaryColor: const Color(0xff003b5c),

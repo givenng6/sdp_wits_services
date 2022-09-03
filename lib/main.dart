@@ -1,3 +1,5 @@
+import 'dart:ui';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'SignupAndLogin/app.dart';
 import 'firebase_options.dart';
@@ -21,7 +23,15 @@ class Main extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const App(),
+      home: AnimatedSplashScreen(
+        duration: 1000,
+        splashIconSize: window.physicalSize.width-100,
+        animationDuration: const Duration(milliseconds: 1000),
+        splashTransition: SplashTransition.slideTransition,
+        backgroundColor: const Color(0xff003b5c),
+        splash: Image.asset("assets/white_logo_nb.png"),
+        nextScreen: const App(),
+      ),
     );
   }
 }
