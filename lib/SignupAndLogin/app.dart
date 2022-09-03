@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../SudentsApp/Home/Home.dart';
 import 'StaffSignin.dart';
 
 class App extends StatefulWidget {
@@ -10,6 +12,30 @@ class App extends StatefulWidget {
 }
 
 class _App extends State<App> {
+  @override
+  void initState() {
+    _getData();
+    super.initState();
+  }
+
+  _getData() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    String username = sharedPreferences.getString('username')!;
+    String email = sharedPreferences.getString('email')!;
+    if(username != ""){
+      _navigateToHome(email, username);
+    }
+  }
+
+  _navigateToHome(email, username){
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) =>
+                Home(email, username)),
+            (Route<dynamic> route) => false);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

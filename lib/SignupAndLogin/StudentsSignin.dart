@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/SudentsApp/Home/Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -118,6 +119,14 @@ class StudentsLoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    _navigateToHome(){
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (BuildContext context) =>
+                  Home(d_email, d_username)),
+              (Route<dynamic> route) => false);
+    }
     return FlutterLogin(
       key: const Key('loginPage'),
       title: 'Wits Services',
@@ -129,14 +138,13 @@ class StudentsLoginScreen extends StatelessWidget {
       onLogin: _authUser,
       onSignup: _signupUser,
       loginAfterSignUp: false,
-      onSubmitAnimationCompleted: () {
+      onSubmitAnimationCompleted: () async{
         if (valid == "valid" && verified!) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) =>
-                      Home(d_email, d_username)),
-              (Route<dynamic> route) => false);
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          sharedPreferences.setString('username', d_username);
+          sharedPreferences.setString('email', d_email);
+          debugPrint('here');
+          _navigateToHome();
         }
       },
       onRecoverPassword: _recoverPassword,
