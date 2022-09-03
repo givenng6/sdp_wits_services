@@ -44,7 +44,7 @@ class Home extends HookWidget {
 
 
 
-    _screens = [Dashboard(isFetching, subs), Buses(), Dining(), Protection(), const Menu()];
+    _screens = [Dashboard(isFetching, subs), Buses(email, subs), Dining(email, subs), Protection(email, subs), Menu(email, username)];
     final screenIndex = useState(0);
 
     void _onNavigate(int index){

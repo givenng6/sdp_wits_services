@@ -11,9 +11,10 @@ class AddSub extends HookWidget{
 
   var isSubscribed = useState(false);
   var isLoading = useState(false);
+  var subs = useState([]);
   List<String> data;
 
-  AddSub(this.isSubscribed, this.data, {Key? key}) : super(key: key);
+  AddSub(this.isSubscribed, this.data, this.subs, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -59,6 +60,7 @@ class AddSub extends HookWidget{
         }));
 
     await Future.delayed(const Duration(seconds: 2), (){
+        subs.value.add(service);
         isLoading.value = false;
         isSubscribed.value = true;
     });

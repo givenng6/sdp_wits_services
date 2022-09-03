@@ -8,16 +8,22 @@ class Protection extends HookWidget {
 
   var isSubscribed = useState(false);
   String title = "Campus Control";
-  String email = "2381410@students.wits.ac.za";
+  String email = "";
   String service = "campus_control";
   List<String> data = [];
 
-  Protection({Key? key}) : super(key: key){
+  var subs = useState([]);
+  Protection(this.email, this.subs, {Key? key}) : super(key: key){
     data = [email, title, service];
   }
 
   @override
   Widget build(BuildContext context) {
+
+    if(subs.value.contains(service)){
+      isSubscribed.value = true;
+    }
+
     return Scaffold(
       body: isSubscribed.value ?  Column(
         children: [
@@ -27,7 +33,7 @@ class Protection extends HookWidget {
       Column(
         mainAxisAlignment:  MainAxisAlignment.center,
         children: [
-          AddSub(isSubscribed, data),
+          AddSub(isSubscribed, data, subs),
         ],
       ),
     );

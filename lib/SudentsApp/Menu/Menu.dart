@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import './MenuAppBar.dart';
 import './MenuItems.dart';
 
-class Menu extends StatefulWidget {
-  const Menu({Key? key}) : super(key: key);
 
-  @override
-  State<Menu> createState() => _Menu();
-}
+class Menu extends HookWidget {
 
-class _Menu extends State<Menu> {
+  String email = "", username = "";
+  Menu(this.email, this.username, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(flex:1,child: MenuAppBar()),
+          Expanded(flex:1,child: MenuAppBar(email, username)),
           Expanded(flex:3,child: MenuItems())
         ],
       ),

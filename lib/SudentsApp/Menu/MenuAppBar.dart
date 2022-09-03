@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import '../UtilityWidgets.dart';
 
-class MenuAppBar extends StatefulWidget{
-  const MenuAppBar({Key? key}) : super(key: key);
 
-  @override
-  State<MenuAppBar> createState() => _MenuAppBar();
-}
+class MenuAppBar extends HookWidget{
 
-class _MenuAppBar extends State<MenuAppBar>{
 
   // creating utility widget object...
   UtilityWidget utilityWidget = new UtilityWidget();
+
+  String username = "", email = "";
+  MenuAppBar(this.email, this.username, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -28,8 +27,8 @@ class _MenuAppBar extends State<MenuAppBar>{
             margin: EdgeInsets.fromLTRB(0, 12, 0, 12),
             child: Row(
               children: [
-                utilityWidget.CircularProfile("Given Mathebula"),
-                Text("Given Mathebula", style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 20)),
+                utilityWidget.CircularProfile(username),
+                Text(username, style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 20)),
               ],
             ),
           ),
