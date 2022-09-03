@@ -1,35 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import '../UtilityWidgets.dart';
+import '../Utilities/AddSub.dart';
 
-class Dining extends StatefulWidget {
-  const Dining({Key? key}) : super(key: key);
+class Dining extends HookWidget {
+  UtilityWidget utilityWidget = UtilityWidget();
 
-  @override
-  State<Dining> createState() => _Dining();
-}
+  var isSubscribed = useState(false);
+  String title = "Dining Services";
+  String email = "2381410@students.wits.ac.za";
+  String service = "dining_service";
+  List<String> data = [];
 
-class _Dining extends State<Dining> {
-  UtilityWidget utilityWidget = new UtilityWidget();
-
-  bool subscribed = false;
+  Dining({Key? key}) : super(key: key){
+    data = [email, title, service];
+  }
 
   @override
   Widget build(BuildContext context) {
-    if(subscribed){
-      return Scaffold(
-        body: Column(
-          children: [
-            utilityWidget.AppBar("Dining Services"),
-          ],
-        ),
-      );
-    }else{
-      return Scaffold(
-        body: Column(
-            mainAxisAlignment:  MainAxisAlignment.center,
-            children: [utilityWidget.NotSubscribed("Dining Services", subscribed),]
-        ),
-      );
-    }
+    return Scaffold(
+      body: isSubscribed.value ?  Column(
+        children: [
+          utilityWidget.AppBar(title),
+        ],
+      ) :
+      Column(
+        mainAxisAlignment:  MainAxisAlignment.center,
+        children: [
+          AddSub(isSubscribed, data),
+        ],
+      ),
+    );
   }
 }

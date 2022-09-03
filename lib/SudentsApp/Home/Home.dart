@@ -1,39 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import '../Buses/Buses.dart';
 import '../Menu/Menu.dart';
 import '../Dining/Dining.dart';
 import '../Dashboard/Dashboard.dart';
 import '../Protection/Protection.dart';
 
-class Home extends StatefulWidget {
-  // required data
-  String username, email;
-  Home({Key? key, required this.username, required this.email}) : super(key: key);
 
-  @override
-  State<Home> createState() => _Home(username, email);
-}
-
-class _Home extends State<Home> {
+class Home extends HookWidget {
   // init var
   String username = "", email = "";
   List<Widget> _screens = [];
-  List<bool> sub = [false];
+  List<bool> sub = [false, false];
 
-  // constructor...
-  _Home(this.username, this.email){
-  _screens = [Dashboard(username: username), Buses(sub: sub), const Dining(), const Protection(), const Menu()];
-  }
+  //constructor...
+  Home(this.email, this.username, {Key? key}) : super(key: key);
 
   // var to keep track of the screen to show...
-  int _screenIndex = 0;
+
 
   @override
   Widget build(BuildContext context) {
+
+    _screens = [Dashboard(username: username), Buses(), Dining(), Protection(), const Menu()];
+
+
+    final screenIndex = useState(0);
+
+    void _onNavigate(int index){
+      screenIndex.value = index;
+    }
+
     return Scaffold(
-      body: _screens.elementAt(_screenIndex),
+      body: _screens.elementAt(screenIndex.value),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _screenIndex,
+        currentIndex: screenIndex.value,
         selectedItemColor:  const Color(0xff003b5c),
         onTap: _onNavigate,
         type: BottomNavigationBarType.fixed,
@@ -53,9 +54,5 @@ class _Home extends State<Home> {
   }
 
   // method to change the bottom nav index...
-  void _onNavigate(int index){
-    setState(() {
-      _screenIndex = index;
-    });
-  }
+
 }

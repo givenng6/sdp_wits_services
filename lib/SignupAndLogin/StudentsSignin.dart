@@ -124,7 +124,7 @@ class StudentsLoginScreen extends StatelessWidget {
         } else if (whereFrom == "login" && valid == "valid" && verified!) {
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (BuildContext context) => Home(username: d_username, email: d_email)),
+              MaterialPageRoute(builder: (BuildContext context) => Home(d_email, d_username)),
               (Route<dynamic> route) => false);
         }
       },
