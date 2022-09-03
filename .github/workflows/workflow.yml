@@ -27,11 +27,12 @@ jobs:
       - run: flutter pub get
       - uses: malinskiy/action-android/emulator-run-cmd@release/0.1.2
         with:
-          cmd: flutter test integration_test
+          cmd: flutter test integration_test --coverage
           api: 31
           cmdOptions: -no-snapshot-save -noaudio -no-boot-anim -cores 2 -memory 3072 -no-window
           tag: google_apis
           abi: x86_64
+      - uses: codecov/codecov-action@v1
 
 
 # name: test-my-app
