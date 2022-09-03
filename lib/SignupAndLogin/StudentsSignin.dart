@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:sdp_wits_services/SignupAndLogin/verification_message.dart';
 import 'package:sdp_wits_services/SudentsApp/Home/Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-String? whereFrom;
 String? valid;
 bool? verified;
 
@@ -20,56 +18,72 @@ class StudentsLoginScreen extends StatelessWidget {
 
   Duration get loginTime => const Duration(milliseconds: 2250);
 
+  Duration get duration => const Duration(milliseconds: 1);
+
   Future<String?> _authUser(LoginData data) async {
-    whereFrom = "login";
     debugPrint('Name: ${data.name}, Password: ${data.password}');
-    var result =
-        await http.post(Uri.parse("${uri}auth/login/"),
-            headers: <String, String>{
-              "Accept": "application/json",
-              "Content-Type": "application/json; charset=UTF-8",
-            },
-            body: jsonEncode(<String, String>{
-              "email": data.name,
-              "password": data.password,
-            }));
-    var json = jsonDecode(result.body);
 
-    valid = json['status'];
-    verified = json['verified'];
+    for (int i = 0; i < data.name.length; i++) {
+      if (data.name[i] == '@') {
+        String emailExtension = data.name.substring(i, data.name.length);
 
-    if(valid == 'valid'){
-      d_username = json['username'];
-      d_email = json['email'];
-      d_uid = json['uid'];
-    }
+        if (emailExtension == '@students.wits.ac.za') {
+          var result = await http.post(Uri.parse("${uri}auth/login/"),
+              headers: <String, String>{
+                "Accept": "application/json",
+                "Content-Type": "application/json; charset=UTF-8",
+              },
+              body: jsonEncode(<String, String>{
+                "email": data.name,
+                "password": data.password,
+              }));
+          var json = jsonDecode(result.body);
 
-    return Future.delayed(loginTime).then((_) {
-      if (valid! == "invalid") {
-        return 'Email or password incorrect';
+          valid = json['status'];
+          verified = json['verified'];
+
+          if (valid == 'valid') {
+            d_username = json['username'];
+            d_email = json['email'];
+            d_uid = json['uid'];
+          }
+
+          return Future.delayed(loginTime).then((_) {
+            if (valid == "valid" && !verified!) {
+              return "Account Is Not Verified\n A Verification Link Has Been Sent To Your Email Account. "
+                  "Also Check In Your SPAM Emails Too";
+            } else if (valid! == "invalid") {
+              return 'Email or password incorrect';
+            }
+            return null;
+          });
+        } else if (emailExtension == '@wits.ac.za') {
+          return Future.delayed(loginTime).then((_) {
+            return 'You Should Log In As Staff!';
+          });
+        } else {
+          return 'You Should Use Your Wits Student Email To Login';
+        }
       }
-      return null;
-    });
+    }
+    return null;
   }
 
   Future<String?> _signupUser(SignupData data) async {
     String username = data.additionalSignupData!['username']!;
     debugPrint("username = $username");
-    whereFrom = "signup";
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    var result = await http.post(
-      Uri.parse("${uri}auth/signUp/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      body: jsonEncode(<String, String>{
-        "email"   : data.name as String,
-        "password": data.password as String,
-        "kind"    : "student",
-        "username": username,
-      })
-    );
+    var result = await http.post(Uri.parse("${uri}auth/signUp/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": data.name as String,
+          "password": data.password as String,
+          "kind": "student",
+          "username": username,
+        }));
     var json = jsonDecode(result.body);
     valid = json['status'] as String;
     debugPrint(json['status']);
@@ -81,13 +95,13 @@ class StudentsLoginScreen extends StatelessWidget {
   Future<String?> _recoverPassword(String name) async {
     debugPrint('Name: $name');
     await http.post(Uri.parse("${uri}auth/reset/"),
-            headers: <String, String>{
-              "Accept": "application/json",
-              "Content-Type": "application/json; charset=UTF-8",
-            },
-            body: jsonEncode(<String, String>{
-              "email": name,
-            }));
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": name,
+        }));
     return Future.delayed(loginTime).then((_) {
       return null;
     });
@@ -96,7 +110,7 @@ class StudentsLoginScreen extends StatelessWidget {
   String? _nameValidator(String? name) {
     debugPrint('Name: $name');
     String? error;
-    if (name == null || name == ""){
+    if (name == null || name == "") {
       error = "Username is required";
     }
     return error;
@@ -110,21 +124,17 @@ class StudentsLoginScreen extends StatelessWidget {
         primaryColor: const Color(0xff003b5c),
         accentColor: Colors.white,
       ),
+      scrollable: true,
       onLogin: _authUser,
       onSignup: _signupUser,
+      loginAfterSignUp: false,
       onSubmitAnimationCompleted: () {
-        if ((whereFrom == "signup" && valid == "valid") ||
-            (whereFrom == "login" && valid == "valid" && !verified!)) {
+        if (valid == "valid" && verified!) {
           Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                  builder: (BuildContext context) => const VerificationMessage(kind: "student")),
-              (Route<dynamic> route) => false,
-          );
-        } else if (whereFrom == "login" && valid == "valid" && verified!) {
-          Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (BuildContext context) => Home(d_email, d_username)),
+                  builder: (BuildContext context) =>
+                      Home(d_email, d_username)),
               (Route<dynamic> route) => false);
         }
       },
@@ -138,14 +148,13 @@ class StudentsLoginScreen extends StatelessWidget {
         ),
       ],
       messages: LoginMessages(
-          recoverPasswordDescription:
-              "We will send a link to the email account.",
-          recoverPasswordSuccess: 'If your account exists email has been sent!',
-          additionalSignUpFormDescription:
-              "Enter your username in this form to complete signup"),
+        recoverPasswordDescription: "We will send a link to the email account.",
+        recoverPasswordSuccess: 'If your account exists email has been sent!',
+        additionalSignUpFormDescription:
+            "Enter your username in this form to complete signup",
+        signUpSuccess: "A verification link has been sent."
+            "\nCHECK IN YOUR SPAM EMAILS TOO!!!",
+      ),
     );
   }
 }
-
-// 2375736@students.wits.ac.za
-// 1234567
