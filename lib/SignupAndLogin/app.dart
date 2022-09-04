@@ -23,7 +23,7 @@ class _App extends State<App> {
     String username = sharedPreferences.getString('username')!;
     String email = sharedPreferences.getString('email')!;
     if(username != ""){
-      _navigateToHome(email, username);
+//       _navigateToHome(email, username);
     }
   }
 
