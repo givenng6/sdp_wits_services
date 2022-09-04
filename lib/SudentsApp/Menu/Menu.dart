@@ -7,14 +7,15 @@ import './MenuItems.dart';
 class Menu extends HookWidget {
 
   String email = "", username = "";
-  Menu(this.email, this.username, {Key? key}) : super(key: key);
+  var subs = useState([]);
+  Menu(this.email, this.username, this.subs,{Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          Expanded(flex:1,child: MenuAppBar(email, username)),
+          Expanded(flex:1,child: MenuAppBar(email, username, subs)),
           Expanded(flex:3,child: MenuItems())
         ],
       ),
