@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 class ProfileWidget extends StatelessWidget {
   final String imagePath;
@@ -50,7 +49,7 @@ class ProfileWidget extends StatelessWidget {
         child: buildCircle(
           color: color,
           all: 8,
-          child: Icon(Icons.edit, color: Colors.white, size: 20),
+          child: const Icon(Icons.edit, color: Colors.white, size: 20),
         ),
       );
 
