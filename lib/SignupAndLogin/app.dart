@@ -20,10 +20,10 @@ class _App extends State<App> {
 
   _getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String username = sharedPreferences.getString('username')!;
-    String email = sharedPreferences.getString('email')!;
-    if(username != ""){
-//       _navigateToHome(email, username);
+    String? username = sharedPreferences.getString('username');
+    String? email = sharedPreferences.getString('email');
+    if(username != "" || username != null){
+      _navigateToHome(email, username);
     }
   }
 
