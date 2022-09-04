@@ -22,7 +22,7 @@ class _App extends State<App> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? username = sharedPreferences.getString('username');
     String? email = sharedPreferences.getString('email');
-    if(username != "" || username != null){
+    if(username != "" && username != null){
       _navigateToHome(email, username);
     }
   }
