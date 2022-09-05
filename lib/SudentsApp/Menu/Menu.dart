@@ -16,7 +16,7 @@ class Menu extends HookWidget {
       body: Column(
         children: <Widget>[
           Expanded(flex:1,child: MenuAppBar(email, username, subs)),
-          Expanded(flex:3,child: MenuItems())
+          Expanded(flex:3,child: MenuItems(email, username, subs))
         ],
       ),
     );
