@@ -9,7 +9,7 @@ String? valid;
 bool? verified;
 
 // Uri to the API
-String uri = "http://192.168.137.217:8000/";
+String uri = "http://10.0.1.55:8000/";
 
 class StaffLoginScreen extends StatelessWidget {
   const StaffLoginScreen({Key? key}) : super(key: key);
