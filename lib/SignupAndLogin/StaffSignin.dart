@@ -64,23 +64,42 @@ class StaffLoginScreen extends StatelessWidget {
   Future<String?> _signupUser(SignupData data) async {
     String username = data.additionalSignupData!['username']!;
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    var result = await http.post(Uri.parse("${uri}auth/signUp/"),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-        body: jsonEncode(<String, String>{
-          "email": data.name as String,
-          "password": data.password as String,
-          "kind": "staff",
-          "username": username,
-        }));
-    var json = jsonDecode(result.body);
-    valid = json['status'] as String;
-    debugPrint(json['status']);
-    return Future.delayed(loginTime).then((_) {
-      return null;
-    });
+
+
+    for (int i = 0; i < data.name!.length; i++) {
+      if (data.name![i] == '@') {
+        String emailExtension = data.name!.substring(i, data.name!.length);
+        if (emailExtension == '@students.wits.ac.za') {
+          return Future.delayed(loginTime).then((_) {
+            return 'You Know You Should Signup As A Student';
+          });
+        } else if (emailExtension == '@wits.ac.za') {
+          var result = await http.post(Uri.parse("${uri}auth/signUp/"),
+              headers: <String, String>{
+                "Accept": "application/json",
+                "Content-Type": "application/json; charset=UTF-8",
+              },
+              body: jsonEncode(<String, String>{
+                "email": data.name as String,
+                "password": data.password as String,
+                "kind": "staff",
+                "username": username,
+              }));
+          var json = jsonDecode(result.body);
+          valid = json['status'] as String;
+          debugPrint(json['status']);
+
+          return Future.delayed(loginTime).then((_) {
+            return null;
+          });
+        } else {
+          return Future.delayed(loginTime).then((_) {
+            return 'You Should Use Your Wits Stuff Email To Signup';
+          });
+        }
+      }
+    }
+    return null;
   }
 
   Future<String?> _recoverPassword(String name) async {

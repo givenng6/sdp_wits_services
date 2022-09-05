@@ -75,24 +75,41 @@ class StudentsLoginScreen extends StatelessWidget {
     String username = data.additionalSignupData!['username']!;
     debugPrint("username = $username");
     debugPrint('Signup Name: ${data.name}, Password: ${data.password}');
-    var result = await http.post(Uri.parse("${uri}auth/signUp/"),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-        body: jsonEncode(<String, String>{
-          "email": data.name as String,
-          "password": data.password as String,
-          "kind": "student",
-          "username": username,
-        },
-        ));
-    var json = await jsonDecode(result.body);
-    valid = json['status'] as String;
-    debugPrint(json['status']);
-    return Future.delayed(loginTime).then((_) {
-      return null;
-    });
+    for (int i = 0; i < data.name!.length; i++) {
+      if (data.name![i] == '@') {
+        String emailExtension = data.name!.substring(i, data.name!.length);
+
+        if (emailExtension == '@students.wits.ac.za') {
+          var result = await http.post(Uri.parse("${uri}auth/signUp/"),
+              headers: <String, String>{
+                "Accept": "application/json",
+                "Content-Type": "application/json; charset=UTF-8",
+              },
+              body: jsonEncode(<String, String>{
+                "email": data.name as String,
+                "password": data.password as String,
+                "kind": "student",
+                "username": username,
+              },
+              ));
+          var json = await jsonDecode(result.body);
+          valid = json['status'] as String;
+          debugPrint(json['status']);
+          return Future.delayed(loginTime).then((_) {
+            return null;
+          });
+        }
+        else if (emailExtension == '@wits.ac.za') {
+          return Future.delayed(loginTime).then((_) {
+            return 'You Should Signup As Staff!';
+          });
+        } else {
+          return 'You Should Use Your Wits Student Email To Signup!';
+        }
+      }
+    }
+    return null;
+
   }
 
   Future<String?> _recoverPassword(String name) async {
