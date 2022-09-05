@@ -38,7 +38,7 @@ class StudentsLoginScreen extends StatelessWidget {
                 "email": data.name,
                 "password": data.password,
               }));
-          var json = jsonDecode(result.body);
+          var json = await jsonDecode(result.body);
 
           valid = json['status'];
           verified = json['verified'];
@@ -85,8 +85,9 @@ class StudentsLoginScreen extends StatelessWidget {
           "password": data.password as String,
           "kind": "student",
           "username": username,
-        }));
-    var json = jsonDecode(result.body);
+        },
+        ));
+    var json = await jsonDecode(result.body);
     valid = json['status'] as String;
     debugPrint(json['status']);
     return Future.delayed(loginTime).then((_) {
