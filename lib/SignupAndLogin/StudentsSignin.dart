@@ -51,8 +51,9 @@ class StudentsLoginScreen extends StatelessWidget {
 
           return Future.delayed(loginTime).then((_) {
             if (valid == "valid" && !verified!) {
-              return "Account Is Not Verified\n A Verification Link Has Been Sent To Your Email Account. "
-                  "Also Check In Your SPAM Emails Too";
+              return "Account Is Not Verified"
+                  "\nLink To Verify Has Been Sent To ${data.name}."
+                  "\nAlso Check In Your SPAM Emails Too";
             } else if (valid! == "invalid") {
               return 'Email or password incorrect';
             }
