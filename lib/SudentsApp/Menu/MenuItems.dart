@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sdp_wits_services/SudentsApp/Buses/Buses.dart';
 import 'package:sdp_wits_services/SudentsApp/Menu/Department.dart';
 
-class MenuItems extends StatefulWidget {
-  @override
-  State<MenuItems> createState() => _MenuItems();
-}
 
-class _MenuItems extends State<MenuItems> {
+class MenuItems extends HookWidget {
   List<Department> cardNames = [
 
     Department(title: "Buses", icon: Icons.directions_bus),
@@ -17,10 +15,14 @@ class _MenuItems extends State<MenuItems> {
     Department(title: "Events", icon: Icons.event),
   ];
 
+  String email = "", username = "";
+  var subs = useState([]);
+  MenuItems(this.email, this.username, this.subs, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
+        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
         child: GridView.count(
           crossAxisCount: 2,
           crossAxisSpacing: 15.0,
@@ -30,7 +32,9 @@ class _MenuItems extends State<MenuItems> {
                   (index) => SizedBox(
                   height: 400,
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
