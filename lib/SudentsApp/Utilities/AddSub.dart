@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // Uri to the API
-String uri = "http://10.0.1.55:8000/";
+String uri = "http://192.168.137.217:8000/";
 
 class AddSub extends HookWidget{
 
