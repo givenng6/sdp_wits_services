@@ -67,7 +67,7 @@ void main() {
       expect(passwordIsTooShort, findsOneWidget);
       // await tester.tap(find.text('LOGIN'));
       await tester.pumpAndSettle();
-      await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
+      await tester.enterText(findNameTextField(), '23123456@students.wits.ac.za');
       await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 1));
       await tester.enterText(findPasswordTextField(), '1234567890');
@@ -156,7 +156,7 @@ void main() {
       expect(passwordIsTooShort, findsOneWidget);
 
       await tester.pumpAndSettle();
-      await tester.enterText(findNameTextField(), 'a2375736@wits.ac.za');
+      await tester.enterText(findNameTextField(), 'a23123456@wits.ac.za');
       await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 1));
       await tester.enterText(findPasswordTextField(), '1234567890');
