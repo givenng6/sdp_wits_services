@@ -33,10 +33,32 @@ AppBar BuildAppBar(BuildContext context) {
         onPressed: () {},
       ),
       IconButton(
-        color: Colors.red.shade900,
+        color: Colors.redAccent,
         icon: const Icon(Icons.logout_rounded),
         onPressed: () {
-          _logOut();
+          showModalBottomSheet(context: context,
+              builder: (builder) => Container(
+                padding: const EdgeInsets.all(15),
+                height: 200,
+                child: Column(
+                  children: [
+                    const Text("Are you sure you want to Sign Out?",
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                    ),
+                    TextButton(onPressed: (){
+                      _logOut();
+                    },
+                        child: const Text("Sign Out", style: TextStyle(color: Colors.red))
+                    ),
+                    TextButton(onPressed: (){
+                      Navigator.pop(context);
+                    },
+                        child: const Text("Cancel")
+                    ),
+                  ],
+                ),
+              )
+          );
         },
       ),
     ],
