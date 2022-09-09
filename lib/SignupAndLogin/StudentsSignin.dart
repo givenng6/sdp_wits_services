@@ -5,14 +5,14 @@ import 'package:sdp_wits_services/SudentsApp/Home/Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-String? valid = 'valid';
-bool? verified = true;
+String? valid;
+bool? verified;
 
 // Uri to the API
 String uri = "http://10.203.238.89:8000/";
 
 // data to send
-String? username = "GhostCoder", email = "nutty@chuma.ghost", uid;
+String? username = "", email = "", uid;
 
 class StudentsLoginScreen extends StatelessWidget {
   const StudentsLoginScreen({Key? key}) : super(key: key);
@@ -24,50 +24,50 @@ class StudentsLoginScreen extends StatelessWidget {
   Future<String?> _authUser(LoginData data) async {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
 
-    // for (int i = 0; i < data.name.length; i++) {
-    //   if (data.name[i] == '@') {
-    //     String emailExtension = data.name.substring(i, data.name.length);
-    //
-    //     if (emailExtension == '@students.wits.ac.za') {
-    //       var result = await http.post(Uri.parse("${uri}auth/login/"),
-    //           headers: <String, String>{
-    //             "Accept": "application/json",
-    //             "Content-Type": "application/json; charset=UTF-8",
-    //           },
-    //           body: jsonEncode(<String, String>{
-    //             "email": data.name,
-    //             "password": data.password,
-    //           }));
-    //       var json = await jsonDecode(result.body);
-    //
-    //       valid = json['status'];
-    //       verified = json['verified'];
-    //
-    //       if (valid == 'valid') {
-    //         username = json['username'];
-    //         email = json['email'];
-    //         uid = json['uid'];
-    //       }
-    //
-    //       return Future.delayed(loginTime).then((_) {
-    //         if (valid == "valid" && !verified!) {
-    //           return "Account Is Not Verified"
-    //               "\nLink To Verify Has Been Sent To ${data.name}."
-    //               "\nAlso Check In Your SPAM Emails Too";
-    //         } else if (valid! == "invalid") {
-    //           return 'Email or password incorrect';
-    //         }
-    //         return null;
-    //       });
-    //     } else if (emailExtension == '@wits.ac.za') {
-    //       return Future.delayed(loginTime).then((_) {
-    //         return 'You Should Log In As Staff!';
-    //       });
-    //     } else {
-    //       return 'You Should Use Your Wits Student Email To Login';
-    //     }
-    //   }
-    // }
+    for (int i = 0; i < data.name.length; i++) {
+      if (data.name[i] == '@') {
+        String emailExtension = data.name.substring(i, data.name.length);
+
+        if (emailExtension == '@students.wits.ac.za') {
+          var result = await http.post(Uri.parse("${uri}auth/login/"),
+              headers: <String, String>{
+                "Accept": "application/json",
+                "Content-Type": "application/json; charset=UTF-8",
+              },
+              body: jsonEncode(<String, String>{
+                "email": data.name,
+                "password": data.password,
+              }));
+          var json = await jsonDecode(result.body);
+
+          valid = json['status'];
+          verified = json['verified'];
+
+          if (valid == 'valid') {
+            username = json['username'];
+            email = json['email'];
+            uid = json['uid'];
+          }
+
+          return Future.delayed(loginTime).then((_) {
+            if (valid == "valid" && !verified!) {
+              return "Account Is Not Verified"
+                  "\nLink To Verify Has Been Sent To ${data.name}."
+                  "\nAlso Check In Your SPAM Emails Too";
+            } else if (valid! == "invalid") {
+              return 'Email or password incorrect';
+            }
+            return null;
+          });
+        } else if (emailExtension == '@wits.ac.za') {
+          return Future.delayed(loginTime).then((_) {
+            return 'You Should Log In As Staff!';
+          });
+        } else {
+          return 'You Should Use Your Wits Student Email To Login';
+        }
+      }
+    }
     return null;
   }
 
