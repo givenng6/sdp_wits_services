@@ -9,7 +9,7 @@ import '../Dashboard/Dashboard.dart';
 import '../Protection/Protection.dart';
 
 // Uri to the API
-String uri = "http://10.0.1.55:8000/";
+String uri = "http://10.203.238.89:8000/";
 class Home extends HookWidget {
   // init var
   String username = "", email = "";

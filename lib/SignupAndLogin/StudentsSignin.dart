@@ -9,7 +9,7 @@ String? valid = 'valid';
 bool? verified = true;
 
 // Uri to the API
-String uri = "http://10.0.1.55:8000/";
+String uri = "http://10.203.238.89:8000/";
 
 // data to send
 String? username = "GhostCoder", email = "nutty@chuma.ghost", uid;
