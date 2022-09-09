@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
 
 class StaffPage extends StatefulWidget {
@@ -29,8 +30,8 @@ class _StaffPageState extends State<StaffPage> {
         break;
       case "Bus Services":
         {
-          print("Coming soon");
-          // TODO implement Bus Services
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (BuildContext context) => const BusesMain()));
         }
         break;
       default:

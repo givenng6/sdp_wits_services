@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../StaffApp/StaffPage.dart';
 import '../SudentsApp/Home/Home.dart';
 import 'StaffSignin.dart';
 
@@ -22,18 +23,28 @@ class _App extends State<App> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? username = sharedPreferences.getString('username');
     String? email = sharedPreferences.getString('email');
-    if(username != "" && username != null){
+    String? kind = sharedPreferences.getString('kind');
+    if (username != "" && username != null && kind == 'Student') {
       _navigateToHome(email, username);
+    } else if (username != "" && username != null && kind == 'Staff') {
+      debugPrint(username);
+      _navigateToStaffPage();
     }
   }
 
-  _navigateToHome(email, username){
+  _navigateToHome(email, username) {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) =>
-                Home(email, username)),
-            (Route<dynamic> route) => false);
+            builder: (BuildContext context) => Home(email, username)),
+        (Route<dynamic> route) => false);
+  }
+
+  _navigateToStaffPage() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => const StaffPage()),
+        (Route<dynamic> route) => false);
   }
 
   @override
@@ -49,8 +60,10 @@ class _App extends State<App> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-                child: const Image(image: AssetImage('assets/white_logo_nb.png'))),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+                child:
+                    const Image(image: AssetImage('assets/white_logo_nb.png'))),
             Container(
                 width: 300,
                 height: 55,
