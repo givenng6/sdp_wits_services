@@ -22,12 +22,8 @@ class Home extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    BusObject bus1 = BusObject("Route 1", ["Stop1" , "Stop2"]);
-    BusObject bus2 = BusObject("Route 2", ["Stop3" , "Stop4", "Stop5"]);
-    BusObject bus3 = BusObject("Route 3", ["Stop6"]);
 
-    List<BusObject> busSchedule = [bus1, bus2, bus3, bus1, bus2, bus3, bus1, bus2, bus3];
-
+    var busSchedule = useState([]);
     var subs = useState([]);
     var isFetching = useState(true);
 
@@ -47,7 +43,26 @@ class Home extends HookWidget {
         });
 
       }
+
+      Future<void> getBusSchedule() async{
+        await http.get(Uri.parse("${uri}db/getBusSchedule/"),
+            headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+            }).then((response){
+              var toJSON = jsonDecode(response.body);
+              List<BusObject> tempSchedule = [];
+              for(var data in toJSON){
+                //print(data['name']);
+                tempSchedule.add(BusObject(data['name'], data['id'], data['stops']));
+              }
+              busSchedule.value = tempSchedule;
+
+        });
+      }
+
      getSubs();
+      getBusSchedule();
     }, []);
 
 

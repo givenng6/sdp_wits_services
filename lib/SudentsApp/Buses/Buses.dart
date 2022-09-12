@@ -13,7 +13,7 @@ class Buses extends HookWidget {
   String email = "";
   String service = "bus_service";
   List<String> data = [];
-  List<BusObject> busSchedule = [];
+  var busSchedule = useState([]);
 
   var subs = useState([]);
   Buses(this.email, this.subs, this.busSchedule,{Key? key}) : super(key: key){
@@ -22,8 +22,15 @@ class Buses extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    List<BusObject> busSchedule2 = [];
+
     if(subs.value.contains(service)){
       isSubscribed.value = true;
+    }
+
+    for(BusObject data in busSchedule.value){
+      busSchedule2.add(data);
     }
 
     return Scaffold(
@@ -31,7 +38,7 @@ class Buses extends HookWidget {
         child: Column(
           children: [
             utilityWidget.AppBar(title),
-            BusSchedule(busSchedule)
+            BusSchedule(busSchedule2)
           ],
         ) ,
       )

@@ -3,8 +3,13 @@
 class BusObject {
 
   String routeName = "";
+  String id = "";
   List<dynamic> stops = [];
-  BusObject(this.routeName, this.stops);
+  BusObject(this.routeName, this.id, this.stops);
+
+  String getID(){
+    return id;
+  }
 
   // return the current bus route name
   String getRouteName(){

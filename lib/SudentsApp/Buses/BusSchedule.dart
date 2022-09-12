@@ -15,7 +15,7 @@ class BusSchedule extends HookWidget{
     );
   }
 
-  Widget BusItem(String route, List<dynamic> stops){
+  Widget BusItem(String route, String id, List<dynamic> stops){
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
@@ -33,7 +33,9 @@ class BusSchedule extends HookWidget{
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              OutlinedButton(onPressed: (){}, child: const Text("Follow"))
+              OutlinedButton(onPressed: (){
+                print(id);
+              }, child: const Text("Follow"))
             ],
           )
         ],
@@ -47,13 +49,13 @@ class BusSchedule extends HookWidget{
         items.add(Text(location, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))));
       }
 
-      return Column(children: items);
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: items);
   }
 
   Widget showNames(){
     List<Widget> items = [];
     for(BusObject object in busSchedule){
-      items.add(BusItem(object.getRouteName(), object.getStops()));
+      items.add(BusItem(object.getRouteName(), object.getID(), object.getStops()));
     }
 
     return Column(children: items);
