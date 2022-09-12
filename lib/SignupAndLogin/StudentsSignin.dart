@@ -9,7 +9,7 @@ String? valid;
 bool? verified;
 
 // Uri to the API
-String uri = "http://10.0.1.55:8000/";
+String uri = "https://web-production-8fed.up.railway.app/";
 
 // data to send
 String? username = "", email = "", uid;
@@ -39,6 +39,8 @@ class StudentsLoginScreen extends StatelessWidget {
                 "password": data.password,
               }));
           var json = await jsonDecode(result.body);
+
+          print(json);
 
           valid = json['status'];
           verified = json['verified'];

@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // Uri to the API
-String uri = "http://10.0.1.55:8000/";
+String uri = "https://web-production-8fed.up.railway.app/";
 
 class AddSub extends HookWidget{
 

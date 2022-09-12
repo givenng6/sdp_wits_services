@@ -9,7 +9,7 @@ String? valid;
 bool? verified;
 
 // Uri to the API
-String uri = "http://10.0.1.55:8000/";
+String uri = "https://web-production-8fed.up.railway.app/";
 
 class StaffLoginScreen extends StatelessWidget {
   const StaffLoginScreen({Key? key}) : super(key: key);

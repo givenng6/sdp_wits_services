@@ -34,6 +34,8 @@ class BusSchedule extends HookWidget{
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               OutlinedButton(onPressed: (){
+              }, child: const Text("Status")),
+              OutlinedButton(onPressed: (){
                 print(id);
               }, child: const Text("Follow"))
             ],

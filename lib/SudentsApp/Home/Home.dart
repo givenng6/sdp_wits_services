@@ -10,7 +10,7 @@ import '../Protection/Protection.dart';
 import '../Buses/BusObject.dart';
 
 // Uri to the API
-String uri = "http://10.0.1.55:8000/";
+String uri = "https://web-production-8fed.up.railway.app/";
 
 class Home extends HookWidget {
   // init var
@@ -23,6 +23,7 @@ class Home extends HookWidget {
   @override
   Widget build(BuildContext context) {
 
+    // data to pass to other screens...
     var busSchedule = useState([]);
     var subs = useState([]);
     var isFetching = useState(true);
@@ -61,11 +62,9 @@ class Home extends HookWidget {
         });
       }
 
-     getSubs();
+      getSubs();
       getBusSchedule();
     }, []);
-
-
 
     _screens = [Dashboard(isFetching, subs), Buses(email, subs, busSchedule), Dining(email, subs), Protection(email, subs), Menu(email, username, subs)];
     final screenIndex = useState(0);
