@@ -7,9 +7,11 @@ import '../Menu/Menu.dart';
 import '../Dining/Dining.dart';
 import '../Dashboard/Dashboard.dart';
 import '../Protection/Protection.dart';
+import '../Buses/BusObject.dart';
 
 // Uri to the API
-String uri = "http://10.203.238.89:8000/";
+String uri = "http://10.0.1.55:8000/";
+
 class Home extends HookWidget {
   // init var
   String username = "", email = "";
@@ -20,6 +22,12 @@ class Home extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    BusObject bus1 = BusObject("Route 1", ["Stop1" , "Stop2"]);
+    BusObject bus2 = BusObject("Route 2", ["Stop3" , "Stop4", "Stop5"]);
+    BusObject bus3 = BusObject("Route 3", ["Stop6"]);
+
+    List<BusObject> busSchedule = [bus1, bus2, bus3, bus1, bus2, bus3, bus1, bus2, bus3];
+
     var subs = useState([]);
     var isFetching = useState(true);
 
@@ -44,7 +52,7 @@ class Home extends HookWidget {
 
 
 
-    _screens = [Dashboard(isFetching, subs), Buses(email, subs), Dining(email, subs), Protection(email, subs), Menu(email, username, subs)];
+    _screens = [Dashboard(isFetching, subs), Buses(email, subs, busSchedule), Dining(email, subs), Protection(email, subs), Menu(email, username, subs)];
     final screenIndex = useState(0);
 
     void _onNavigate(int index){

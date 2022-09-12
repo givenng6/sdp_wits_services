@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import './BusObject.dart';
 
 class BusSchedule extends HookWidget{
+
+  List<BusObject> busSchedule = [];
+  BusSchedule(this.busSchedule, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
     return Container(
       padding: const EdgeInsets.all(12),
-      child: Column(
-        children: [
-          BusItem("Route 1 - Full Circuit", "Enroute", "Yale Village", "5 mins"),
-          BusItem("Route 1 - Full Circuit", "Enroute", "Yale Village", "5 mins"),
-        ],
-      ),
+      child: showNames()
     );
   }
 
-  Widget BusItem(String route, String status, String nextStop, String timeEstimate){
+  Widget BusItem(String route, List<dynamic> stops){
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
@@ -28,12 +27,9 @@ class BusSchedule extends HookWidget{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(route, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-          Text("", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
-          Text("Wits Amic Deck", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
-          Text("Noswal", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
-          Text("Rennie House", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
-          Text("Wits Education Campus", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text(route, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
+          const Text("", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          showList(stops),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -44,4 +40,23 @@ class BusSchedule extends HookWidget{
       ),
     );
   }
+
+  Widget showList(List<dynamic> stops){
+      List<Widget> items = [];
+      for(var location in stops){
+        items.add(Text(location, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))));
+      }
+
+      return Column(children: items);
+  }
+
+  Widget showNames(){
+    List<Widget> items = [];
+    for(BusObject object in busSchedule){
+      items.add(BusItem(object.getRouteName(), object.getStops()));
+    }
+
+    return Column(children: items);
+  }
+
 }

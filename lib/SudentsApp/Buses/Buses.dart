@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/SudentsApp/Buses/BusSchedule.dart';
 import '../UtilityWidgets.dart';
 import '../Utilities/AddSub.dart';
+import './BusObject.dart';
 
 class Buses extends HookWidget {
   UtilityWidget utilityWidget = UtilityWidget();
@@ -12,9 +13,10 @@ class Buses extends HookWidget {
   String email = "";
   String service = "bus_service";
   List<String> data = [];
+  List<BusObject> busSchedule = [];
 
   var subs = useState([]);
-  Buses(this.email, this.subs, {Key? key}) : super(key: key){
+  Buses(this.email, this.subs, this.busSchedule,{Key? key}) : super(key: key){
     data = [email, title, service];
   }
 
@@ -25,12 +27,15 @@ class Buses extends HookWidget {
     }
 
     return Scaffold(
-      body: isSubscribed.value ?  Column(
-        children: [
-          utilityWidget.AppBar(title),
-          BusSchedule()
-        ],
-      ) :
+      body: isSubscribed.value ? SingleChildScrollView(
+        child: Column(
+          children: [
+            utilityWidget.AppBar(title),
+            BusSchedule(busSchedule)
+          ],
+        ) ,
+      )
+      :
       Column(
         mainAxisAlignment:  MainAxisAlignment.center,
         children: [
