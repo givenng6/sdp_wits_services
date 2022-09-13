@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import './BusObject.dart';
+
+// Uri to the API
+String uri = "https://web-production-8fed.up.railway.app/";
 
 class BusSchedule extends HookWidget{
 
@@ -43,7 +48,7 @@ class BusSchedule extends HookWidget{
                   child: Text("Following"))
               :
               OutlinedButton(onPressed: (){
-                print(id);
+                followBus(id);
               }, child: const Text("Follow"))
             ],
           )
@@ -69,6 +74,21 @@ class BusSchedule extends HookWidget{
     }
 
     return Column(children: items);
+  }
+
+  Future<void> followBus(String busID) async{
+    await http.post(Uri.parse("${uri}db/followBus/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": '2381410@students.wits.ac.za',
+          "id": busID,
+        })).then((value) {
+      var json = jsonDecode(value.body);
+      busFollowing.value = json;
+    });
   }
 
 }
