@@ -40,8 +40,12 @@ class BusSchedule extends HookWidget{
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              OutlinedButton(onPressed: (){
-              }, child: const Text("Status")),
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 12, 0),
+                child: OutlinedButton(onPressed: (){
+                }, child: const Text("Status", style: TextStyle(color: Color(0xff003b5c)),))
+              ),
+
               isFollowing ?
               const OutlinedButton(
                   onPressed: null,
@@ -49,7 +53,7 @@ class BusSchedule extends HookWidget{
               :
               OutlinedButton(onPressed: (){
                 followBus(id);
-              }, child: const Text("Follow"))
+              }, child: const Text("Follow", style:  TextStyle(color: Color(0xff003b5c)),))
             ],
           )
         ],
@@ -60,7 +64,7 @@ class BusSchedule extends HookWidget{
   Widget showList(List<dynamic> stops){
       List<Widget> items = [];
       for(var location in stops){
-        items.add(Text(location, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))));
+        items.add(Text(location, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54)));
       }
 
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: items);
