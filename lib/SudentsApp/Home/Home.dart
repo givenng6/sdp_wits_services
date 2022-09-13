@@ -27,6 +27,7 @@ class Home extends HookWidget {
     var busSchedule = useState([]);
     var subs = useState([]);
     var isFetching = useState(true);
+    var busFollowing = useState([]);
 
     useEffect(() {
       Future<void> getSubs() async{
@@ -42,7 +43,20 @@ class Home extends HookWidget {
           subs.value = json["subs"];
           isFetching.value = false;
         });
+      }
 
+      Future<void> getBusFollowing() async{
+        await http.post(Uri.parse("${uri}db/getBusFollowing/"),
+            headers: <String, String>{
+              "Accept": "application/json",
+              "Content-Type": "application/json; charset=UTF-8",
+            },
+            body: jsonEncode(<String, String>{
+              "email": email,
+            })).then((value) {
+          var busData = jsonDecode(value.body);
+          busFollowing.value = busData;
+        });
       }
 
       Future<void> getBusSchedule() async{
@@ -64,9 +78,10 @@ class Home extends HookWidget {
 
       getSubs();
       getBusSchedule();
+      getBusFollowing();
     }, []);
 
-    _screens = [Dashboard(isFetching, subs), Buses(email, subs, busSchedule), Dining(email, subs), Protection(email, subs), Menu(email, username, subs)];
+    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs), Protection(email, subs), Menu(email, username, subs)];
     final screenIndex = useState(0);
 
     void _onNavigate(int index){

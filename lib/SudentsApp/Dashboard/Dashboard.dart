@@ -16,7 +16,9 @@ class Dashboard extends HookWidget{
 
   var isFetching = useState(true);
   var subs = useState([]);
-  Dashboard(this.isFetching, this.subs, {Key? key}) : super(key: key);
+  var busSchedule = useState([]);
+  var busFollowing = useState([]);
+  Dashboard(this.isFetching, this.subs, this.busSchedule, this.busFollowing, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -24,7 +26,7 @@ class Dashboard extends HookWidget{
     for(String service in subs.value){
       switch (service){
         case 'bus_service':
-          _cards.add(BusWidget());
+          _cards.add(BusWidget(busSchedule, busFollowing));
           break;
         case 'dining_service':
           _cards.add(DiningWidget());

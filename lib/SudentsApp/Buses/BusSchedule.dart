@@ -5,7 +5,9 @@ import './BusObject.dart';
 class BusSchedule extends HookWidget{
 
   List<BusObject> busSchedule = [];
-  BusSchedule(this.busSchedule, {Key? key}) : super(key: key);
+  var busFollowing = useState([]);
+  BusSchedule(this.busSchedule, this.busFollowing,{Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context){
@@ -15,7 +17,7 @@ class BusSchedule extends HookWidget{
     );
   }
 
-  Widget BusItem(String route, String id, List<dynamic> stops){
+  Widget BusItem(String route, String id, List<dynamic> stops, bool isFollowing){
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
@@ -35,6 +37,11 @@ class BusSchedule extends HookWidget{
             children: [
               OutlinedButton(onPressed: (){
               }, child: const Text("Status")),
+              isFollowing ?
+              const OutlinedButton(
+                  onPressed: null,
+                  child: Text("Following"))
+              :
               OutlinedButton(onPressed: (){
                 print(id);
               }, child: const Text("Follow"))
@@ -57,7 +64,8 @@ class BusSchedule extends HookWidget{
   Widget showNames(){
     List<Widget> items = [];
     for(BusObject object in busSchedule){
-      items.add(BusItem(object.getRouteName(), object.getID(), object.getStops()));
+      bool isFollowing = busFollowing.value.contains(object.getID());
+      items.add(BusItem(object.getRouteName(), object.getID(), object.getStops(), isFollowing));
     }
 
     return Column(children: items);

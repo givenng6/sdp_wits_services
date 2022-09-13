@@ -16,7 +16,8 @@ class Buses extends HookWidget {
   var busSchedule = useState([]);
 
   var subs = useState([]);
-  Buses(this.email, this.subs, this.busSchedule,{Key? key}) : super(key: key){
+  var busFollowing = useState([]);
+  Buses(this.email, this.subs, this.busSchedule, this.busFollowing, {Key? key}) : super(key: key){
     data = [email, title, service];
   }
 
@@ -38,7 +39,7 @@ class Buses extends HookWidget {
         child: Column(
           children: [
             utilityWidget.AppBar(title),
-            BusSchedule(busSchedule2)
+            BusSchedule(busSchedule2, busFollowing)
           ],
         ) ,
       )

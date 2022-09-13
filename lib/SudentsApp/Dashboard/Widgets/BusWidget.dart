@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sdp_wits_services/SudentsApp/Buses/BusObject.dart';
 
-class BusWidget extends StatefulWidget{
+class BusWidget extends HookWidget{
 
-  @override
-  State<BusWidget> createState()=> _BusWidget();
-}
-
-class _BusWidget extends State<BusWidget>{
+  var busSchedule = useState([]);
+  var busFollowing = useState([]);
+  BusWidget(this.busSchedule, this.busFollowing, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
+    List<BusObject> busSchedule2 = [];
+    List<String> busFollowing2 = [];
+
+    for(BusObject data in busSchedule.value){
+      busSchedule2.add(data);
+    }
+
+    for(String id in busFollowing.value){
+      busFollowing2.add(id);
+    }
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(12),
@@ -32,8 +43,7 @@ class _BusWidget extends State<BusWidget>{
                 style: TextStyle(fontWeight: FontWeight.bold, color:  Color(0xff003b5c)),)
             ],
           ),
-          BusItem("Route 1 - Full Circuit", "Enroute", "Yale Village", "5 mins"),
-          BusItem("Route 6D - Rosebank", "OFF", "N/A", "N/A"),
+          showBus(busFollowing2, busSchedule2)
         ],
       ),
     );
@@ -58,5 +68,24 @@ class _BusWidget extends State<BusWidget>{
         ],
       ),
     );
+  }
+  
+  Widget showBus(List<String> busFollowing, List<BusObject> busSchedule){
+    List<Widget> buses = [];
+    for(var bus in busFollowing){
+      for(int i = 0; i < busSchedule.length; i++){
+          String id = busSchedule[i].getID();
+          if(id == bus){
+            buses.add(BusItem(busSchedule[i].getRouteName(), "Enroute", "Yale Village", "5 mins"),);
+            break;
+          }
+      }
+    }
+
+    if(busFollowing.isEmpty){
+      buses.add(Text("NO DATA", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),));
+    }
+
+    return Column(children: buses);
   }
 }
