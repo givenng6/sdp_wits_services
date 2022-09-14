@@ -67,7 +67,7 @@ class _BusesMainState extends State<BusesMain> {
     Random random = Random();
     int randomNumber = random.nextInt(routes![selectedCardIndex]['stops'].length);
     String stop = routes![selectedCardIndex]['stops'][randomNumber];
-    await http.post(
+    var response = await http.post(
       Uri.parse("${uri}assignDriverToRoute"),
       headers: <String, String>{
         "Accept": "application/json",
@@ -79,10 +79,15 @@ class _BusesMainState extends State<BusesMain> {
         'position': stop
       })
     );
+
+    var json = jsonDecode(response.body);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool('onShift', json['onShift']);
+    sharedPreferences.setInt('selectedCardIndex', selectedCardIndex);
   }
 
   removeDriverFromRoute() async{
-    await http.post(
+    var response = await http.post(
         Uri.parse("${uri}removeDriverFromRoute"),
         headers: <String, String>{
           "Accept": "application/json",
@@ -93,12 +98,33 @@ class _BusesMainState extends State<BusesMain> {
           'driver': email!,
         })
     );
+    var json = jsonDecode(response.body);
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setBool('onShift', json['onShift']);
+    sharedPreferences.setInt('selectedCardIndex', -1);
   }
 
   getSharedPreferences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     username = sharedPreferences.getString('username');
     email = sharedPreferences.getString('email');
+  }
+
+  keepDriverOnShift() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool? onShift = sharedPreferences.getBool('onShift');
+    debugPrint('$onShift');
+    if(onShift!){
+      int? index = sharedPreferences.getInt('selectedCardIndex');
+      tapped = index!;
+      selectedCardIndex = index;
+      shouldFabBeVisible = true;
+      isFabVisible = true;
+
+      fabDecoration.text = 'End Shift';
+      fabDecoration.color = const Color(0xFF851318);
+      clickingEnabled = false;
+    }
   }
 
   List? routes;
@@ -121,6 +147,7 @@ class _BusesMainState extends State<BusesMain> {
   void initState() {
     getSharedPreferences();
     getRoutes();
+    keepDriverOnShift();
     super.initState();
   }
 
@@ -276,29 +303,3 @@ class FabDecoration{
 }
 
 //  http://192.168.7.225:5000/assignDriverToRoute
-
-// Padding(
-//   padding: const EdgeInsets.all(8.0),
-//   child: ListView.builder(
-//     physics: const NeverScrollableScrollPhysics(),
-//       shrinkWrap: true,
-//       itemCount: routes[index].length,
-//       itemBuilder: (context, i) {
-//         return Container(
-//           margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 5.0),
-//           padding: const EdgeInsets.symmetric(horizontal: 15.0,vertical: 20.0),
-//           decoration: BoxDecoration(
-//             color: Colors.grey.shade200,
-//             borderRadius: BorderRadius.circular(8.0),
-//           ),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(routes[index][i].route),
-//               Text(routes[index][i].time),
-//
-//             ],
-//           ),
-//         );
-//       }),
-// ),

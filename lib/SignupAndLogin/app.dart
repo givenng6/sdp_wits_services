@@ -31,12 +31,6 @@ class _App extends State<App> {
     }
     else if (username != "" && username != null && kind == 'Staff' && department == 'Bus Services') {
       _navigateToBusesMain();
-      // var result = await http.get(Uri.parse("http://192.168.7.225:5000/getRoutes"),
-      //   headers: <String, String>{
-      //     "Accept": "application/json",
-      //     "Content-Type": "application/json; charset=UTF-8",
-      //   },);
-      // routes = jsonDecode(result.body);
     }
     else if (username != "" && username != null && kind == 'Staff') {
       _navigateToStaffPage();

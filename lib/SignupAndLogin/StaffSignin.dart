@@ -5,13 +5,13 @@ import '../StaffApp/StaffPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-String? valid = "valid";
-bool? verified = true;
+String? valid;
+bool? verified;
 
 // Uri to the API
 String uri = "https://web-production-8fed.up.railway.app/";
 
-String? username = 'GhostCoder', email = 'nuttychuma@gmail.com', kind = 'Staff';
+String? username, email, kind;
 
 class StaffLoginScreen extends StatelessWidget {
   const StaffLoginScreen({Key? key}) : super(key: key);
@@ -19,46 +19,46 @@ class StaffLoginScreen extends StatelessWidget {
   Duration get loginTime => const Duration(milliseconds: 2250);
 
   Future<String?> _authUser(LoginData data) async {
-    // debugPrint('Name: ${data.name}, Password: ${data.password}');
+    debugPrint('Name: ${data.name}, Password: ${data.password}');
 
-    // for (int i = 0; i < data.name.length; i++) {
-    //   if (data.name[i] == '@') {
-    //     String emailExtension = data.name.substring(i, data.name.length);
-    //     if (emailExtension == '@students.wits.ac.za') {
-    //       return Future.delayed(loginTime).then((_) {
-    //         return 'Come On, Really?\n You Know You Should Login As A Student';
-    //       });
-    //     } else if (emailExtension == '@wits.ac.za') {
-    //       var result = await http.post(Uri.parse("${uri}auth/login/"),
-    //           headers: <String, String>{
-    //             "Accept": "application/json",
-    //             "Content-Type": "application/json; charset=UTF-8",
-    //           },
-    //           body: jsonEncode(<String, String>{
-    //             "email": data.name,
-    //             "password": data.password,
-    //           }));
-    //       var json = jsonDecode(result.body);
-    //
-    //       valid = json['status'];
-    //       verified = json['verified'];
-    //
-    //       return Future.delayed(loginTime).then((_) {
-    //         if (valid == "valid" && !verified!) {
-    //           return "Account Is Not Verified\n A Verification Link Has Been Sent To Your Email Account. "
-    //               "Also Check In Your SPAM Emails Too";
-    //         } else if (valid! == "invalid") {
-    //           return 'Email or password incorrect';
-    //         }
-    //         return null;
-    //       });
-    //     } else {
-    //       return Future.delayed(loginTime).then((_) {
-    //         return 'You Should Use Your Wits Stuff Email To Login';
-    //       });
-    //     }
-    //   }
-    // }
+    for (int i = 0; i < data.name.length; i++) {
+      if (data.name[i] == '@') {
+        String emailExtension = data.name.substring(i, data.name.length);
+        if (emailExtension == '@students.wits.ac.za') {
+          return Future.delayed(loginTime).then((_) {
+            return 'Come On, Really?\n You Know You Should Login As A Student';
+          });
+        } else if (emailExtension == '@wits.ac.za') {
+          var result = await http.post(Uri.parse("${uri}auth/login/"),
+              headers: <String, String>{
+                "Accept": "application/json",
+                "Content-Type": "application/json; charset=UTF-8",
+              },
+              body: jsonEncode(<String, String>{
+                "email": data.name,
+                "password": data.password,
+              }));
+          var json = jsonDecode(result.body);
+
+          valid = json['status'];
+          verified = json['verified'];
+
+          return Future.delayed(loginTime).then((_) {
+            if (valid == "valid" && !verified!) {
+              return "Account Is Not Verified\n A Verification Link Has Been Sent To Your Email Account. "
+                  "Also Check In Your SPAM Emails Too";
+            } else if (valid! == "invalid") {
+              return 'Email or password incorrect';
+            }
+            return null;
+          });
+        } else {
+          return Future.delayed(loginTime).then((_) {
+            return 'You Should Use Your Wits Stuff Email To Login';
+          });
+        }
+      }
+    }
     return null;
   }
 
