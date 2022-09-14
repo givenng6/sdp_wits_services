@@ -20,6 +20,8 @@ Examples of services
 ## APIs
 Staff 
 https://github.com/NuttyChuma/sdp_wits_services_backend
+
 Students
+https://github.com/givenng6/ws_api
 
 Software Design Project - COMS3011A
