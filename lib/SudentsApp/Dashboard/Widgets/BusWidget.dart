@@ -83,7 +83,7 @@ class BusWidget extends HookWidget{
     }
 
     if(busFollowing.isEmpty){
-      buses.add(Text("NO DATA", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),));
+      buses.add(Text("No Data", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),));
     }
 
     return Column(children: buses);
