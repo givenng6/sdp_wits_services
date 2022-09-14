@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../StaffApp/Buses/buses_main.dart';
 import '../StaffApp/StaffPage.dart';
 import '../SudentsApp/Home/Home.dart';
 import 'StaffSignin.dart';
@@ -18,16 +19,26 @@ class _App extends State<App> {
     _getData();
     super.initState();
   }
-
+  List? routes;
   _getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? username = sharedPreferences.getString('username');
     String? email = sharedPreferences.getString('email');
     String? kind = sharedPreferences.getString('kind');
+    String? department = sharedPreferences.getString('department');
     if (username != "" && username != null && kind == 'Student') {
       _navigateToHome(email, username);
-    } else if (username != "" && username != null && kind == 'Staff') {
-      debugPrint(username);
+    }
+    else if (username != "" && username != null && kind == 'Staff' && department == 'Bus Services') {
+      _navigateToBusesMain();
+      // var result = await http.get(Uri.parse("http://192.168.7.225:5000/getRoutes"),
+      //   headers: <String, String>{
+      //     "Accept": "application/json",
+      //     "Content-Type": "application/json; charset=UTF-8",
+      //   },);
+      // routes = jsonDecode(result.body);
+    }
+    else if (username != "" && username != null && kind == 'Staff') {
       _navigateToStaffPage();
     }
   }
@@ -45,6 +56,11 @@ class _App extends State<App> {
         context,
         MaterialPageRoute(builder: (BuildContext context) => const StaffPage()),
         (Route<dynamic> route) => false);
+  }
+
+  _navigateToBusesMain(){
+    Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (BuildContext context) => const BusesMain()));
   }
 
   @override

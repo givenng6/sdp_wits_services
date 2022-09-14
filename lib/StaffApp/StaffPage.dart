@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StaffPage extends StatefulWidget {
   const StaffPage({Key? key}) : super(key: key);
@@ -19,7 +20,7 @@ class _StaffPageState extends State<StaffPage> {
     Department(name: "Events", icon: Icons.event)
   ];
 
-  void handleCard(int index) {
+  void handleCard(int index) async{
     String departmentName = departments[index].name;
 
     switch (departmentName) {
@@ -30,8 +31,11 @@ class _StaffPageState extends State<StaffPage> {
         break;
       case "Bus Services":
         {
+          debugPrint('here here');
           Navigator.pushReplacement(context, MaterialPageRoute(
               builder: (BuildContext context) => const BusesMain()));
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          sharedPreferences.setString('department', 'Bus Services');
         }
         break;
       default:
@@ -41,7 +45,11 @@ class _StaffPageState extends State<StaffPage> {
     }
   }
 
-  // List<Department>
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

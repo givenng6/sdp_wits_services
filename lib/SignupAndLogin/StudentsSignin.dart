@@ -12,7 +12,7 @@ bool? verified;
 String uri = "https://web-production-8fed.up.railway.app/";
 
 // data to send
-String? username = "", email = "", uid;
+String? username, email, uid;
 
 class StudentsLoginScreen extends StatelessWidget {
   const StudentsLoginScreen({Key? key}) : super(key: key);
@@ -164,7 +164,7 @@ class StudentsLoginScreen extends StatelessWidget {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           sharedPreferences.setString('username', username!);
           sharedPreferences.setString('email', email!);
-          sharedPreferences.setString('kind', "Student");
+          sharedPreferences.setString('kind', "Staff");
           debugPrint('here');
           navigateToHome();
         }
