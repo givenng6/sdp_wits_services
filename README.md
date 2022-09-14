@@ -20,8 +20,10 @@ Examples of services
 ## APIs
 Staff 
 https://github.com/NuttyChuma/sdp_wits_services_backend
+Written in Node and Express, handles all the http calls made by the staff side app.
 
 Students
 https://github.com/givenng6/ws_api
+Written in Python Django and handles the authentication of the app and all the https calls on the students app.
 
 Software Design Project - COMS3011A
