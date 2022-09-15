@@ -16,18 +16,21 @@ class DiningCard extends HookWidget{
       child:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-        Text('Convocation'),
-        Text('A43 East campus'),
+        Text('Convocation', style: TextStyle(color: Color(0xff003b5c), fontWeight: FontWeight.bold, fontSize: 15)),
+        Text("A44 Wits East Campus", style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54)),
+
 
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            Container(
+                margin: EdgeInsets.fromLTRB(0, 0, 12, 0),
+                child: OutlinedButton(onPressed: (){
+                }, child: const Text("View", style: TextStyle(color: Color(0xff003b5c)),))
+            ),
           OutlinedButton(onPressed: (){
 
-          }, child: Text("View")),
-          OutlinedButton(onPressed: (){
-
-          }, child: Text("Follow")),
+          }, child: Text("Follow", style: TextStyle(color: Color(0xff003b5c)),)),
         ],)
       ],)
     );
