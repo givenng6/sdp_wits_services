@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sdp_wits_services/SudentsApp/Dining/DiningCard.dart';
 import '../UtilityWidgets.dart';
 import '../Utilities/AddSub.dart';
 
@@ -28,6 +29,7 @@ class Dining extends HookWidget {
       body: isSubscribed.value ?  Column(
         children: [
           utilityWidget.AppBar(title),
+          DiningCard()
         ],
       ) :
       Column(
