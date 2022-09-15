@@ -164,7 +164,7 @@ class StudentsLoginScreen extends StatelessWidget {
           SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
           sharedPreferences.setString('username', username!);
           sharedPreferences.setString('email', email!);
-          sharedPreferences.setString('kind', "Staff");
+          sharedPreferences.setString('kind', "Student");
           debugPrint('here');
           navigateToHome();
         }
