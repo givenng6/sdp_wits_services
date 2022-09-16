@@ -18,7 +18,9 @@ class Dashboard extends HookWidget{
   var subs = useState([]);
   var busSchedule = useState([]);
   var busFollowing = useState([]);
-  Dashboard(this.isFetching, this.subs, this.busSchedule, this.busFollowing, {Key? key}) : super(key: key);
+  var diningHalls = useState([]);
+  var dhFollowing = useState("");
+  Dashboard(this.isFetching, this.subs, this.busSchedule, this.busFollowing, this.diningHalls, this.dhFollowing, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
@@ -29,7 +31,7 @@ class Dashboard extends HookWidget{
           _cards.add(BusWidget(busSchedule, busFollowing));
           break;
         case 'dining_service':
-          _cards.add(DiningWidget());
+          _cards.add(DiningWidget(diningHalls, dhFollowing));
           break;
         case 'campus_control':
           _cards.add(ProtectionWidget());

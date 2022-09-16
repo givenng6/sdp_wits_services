@@ -1,15 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sdp_wits_services/SudentsApp/Dining/DiningObject.dart';
 
-class DiningWidget extends StatefulWidget{
 
-  @override
-  State<DiningWidget> createState()=> _DiningWidget();
-}
+class DiningWidget extends HookWidget{
 
-class _DiningWidget extends State<DiningWidget>{
+  var diningHalls = useState([]);
+  var dhFollowing = useState("");
+  DiningWidget(this.diningHalls, this.dhFollowing, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context){
+
+    bool none = true;
+    String dhName = "";
+
+    for(DiningObject data in diningHalls.value){
+      if(data.getID() == dhFollowing.value){
+        dhName = data.getDiningName();
+         none = false;
+      }
+    }
+
     return Container(
       //height: 300,
       width: double.infinity,
@@ -31,10 +43,12 @@ class _DiningWidget extends State<DiningWidget>{
               Icon(Icons.restaurant_menu, color: Colors.white,),
               Text("Dining Menu",
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),
-
             ],
           ),
-          MenuItem("Main Dining Hall", "Lunch", "11:00 - 14:00", "kkk"),
+          none ?
+          Text("No Data", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),)
+          :
+          MenuItem(dhName, "Lunch", "11:00 - 14:00", "kkk"),
         ],
       ),
     );

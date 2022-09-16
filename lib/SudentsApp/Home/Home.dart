@@ -117,7 +117,7 @@ class Home extends HookWidget {
       getDiningHallFollowing();
     }, []);
 
-    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs, diningHalls, dhFollowing), Protection(email, subs), Menu(email, username, subs)];
+    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing, diningHalls, dhFollowing), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs, diningHalls, dhFollowing), Protection(email, subs), Menu(email, username, subs)];
     final screenIndex = useState(0);
 
     void _onNavigate(int index){
