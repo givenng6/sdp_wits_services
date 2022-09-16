@@ -16,7 +16,8 @@ class Dining extends HookWidget {
 
   var subs = useState([]);
   var diningHalls = useState([]);
-  Dining(this.email, this.subs, this.diningHalls, {Key? key}) : super(key: key){
+  var dhFollowing = useState("");
+  Dining(this.email, this.subs, this.diningHalls, this.dhFollowing, {Key? key}) : super(key: key){
     data = [email, title, service];
   }
 
@@ -38,7 +39,7 @@ class Dining extends HookWidget {
         child:  Column(
           children: [
             utilityWidget.AppBar(title),
-            DiningCard(diningHalls2)
+            DiningCard(email, diningHalls2, dhFollowing)
           ],
         ),
       )  :

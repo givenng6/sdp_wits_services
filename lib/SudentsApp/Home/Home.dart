@@ -30,6 +30,7 @@ class Home extends HookWidget {
     var subs = useState([]);
     var isFetching = useState(true);
     var busFollowing = useState([]);
+    var dhFollowing = useState("");
 
     useEffect(() {
       Future<void> getSubs() async{
@@ -58,6 +59,20 @@ class Home extends HookWidget {
             })).then((value) {
           var busData = jsonDecode(value.body);
           busFollowing.value = busData;
+        });
+      }
+
+      Future<void> getDiningHallFollowing() async{
+        await http.post(Uri.parse("${uri}db/getDiningHallFollowing/"),
+            headers: <String, String>{
+              "Accept": "application/json",
+              "Content-Type": "application/json; charset=UTF-8",
+            },
+            body: jsonEncode(<String, String>{
+              "email": email,
+            })).then((value) {
+          var data = jsonDecode(value.body);
+          dhFollowing.value = data;
         });
       }
 
@@ -99,9 +114,10 @@ class Home extends HookWidget {
       getBusSchedule();
       getBusFollowing();
       getDiningHalls();
+      getDiningHallFollowing();
     }, []);
 
-    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs, diningHalls), Protection(email, subs), Menu(email, username, subs)];
+    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs, diningHalls, dhFollowing), Protection(email, subs), Menu(email, username, subs)];
     final screenIndex = useState(0);
 
     void _onNavigate(int index){

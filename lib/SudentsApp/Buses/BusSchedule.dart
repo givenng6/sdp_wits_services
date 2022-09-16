@@ -11,7 +11,8 @@ class BusSchedule extends HookWidget{
 
   List<BusObject> busSchedule = [];
   var busFollowing = useState([]);
-  BusSchedule(this.busSchedule, this.busFollowing,{Key? key}) : super(key: key);
+  String email = "";
+  BusSchedule(this.email, this.busSchedule, this.busFollowing,{Key? key}) : super(key: key);
 
 
   @override
@@ -87,7 +88,7 @@ class BusSchedule extends HookWidget{
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(<String, String>{
-          "email": '2381410@students.wits.ac.za',
+          "email": email,
           "id": busID,
         })).then((value) {
       var json = jsonDecode(value.body);
