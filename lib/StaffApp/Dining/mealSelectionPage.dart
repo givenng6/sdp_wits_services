@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:sdp_wits_services/SignupAndLogin/app.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'selectBeakfastPage.dart';
 import 'selectLunchPage.dart';
+import '../DiningGlobals.dart' as globals;
 import 'selectDinnerPage.dart';
 
 class mealSelecionPage extends StatefulWidget {
   final DateTime dateTime;
+
   mealSelecionPage({
     Key? key,
     required this.dateTime,
@@ -16,28 +20,103 @@ class mealSelecionPage extends StatefulWidget {
 }
 
 class _mealSelecionPageState extends State<mealSelecionPage> {
+  String username = " ";
+  String dhName = " ";
+
+  getMenus() async {
+    await globals.getMenus();
+    setState(() {});
+  }
+
+  void getName() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    username = sharedPreferences.getString('username')!;
+    dhName = sharedPreferences.getString('dhName')!;
+    setState(() {});
+  }
+
+  void logout() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.remove("email");
+    sharedPreferences.remove("department");
+    sharedPreferences.remove("dhName");
+    sharedPreferences.remove("kind");
+    sharedPreferences.remove("username");
+
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => const App()),
+            (Route<dynamic> route) => false);
+
+  }
+
   @override
-  Widget build(BuildContext context) => DefaultTabController(
-        length: 3,
-        child: Scaffold(
-            appBar: AppBar(
-              title:
-                  Text(DateFormat.yMMMEd().format(widget.dateTime).toString()),
-              centerTitle: true,
-              bottom: const TabBar(
-                tabs: [
-                  Tab(
-                      text: 'Breakfast',
-                      icon: Icon(Icons.breakfast_dining_rounded)),
-                  Tab(text: 'Lunch', icon: Icon(Icons.lunch_dining_rounded)),
-                  Tab(text: 'Dinner', icon: Icon(Icons.dinner_dining_rounded)),
-                ],
-              ),
+  void initState() {
+    getName();
+    getMenus();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // getName();
+    return DefaultTabController(
+      length: 3,
+      child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: const Color(0xFF013152),
+            title: Row(
+              children: [
+                const Icon(Icons.fastfood),
+                const SizedBox(
+                  width: 10.0,
+                ),
+                Text(dhName)
+              ],
             ),
-            body: TabBarView(children: [
-              selectBrakefastPage(dateTime: widget.dateTime),
-              selectLunchPage(dateTime: widget.dateTime),
-              selectDinnerPage(dateTime: widget.dateTime),
-            ])),
-      );
+            centerTitle: true,
+            actions: <Widget>[
+              PopupMenuButton(
+                  child: Container(
+                    margin:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                    child: CircleAvatar(
+                      backgroundColor: const Color(0xFF013152),
+                      child: Text(
+                        username[0],
+                        style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                      ),
+                    ),
+                  ),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                        PopupMenuItem(
+                          child: ListTile(
+                            onTap: () {
+                              logout();
+                            },
+                            title: Text('Logout'),
+                          ),
+                        ),
+                      ])
+            ],
+            bottom: const TabBar(
+              tabs: [
+                Tab(
+                    text: 'Breakfast',
+                    icon: Icon(Icons.breakfast_dining_rounded)),
+                Tab(text: 'Lunch', icon: Icon(Icons.lunch_dining_rounded)),
+                Tab(text: 'Dinner', icon: Icon(Icons.dinner_dining_rounded)),
+              ],
+            ),
+          ),
+          body: TabBarView(children: [
+            selectBrakefastPage(
+              dateTime: widget.dateTime,
+            ),
+            selectLunchPage(dateTime: widget.dateTime),
+            selectDinnerPage(dateTime: widget.dateTime),
+          ])),
+    );
+  }
 }

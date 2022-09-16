@@ -1,7 +1,7 @@
 class Package {
   String packageName;
+  String id;
   List<String> items;
-  bool selected = false;
 
-  Package({required this.packageName, required this.items});
+  Package({required this.packageName, required this.items,required this.id});
 }

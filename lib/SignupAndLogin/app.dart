@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../StaffApp/Buses/buses_main.dart';
+import '../StaffApp/Dining/mealSelectionPage.dart';
 import '../StaffApp/StaffPage.dart';
 import '../SudentsApp/Home/Home.dart';
 import 'StaffSignin.dart';
@@ -22,6 +23,7 @@ class _App extends State<App> {
   List? routes;
   _getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    // sharedPreferences.remove("department");
     String? username = sharedPreferences.getString('username');
     String? email = sharedPreferences.getString('email');
     String? kind = sharedPreferences.getString('kind');
@@ -31,6 +33,9 @@ class _App extends State<App> {
     }
     else if (username != "" && username != null && kind == 'Staff' && department == 'Bus Services') {
       _navigateToBusesMain();
+    }
+    else if (username != "" && username != null && kind == 'Staff' && department == 'Dining Services') {
+      _navigateToDinningServices();
     }
     else if (username != "" && username != null && kind == 'Staff') {
       _navigateToStaffPage();
@@ -50,6 +55,13 @@ class _App extends State<App> {
         context,
         MaterialPageRoute(builder: (BuildContext context) => const StaffPage()),
         (Route<dynamic> route) => false);
+  }
+
+  _navigateToDinningServices() {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (BuildContext context) => mealSelecionPage(dateTime: DateTime.now())),
+            (Route<dynamic> route) => false);
   }
 
   _navigateToBusesMain(){

@@ -11,7 +11,7 @@ bool? verified;
 // Uri to the API
 String uri = "https://web-production-8fed.up.railway.app/";
 
-String? username, email, kind;
+String? username, email, kind,uid;
 
 class StaffLoginScreen extends StatelessWidget {
   const StaffLoginScreen({Key? key}) : super(key: key);
@@ -42,6 +42,13 @@ class StaffLoginScreen extends StatelessWidget {
 
           valid = json['status'];
           verified = json['verified'];
+
+          if (valid == 'valid') {
+            username = json['username'];
+            email = json['email'];
+            uid = json['uid'];
+          }
+
 
           return Future.delayed(loginTime).then((_) {
             if (valid == "valid" && !verified!) {
@@ -150,7 +157,7 @@ class StaffLoginScreen extends StatelessWidget {
             SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
             sharedPreferences.setString('username', username!);
             sharedPreferences.setString('email', email!);
-            sharedPreferences.setString('kind', "Staff");
+            sharedPreferences.setString('kind', 'Staff');
             debugPrint('here');
             navigateToStaffPage();
           }

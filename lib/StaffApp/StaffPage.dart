@@ -1,7 +1,13 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
+import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'Dining/mealSelectionPage.dart';
+
+const String url = "http://192.168.42.155:5000";
 
 class StaffPage extends StatefulWidget {
   const StaffPage({Key? key}) : super(key: key);
@@ -14,14 +20,38 @@ class _StaffPageState extends State<StaffPage> {
   List<Department> departments = [
     Department(name: "Bus Services", icon: Icons.bus_alert),
     Department(name: "Campus Control", icon: Icons.security),
-    Department(name: "Dining Hall", icon: Icons.fastfood),
+    Department(name: "Dining Services", icon: Icons.fastfood),
     Department(name: "CCDU", icon: Icons.health_and_safety),
     Department(name: "Campus Health", icon: Icons.health_and_safety),
     Department(name: "Events", icon: Icons.event)
   ];
 
+  void chooseDep(String depName) async{
+
+    SharedPreferences sharedPreferences = await  SharedPreferences.getInstance();
+    String? email = sharedPreferences.getString("email");
+
+    var result = await http.post(Uri.parse("$url/Users/AssignDep"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email!,
+          "department":depName
+
+        }));
+    var json = jsonDecode(result.body);
+
+    debugPrint("${json["status"]}");
+
+
+  }
+
   void handleCard(int index) async{
     String departmentName = departments[index].name;
+    chooseDep(departmentName);
+
 
     switch (departmentName) {
       case "Campus Control":
@@ -38,6 +68,16 @@ class _StaffPageState extends State<StaffPage> {
           sharedPreferences.setString('department', 'Bus Services');
         }
         break;
+      case "Dining Services":
+        {
+          debugPrint('here here');
+          Navigator.pushReplacement(context, MaterialPageRoute(
+              builder: (BuildContext context) => const SelectDH()));
+
+          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          sharedPreferences.setString('department', 'Dining Services');
+        }
+        break;
       default:
         {
           return;
@@ -45,8 +85,18 @@ class _StaffPageState extends State<StaffPage> {
     }
   }
 
+  void getName()async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    username = sharedPreferences.getString("username")!;
+    setState(() {
+    });
+  }
+
+  String username = " ";
+
   @override
   void initState() {
+   getName();
     super.initState();
   }
 
@@ -60,10 +110,10 @@ class _StaffPageState extends State<StaffPage> {
             Container(
               margin:
                   const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 backgroundColor: Color(0xff31AFB4),
                 child: Text(
-                  "L",
+                  username[0],
                   style: TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
               ),
