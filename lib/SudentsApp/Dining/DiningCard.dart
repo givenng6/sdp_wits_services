@@ -22,14 +22,13 @@ class DiningCard extends HookWidget{
     );}
 
       Widget DHItem(String name, String id, isFollowing){
-      return Container(
+      return Card(
+        color: Colors.white70,
+          elevation: 2,
+          child: Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-      ),
       child:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -40,22 +39,21 @@ class DiningCard extends HookWidget{
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Container(
-                margin: EdgeInsets.fromLTRB(0, 0, 12, 0),
-                child: OutlinedButton(onPressed: (){
-                }, child: const Text("View Menu", style: TextStyle(color: Color(0xff003b5c)),))
-            ),
             isFollowing ?
             const OutlinedButton(
                 onPressed: null,
                 child: Text("Following"))
                 :
-            OutlinedButton(onPressed: (){
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    primary: const Color(0xff003b5c)
+                ),
+                onPressed: (){
               followDH(id);
-            }, child: const Text("Follow", style:  TextStyle(color: Color(0xff003b5c)),))
+            }, child: const Text("Follow", style:  TextStyle(color: Color(0xffbf9b30), fontSize: 14,fontWeight: FontWeight.bold),))
         ],)
       ],)
-    );
+    ));
 
   }
 

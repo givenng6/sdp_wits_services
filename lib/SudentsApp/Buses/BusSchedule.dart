@@ -24,14 +24,13 @@ class BusSchedule extends HookWidget{
   }
 
   Widget BusItem(String route, String id, List<dynamic> stops, bool isFollowing){
-    return Container(
+    return Card(
+      color: Colors.white70,
+        elevation: 2,
+        child: Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
       padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(12),
-        color: Colors.white,
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -43,8 +42,12 @@ class BusSchedule extends HookWidget{
             children: [
               Container(
                 margin: EdgeInsets.fromLTRB(0, 0, 12, 0),
-                child: OutlinedButton(onPressed: (){
-                }, child: const Text("Status", style: TextStyle(color: Color(0xff003b5c)),))
+                child:  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: Colors.white
+                    ),
+                    onPressed: (){
+                }, child: const Text("Status", style: TextStyle(color: Color(0xff003b5c), fontSize: 14,fontWeight: FontWeight.bold),))
               ),
 
               isFollowing ?
@@ -52,14 +55,18 @@ class BusSchedule extends HookWidget{
                   onPressed: null,
                   child: Text("Following"))
               :
-              OutlinedButton(onPressed: (){
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: const Color(0xff003b5c)
+                  ),
+                  onPressed: (){
                 followBus(id);
-              }, child: const Text("Follow", style:  TextStyle(color: Color(0xff003b5c)),))
+              }, child: const Text("Follow", style:  TextStyle(color: Color(0xffbf9b30), fontSize: 14,fontWeight: FontWeight.bold),))
             ],
           )
         ],
       ),
-    );
+    ));
   }
 
   Widget showList(List<dynamic> stops){
