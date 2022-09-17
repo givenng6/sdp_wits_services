@@ -7,8 +7,6 @@ import '../DiningGlobals.dart' as globals;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'Package.dart';
 
-
-
 class AccordionWidget extends StatefulWidget {
   final String type;
 
@@ -27,17 +25,16 @@ class _AccordionWidgetState extends State<AccordionWidget> {
 
   bool showFloatingButton = false;
   bool first = true;
+  bool loading = false;
 
-  bool listEquals(List<String> a,List<String>b){
+  bool listEquals(List<String> a, List<String> b) {
+    if (a.length != b.length) return false;
 
-    if(a.length != b.length) return false;
-
-    for(int i=0;i<b.length;i++){
-      if(!a.contains(b[i])) return false;
+    for (int i = 0; i < b.length; i++) {
+      if (!a.contains(b[i])) return false;
     }
 
     return true;
-
   }
 
   @override
@@ -129,8 +126,10 @@ class _AccordionWidgetState extends State<AccordionWidget> {
       floatingActionButton: showFloatingButton
           ? null
           : FloatingActionButton(
-        backgroundColor: const Color(0xFF003b5c),
-              onPressed: () async {
+              backgroundColor: const Color(0xFF003b5c),
+              onPressed: loading ?null:() async {
+                loading = true;
+                setState(() {});
                 SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
 
@@ -142,7 +141,8 @@ class _AccordionWidgetState extends State<AccordionWidget> {
 
                 debugPrint("$data");
 
-                var req = await http.post(Uri.parse("${globals.url}/Menus/SelectedMenu"),
+                var req = await http.post(
+                    Uri.parse("${globals.url}/Menus/SelectedMenu"),
                     headers: <String, String>{
                       "Accept": "application/json",
                       "Content-Type": "application/json; charset=UTF-8"
@@ -155,12 +155,11 @@ class _AccordionWidgetState extends State<AccordionWidget> {
                   debugPrint("$res");
                   await globals.getMenus();
                   showFloatingButton = true;
+                  loading = false;
                   setState(() {});
-
-
                 }
               },
-              child: const Icon(Icons.check)),
+              child: loading?const CircularProgressIndicator():const Icon(Icons.check)),
     );
   }
 }
