@@ -57,7 +57,7 @@ class _SelectDHState extends State<SelectDH> {
   @override
   void initState() {
     // TODO: implement initState
-
+    getName();
     super.initState();
   }
 
