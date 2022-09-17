@@ -8,6 +8,7 @@ import '../Dining/Dining.dart';
 import '../Dashboard/Dashboard.dart';
 import '../Protection/Protection.dart';
 import '../Buses/BusObject.dart';
+import '../Dining/DiningObject.dart';
 
 // Uri to the API
 String uri = "https://web-production-8fed.up.railway.app/";
@@ -25,9 +26,11 @@ class Home extends HookWidget {
 
     // data to pass to other screens...
     var busSchedule = useState([]);
+    var diningHalls = useState([]);
     var subs = useState([]);
     var isFetching = useState(true);
     var busFollowing = useState([]);
+    var dhFollowing = useState("");
 
     useEffect(() {
       Future<void> getSubs() async{
@@ -59,6 +62,20 @@ class Home extends HookWidget {
         });
       }
 
+      Future<void> getDiningHallFollowing() async{
+        await http.post(Uri.parse("${uri}db/getDiningHallFollowing/"),
+            headers: <String, String>{
+              "Accept": "application/json",
+              "Content-Type": "application/json; charset=UTF-8",
+            },
+            body: jsonEncode(<String, String>{
+              "email": email,
+            })).then((value) {
+          var data = jsonDecode(value.body);
+          dhFollowing.value = data;
+        });
+      }
+
       Future<void> getBusSchedule() async{
         await http.get(Uri.parse("${uri}db/getBusSchedule/"),
             headers: <String, String>{
@@ -76,12 +93,31 @@ class Home extends HookWidget {
         });
       }
 
+      Future<void> getDiningHalls() async{
+        await http.get(Uri.parse("${uri}db/getDiningHalls/"),
+            headers: <String, String>{
+              "Accept": "application/json",
+              "Content-Type": "application/json; charset=UTF-8",
+            }).then((response){
+          var toJSON = jsonDecode(response.body);
+          List<DiningObject> tempList = [];
+          for(var data in toJSON){
+            //print(data['name']);
+            tempList.add(DiningObject(data['name'], data['id']));
+          }
+          diningHalls.value = tempList;
+
+        });
+      }
+
       getSubs();
       getBusSchedule();
       getBusFollowing();
+      getDiningHalls();
+      getDiningHallFollowing();
     }, []);
 
-    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs), Protection(email, subs), Menu(email, username, subs)];
+    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing, diningHalls, dhFollowing), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs, diningHalls, dhFollowing), Protection(email, subs), Menu(email, username, subs)];
     final screenIndex = useState(0);
 
     void _onNavigate(int index){

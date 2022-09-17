@@ -39,7 +39,7 @@ class Buses extends HookWidget {
         child: Column(
           children: [
             utilityWidget.AppBar(title),
-            BusSchedule(busSchedule2, busFollowing)
+            BusSchedule(email, busSchedule2, busFollowing)
           ],
         ) ,
       )
