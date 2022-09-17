@@ -23,7 +23,6 @@ class _App extends State<App> {
   List? routes;
   _getData() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    // sharedPreferences.remove("department");
     String? username = sharedPreferences.getString('username');
     String? email = sharedPreferences.getString('email');
     String? kind = sharedPreferences.getString('kind');

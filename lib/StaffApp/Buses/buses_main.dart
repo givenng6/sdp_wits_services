@@ -14,7 +14,7 @@ class BusesMain extends StatefulWidget {
 }
 
 class _BusesMainState extends State<BusesMain> {
-  String uri = 'http://192.168.7.225:5000/';
+  String uri = 'http://192.168.42.155:5000/';
   String? username;
   String? email;
   bool isFabVisible = true;

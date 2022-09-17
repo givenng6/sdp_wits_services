@@ -1,7 +1,9 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+// import '../../SudentsApp/Profile/Profile.dart';
+import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart';
 import 'selectBeakfastPage.dart';
 import 'selectLunchPage.dart';
 import '../DiningGlobals.dart' as globals;
@@ -35,22 +37,6 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
     setState(() {});
   }
 
-  void logout() async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.remove("email");
-    sharedPreferences.remove("department");
-    sharedPreferences.remove("dhName");
-    sharedPreferences.remove("kind");
-    sharedPreferences.remove("username");
-
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => const App()),
-            (Route<dynamic> route) => false);
-
-  }
-
   @override
   void initState() {
     getName();
@@ -77,7 +63,23 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
             ),
             centerTitle: true,
             actions: <Widget>[
-              PopupMenuButton(
+              InkWell(
+                child: Container(
+                  margin:
+                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                  child: CircleAvatar(
+                    backgroundColor: const Color(0xFF013152),
+                    child: Text(
+                      username[0],
+                      style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                    ),
+                  ),
+                ),
+                  onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Profile()));
+              })
+              /*PopupMenuButton(
                   child: Container(
                     margin:
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
@@ -92,13 +94,11 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                         PopupMenuItem(
                           child: ListTile(
-                            onTap: () {
-                              logout();
-                            },
+                            ,
                             title: Text('Logout'),
                           ),
                         ),
-                      ])
+                      ])*/
             ],
             bottom: const TabBar(
               tabs: [

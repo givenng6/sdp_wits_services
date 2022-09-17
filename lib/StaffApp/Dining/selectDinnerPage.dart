@@ -19,7 +19,7 @@ class _selectDinnerPageState extends State<selectDinnerPage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: AccordionWidget(type: "Lunch"),
+      body: AccordionWidget(type: "dinner"),
     );
   }
 }

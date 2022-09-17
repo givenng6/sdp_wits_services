@@ -85,14 +85,14 @@ class _AccordionWidgetState extends State<AccordionWidget> {
                   //leftIcon:
                   headerBackgroundColor: selectedPackages.contains(package.id)
                       ? Colors.green
-                      : const Color(0xFF013152),
+                      : const Color(0xFF003b5c),
                   contentBorderColor: selectedPackages.contains(package.id)
                       ? Colors.green
-                      : const Color(0xFF013152),
+                      : const Color(0xFF003b5c),
                   headerBackgroundColorOpened:
                       selectedPackages.contains(package.id)
                           ? Colors.green
-                          : const Color(0xFF013152),
+                          : const Color(0xFF003b5c),
                   header: Text(package.packageName, style: _headerStyle),
                   content: Row(
                     children: [
@@ -129,7 +129,7 @@ class _AccordionWidgetState extends State<AccordionWidget> {
       floatingActionButton: showFloatingButton
           ? null
           : FloatingActionButton(
-        backgroundColor: const Color(0xFF013152),
+        backgroundColor: const Color(0xFF003b5c),
               onPressed: () async {
                 SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
