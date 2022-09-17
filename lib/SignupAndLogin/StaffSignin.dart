@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:sdp_wits_services/StaffApp/Dining/mealSelectionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../StaffApp/Buses/buses_main.dart';
 import '../StaffApp/StaffPage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -17,6 +19,31 @@ class StaffLoginScreen extends StatelessWidget {
   const StaffLoginScreen({Key? key}) : super(key: key);
 
   Duration get loginTime => const Duration(milliseconds: 2250);
+
+  Future<void> getDep(String email) async{
+
+    var result = await http.post(Uri.parse("http://192.168.42.155:5000/Users/GetDep"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+        }));
+    var json = jsonDecode(result.body);
+    debugPrint("");
+
+    if(json["status"]=="exists"){
+      SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+      sharedPreferences.setString("department",json["department"]);
+      if(json["department"] == "Dining Services"){
+        sharedPreferences.setString("dhName",json["dhName"]);
+      }
+    }
+
+
+
+  }
 
   Future<String?> _authUser(LoginData data) async {
     debugPrint('Name: ${data.name}, Password: ${data.password}');
@@ -44,6 +71,7 @@ class StaffLoginScreen extends StatelessWidget {
           verified = json['verified'];
 
           if (valid == 'valid') {
+            await getDep(data.name);
             username = json['username'];
             email = json['email'];
             uid = json['uid'];
@@ -143,6 +171,24 @@ class StaffLoginScreen extends StatelessWidget {
               builder: (BuildContext context) => const StaffPage()),
               (Route<dynamic> route) => false);
     }
+
+    handleDepartments(String dep) {
+
+      if(dep=="Dining Services"){
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>  mealSelecionPage(dateTime: DateTime.now())),
+                (Route<dynamic> route) => false);
+      }else if(dep=="Bus Services"){
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>   const BusesMain()),
+                (Route<dynamic> route) => false);
+      }
+
+    }
     return FlutterLogin(
       title: 'Wits Services',
       theme: LoginTheme(
@@ -159,7 +205,12 @@ class StaffLoginScreen extends StatelessWidget {
             sharedPreferences.setString('email', email!);
             sharedPreferences.setString('kind', 'Staff');
             debugPrint('here');
-            navigateToStaffPage();
+            String? dep = sharedPreferences.getString("department");
+            if(dep == null){
+              navigateToStaffPage();
+            }else{
+              handleDepartments(dep);
+            }
           }
 
         }
@@ -185,4 +236,6 @@ class StaffLoginScreen extends StatelessWidget {
       ),
     );
   }
+
+
 }
