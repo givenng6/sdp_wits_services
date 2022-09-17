@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Dining/Package.dart';
 import 'package:http/http.dart' as http;
 
-String url = "http://192.168.42.155:5000";
+String url = "https://sdp-staff-backend.herokuapp.com";
 String dhName = "";
 
 List<Package> breakfast = [];
@@ -14,6 +14,8 @@ List<Package> dinner = [];
 List<String> selectedBreakfast = [];
 List<String> selectedLunch = [];
 List<String> selectedDinner = [];
+
+bool ready = false;
 
 parse(curr) {
   List<Package> output = [];
@@ -49,4 +51,6 @@ Future<void> getMenus() async {
   selectedBreakfast = json["selected"]["selectedBreakfast"].cast<String>();
   selectedLunch = json["selected"]["selectedLunch"].cast<String>();
   selectedDinner = json["selected"]["selectedDinner"].cast<String>();
+
+  ready=true;
 }

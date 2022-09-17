@@ -70,7 +70,7 @@ class _AccordionWidgetState extends State<AccordionWidget> {
     }
 
     return Scaffold(
-      body: Accordion(
+      body: !globals.ready ? Center(child: CircularProgressIndicator(),): Accordion(
         maxOpenSections: 1,
         headerBackgroundColorOpened: Colors.black54,
         scaleWhenAnimating: true,

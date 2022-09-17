@@ -22,7 +22,7 @@ class StaffLoginScreen extends StatelessWidget {
 
   Future<void> getDep(String email) async{
 
-    var result = await http.post(Uri.parse("http://192.168.42.155:5000/Users/GetDep"),
+    var result = await http.post(Uri.parse("https://sdp-staff-backend.herokuapp.com/Users/GetDep"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
