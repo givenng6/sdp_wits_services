@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:sdp_wits_services/SudentsApp/Home/Home.dart';
+import 'package:sdp_wits_services/StudentsApp/Home/Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 

@@ -31,6 +31,7 @@ class Home extends HookWidget {
     var isFetching = useState(true);
     var busFollowing = useState([]);
     var dhFollowing = useState("");
+    var mealTime = useState("");
 
     useEffect(() {
       Future<void> getSubs() async{
@@ -93,6 +94,18 @@ class Home extends HookWidget {
         });
       }
 
+      Future<void> getTime() async{
+        await http.get(Uri.parse("${uri}db/getTime/"),
+            headers: <String, String>{
+              "Accept": "application/json",
+              "Content-Type": "application/json; charset=UTF-8",
+            }).then((response){
+          var data = jsonDecode(response.body);
+            print(data);
+            mealTime.value = data;
+        });
+      }
+
       Future<void> getDiningHalls() async{
         await http.get(Uri.parse("${uri}db/getDiningHalls/"),
             headers: <String, String>{
@@ -102,8 +115,8 @@ class Home extends HookWidget {
           var toJSON = jsonDecode(response.body);
           List<DiningObject> tempList = [];
           for(var data in toJSON){
-            //print(data['name']);
-            tempList.add(DiningObject(data['name'], data['id']));
+            //print(data['breakfast']['optionC']);
+            tempList.add(DiningObject(data['name'], data['id'], data['breakfast']['optionA'], data['breakfast']['optionB'], data['breakfast']['optionC'], data['lunch']['optionA'], data['lunch']['optionB'], data['lunch']['optionC'], data['dinner']['optionA'], data['dinner']['optionB'], data['dinner']['optionC']));
           }
           diningHalls.value = tempList;
 
@@ -113,11 +126,12 @@ class Home extends HookWidget {
       getSubs();
       getBusSchedule();
       getBusFollowing();
+      getTime();
       getDiningHalls();
       getDiningHallFollowing();
     }, []);
 
-    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing, diningHalls, dhFollowing), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs, diningHalls, dhFollowing), Protection(email, subs), Menu(email, username, subs)];
+    _screens = [Dashboard(isFetching, subs, busSchedule, busFollowing, diningHalls, dhFollowing, mealTime), Buses(email, subs, busSchedule, busFollowing), Dining(email, subs, diningHalls, dhFollowing), Protection(email, subs), Menu(email, username, subs)];
     final screenIndex = useState(0);
 
     void _onNavigate(int index){

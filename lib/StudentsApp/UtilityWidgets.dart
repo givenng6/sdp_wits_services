@@ -27,7 +27,7 @@ class UtilityWidget {
     // The app bar to be reused among screens
     return Container(
         width: double.infinity,
-        padding: const EdgeInsets.fromLTRB(0, 45, 0, 15),
+        padding: const EdgeInsets.fromLTRB(0, 55, 0, 25),
         decoration: const BoxDecoration(color: Color(0xff003b5c)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,7 +35,7 @@ class UtilityWidget {
             Text(
               title,
               style:
-                  const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),
+                  const TextStyle(fontWeight: FontWeight.w600, color: Colors.white, fontSize: 17),
             )
           ],
         ));

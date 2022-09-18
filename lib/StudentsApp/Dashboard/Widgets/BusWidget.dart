@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:sdp_wits_services/SudentsApp/Buses/BusObject.dart';
+import 'package:sdp_wits_services/StudentsApp/Buses/BusObject.dart';
 
 class BusWidget extends HookWidget{
 
