@@ -19,11 +19,11 @@ class BusSchedule extends HookWidget{
   Widget build(BuildContext context){
     return Container(
       padding: const EdgeInsets.all(12),
-      child: showNames()
+      child: showNames(context)
     );
   }
 
-  Widget BusItem(String route, String id, List<dynamic> stops, bool isFollowing){
+  Widget BusItem(String route, String id, List<dynamic> stops, bool isFollowing, BuildContext context){
     return Card(
       //color: Colors.white70,
         elevation: 2,
@@ -54,7 +54,31 @@ class BusSchedule extends HookWidget{
                         primary: Colors.white
                     ),
                     onPressed: (){
-                }, child: const Text("Status", style: TextStyle(color: Color(0xff003b5c), fontSize: 14,fontWeight: FontWeight.bold),))
+                      String status = "";
+                      String pos = "Not available";
+                      for(BusObject bus in busSchedule){
+                        if(id == bus.getID()){
+                          status = bus.getStatus();
+                          if(bus.getPosition() != ""){
+                            pos = bus.getPosition();
+                          }
+                        }
+                      }
+                      showModalBottomSheet(context: context, 
+                          builder: (builder) => Container(
+                            padding: const EdgeInsets.all(12),
+                            height: 150,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(route, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                Text("Status: $status"),
+                                Text("Current Position: $pos")
+                              ],
+                            ),
+                          ));
+                    }, 
+                    child: const Text("Status", style: TextStyle(color: Color(0xff003b5c), fontSize: 14,fontWeight: FontWeight.bold),))
               ),
 
               isFollowing ?
@@ -85,11 +109,11 @@ class BusSchedule extends HookWidget{
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: items);
   }
 
-  Widget showNames(){
+  Widget showNames(BuildContext context){
     List<Widget> items = [];
     for(BusObject object in busSchedule){
       bool isFollowing = busFollowing.value.contains(object.getID());
-      items.add(BusItem(object.getRouteName(), object.getID(), object.getStops(), isFollowing));
+      items.add(BusItem(object.getRouteName(), object.getID(), object.getStops(), isFollowing, context));
     }
 
     return Column(children: items);
