@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
 import 'package:sdp_wits_services/StudentsApp/Menu/Department.dart';
+import 'package:sdp_wits_services/StudentsApp/Profile/Profile.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/Protection.dart';
 
+const String APP_VERSION = "version 1.0.2 (sprint2)";
 
 class MenuItems extends HookWidget {
   List<Department> cardNames = [
@@ -17,104 +20,56 @@ class MenuItems extends HookWidget {
 
   String email = "", username = "";
   var subs = useState([]);
+
   MenuItems(this.email, this.username, this.subs, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 0.0),
-        child: GridView.count(
-          crossAxisCount: 2,
-          crossAxisSpacing: 15.0,
-          mainAxisSpacing: 15.0,
-          children: List.generate(
-              cardNames.length,
-                  (index) => SizedBox(
-                  height: 400,
-                  child: InkWell(
-                    onTap: () {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      child: Column(children: [
+        ListMenu(context),
+        const Text(APP_VERSION, style: TextStyle(fontSize: 10, color: Colors.grey),),
+      ],
+      )
+    );
+  }
 
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.white,
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            cardNames[index].icon,
-                            size: 50,
-                            color: Color(0xff003b5c),
-                          ),
-                          Text(
-                            cardNames[index].title,
-                            style: TextStyle(color: Color(0xff003b5c), fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ))),
-        ));
+  Widget ViewCard(int index, BuildContext context){
+    return GestureDetector(
+      onTap: (){
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => Protection(email, subs)),
+        // );
+      },
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.fromLTRB(12, 6, 12, 6),
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
 
-    // Container(child: Padding(
-    //   padding: const EdgeInsets.all(10.0),
-    //   child: GridView(children: [
-    //     InkWell(
-    //       onTap: () {
-    //         print("hi");
-    //       },
-    //       child: Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color:Colors.white,),
-    //         child: Column(
-    //           mainAxisAlignment: MainAxisAlignment.center,
-    //           children: [
-    //             Text("Buses",style: TextStyle(color: Colors.black,fontSize: 30),),
-    //             Icon(Icons.directions_bus,size:50,color:Colors.blue,),
-    //           ],),),
-    //     ),
+        ),
+        child: Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+              child:  Icon(cardNames[index].icon, color: Colors.blue,),
+            ),
+            Text(cardNames[index].title, style: const TextStyle(fontWeight: FontWeight.bold),)
+          ],
+        ),
+      ),
+    );
+  }
 
-    // Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color:Colors.white,),
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: [
-    //       Text("Protection",style: TextStyle(color: Colors.black,fontSize: 30),),
-    //       Icon(Icons.directions_car,size:50,color:Colors.blue,),
-    //
-    //     ],),),
-    // Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color:Colors.white,),
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: [
-    //       Text("Dining Hall",style: TextStyle(color: Colors.black,fontSize: 30),),
-    //       Icon(Icons.restaurant,size:50,color:Colors.blue,),
-    //
-    //     ],),),
-    // Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color:Colors.white,),
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: [
-    //       Text("CCDU",style: TextStyle(color: Colors.black,fontSize: 30),),
-    //       Icon(Icons.chat,size:50,color:Colors.blue,),
-    //
-    //     ],),),
-    // Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color:Colors.white,),
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: [
-    //       Text("Campus Health",style: TextStyle(color: Colors.black,fontSize: 20),),
-    //       Icon(Icons.healing_outlined,size:50,color:Colors.red,),
-    //
-    //     ],),),
-    // Container(decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color:Colors.white,),
-    //   child: Column(
-    //     mainAxisAlignment: MainAxisAlignment.center,
-    //     children: [
-    //       Text("Events",style: TextStyle(color: Colors.black,fontSize: 30),),
-    //       Icon(Icons.event,size:50,color:Colors.blue,),
-    //
-    //   //     ],),),
-    // ],
-    //   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount:2,mainAxisSpacing: 10,crossAxisSpacing: 10),
+  Widget ListMenu(BuildContext context){
+    List<Widget> items = [];
+    for(int i = 0; i < cardNames.length; i++){
+      items.add(ViewCard(i, context));
+    }
+
+    return Column(children: items,);
   }
 }

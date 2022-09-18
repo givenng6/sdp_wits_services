@@ -23,7 +23,7 @@ class DiningCard extends HookWidget{
 
       Widget DHItem(String name, String id, isFollowing){
       return Card(
-        color: Colors.white70,
+        //color: Colors.white70,
           elevation: 2,
           child: Container(
       width: double.infinity,

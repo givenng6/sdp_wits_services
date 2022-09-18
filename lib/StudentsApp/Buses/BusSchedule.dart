@@ -25,7 +25,7 @@ class BusSchedule extends HookWidget{
 
   Widget BusItem(String route, String id, List<dynamic> stops, bool isFollowing){
     return Card(
-      color: Colors.white70,
+      //color: Colors.white70,
         elevation: 2,
         child: Container(
       width: double.infinity,

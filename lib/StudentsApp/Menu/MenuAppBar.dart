@@ -19,15 +19,15 @@ class MenuAppBar extends HookWidget{
   Widget build(BuildContext context){
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(12, 45, 12, 12),
-      decoration: BoxDecoration(
+      padding: const EdgeInsets.fromLTRB(24, 45, 12, 12),
+      decoration: const BoxDecoration(
         color: Color(0xff003b5c)
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            margin: EdgeInsets.fromLTRB(0, 12, 0, 12),
+            margin: const EdgeInsets.fromLTRB(0, 12, 0, 20),
             child: GestureDetector(
               child: Row(
                 children: [
@@ -43,7 +43,7 @@ class MenuAppBar extends HookWidget{
               },
             ),
           ),
-          Text("Menu", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),)
+          const Text("Menu", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 25),)
         ],
       ),
     );

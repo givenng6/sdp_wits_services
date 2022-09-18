@@ -102,8 +102,8 @@ class Home extends HookWidget {
           var toJSON = jsonDecode(response.body);
           List<DiningObject> tempList = [];
           for(var data in toJSON){
-            //print(data['name']);
-            tempList.add(DiningObject(data['name'], data['id']));
+            //print(data['breakfast']['optionC']);
+            tempList.add(DiningObject(data['name'], data['id'], data['breakfast']['optionA'], data['breakfast']['optionB'], data['breakfast']['optionC'], data['lunch']['optionA'], data['lunch']['optionB'], data['lunch']['optionC'], data['dinner']['optionA'], data['dinner']['optionB'], data['dinner']['optionC']));
           }
           diningHalls.value = tempList;
 
