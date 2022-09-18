@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
 import 'package:sdp_wits_services/SignupAndLogin/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +24,7 @@ class mealSelecionPage extends StatefulWidget {
 
 class _mealSelecionPageState extends State<mealSelecionPage> {
   String username = " ";
+  String email = "";
   String dhName = " ";
 
   getMenus() async {
@@ -33,6 +35,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
   void getName() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     username = sharedPreferences.getString('username')!;
+    email = sharedPreferences.getString('email')!;
     dhName = sharedPreferences.getString('dhName')!;
     setState(() {});
   }
@@ -77,7 +80,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
                 ),
                   onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Profile()));
+                    MaterialPageRoute(builder: (context) => Profile(email, username)));
               })
               /*PopupMenuButton(
                   child: Container(

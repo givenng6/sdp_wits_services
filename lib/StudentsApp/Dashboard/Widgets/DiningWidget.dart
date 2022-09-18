@@ -89,7 +89,7 @@ class DiningWidget extends HookWidget{
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0),
         image: const DecorationImage(
-            image: const AssetImage('assets/food.jpg'),
+            image: AssetImage('assets/food.jpg'),
             fit: BoxFit.cover
         ),
       ),

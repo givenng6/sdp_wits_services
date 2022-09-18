@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart';
 import 'package:http/http.dart' as http;
+import '../SignupAndLogin/StaffSignin.dart';
 import 'DiningGlobals.dart' as globals;
 
 import 'Dining/mealSelectionPage.dart';
@@ -26,10 +27,12 @@ class _SelectDHState extends State<SelectDH> {
   ];
 
   String username = " ";
+  String email = "";
 
   void getName() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     username = sharedPreferences.getString('username')!;
+    email = sharedPreferences.getString('email')!;
     setState(() {});
   }
 
@@ -87,7 +90,7 @@ class _SelectDHState extends State<SelectDH> {
               ),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const Profile()));
+                    MaterialPageRoute(builder: (context) => Profile(email, username)));
               })
         ],
         backgroundColor: const Color(0xFF003b5c),

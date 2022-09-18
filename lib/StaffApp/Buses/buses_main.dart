@@ -216,7 +216,7 @@ class _BusesMainState extends State<BusesMain> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const Profile()));
+                                    builder: (context) => Profile(email, username)));
                           },
                         )
                       : Container(
