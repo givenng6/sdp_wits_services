@@ -7,12 +7,14 @@ class DiningWidget extends HookWidget{
 
   var diningHalls = useState([]);
   var dhFollowing = useState("");
-  DiningWidget(this.diningHalls, this.dhFollowing, {Key? key}) : super(key: key);
+  var mealTime = useState("");
+  DiningWidget(this.diningHalls, this.dhFollowing, this.mealTime, {Key? key}) : super(key: key);
 
   List<String> option1Meals = [];
   List<String> option2Meals = [];
   List<String> option3Meals = [];
-  String meal = "Dinner";
+
+  String times = "";
 
   @override
   Widget build(BuildContext context){
@@ -25,7 +27,8 @@ class DiningWidget extends HookWidget{
         dhName = data.getDiningName();
          none = false;
 
-         if(meal == "Breakfast"){
+         if(mealTime.value == "Breakfast"){
+           times = "06:00 - 09:00";
            List<dynamic> bfA = data.bfA;
            List<dynamic> bfB = data.bfB;
            List<dynamic> bfC= data.bfC;
@@ -40,7 +43,8 @@ class DiningWidget extends HookWidget{
            for(int i = 0; i < bfC.length; i++){
              option3Meals.add(bfC[i]);
            }
-         }else if(meal == "Lunch"){
+         }else if(mealTime.value == "Lunch"){
+           times = "11:00 - 14;00";
            List<dynamic> A = data.lA;
            List<dynamic> B = data.lB;
            List<dynamic> C = data.lC;
@@ -56,6 +60,7 @@ class DiningWidget extends HookWidget{
              option3Meals.add(C[i]);
            }
          }else{
+           times = "16:00 - 19:00";
            List<dynamic> A = data.dA;
            List<dynamic> B = data.dB;
            List<dynamic> C = data.dC;
@@ -101,13 +106,13 @@ class DiningWidget extends HookWidget{
           none ?
           const Text("No Data", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),)
           :
-          MenuItem(dhName, meal, "11:00 - 14:00", "kkk"),
+          MenuItem(dhName, mealTime.value, times),
         ],
       ),
     );
   }
 
-  Widget MenuItem(String route, String status, String nextStop, String timeEstimate){
+  Widget MenuItem(String dh, String meal, String times){
     return Container(
       width: double.infinity,
       margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
@@ -119,9 +124,9 @@ class DiningWidget extends HookWidget{
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(route, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-          Text("Meal: $status", style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
-          Text("Time: $nextStop", style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text(dh, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
+          Text("Meal: $meal", style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text("Time: $times", style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
           const Text(""),
           Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
