@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../StaffApp/Buses/buses_main.dart';
 import '../StaffApp/Dining/mealSelectionPage.dart';
 import '../StaffApp/StaffPage.dart';
-import '../SudentsApp/Home/Home.dart';
+import '../StudentsApp/Home/Home.dart';
 import 'StaffSignin.dart';
 
 class App extends StatefulWidget {

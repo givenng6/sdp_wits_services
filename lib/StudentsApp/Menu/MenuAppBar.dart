@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:sdp_wits_services/SudentsApp/Profile/Profile.dart';
+import 'package:sdp_wits_services/StudentsApp/Profile/Profile.dart';
 import '../UtilityWidgets.dart';
 
 
