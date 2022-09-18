@@ -34,11 +34,18 @@ class DiningCard extends HookWidget{
         },
           child:Card(
           elevation: 2,
-          child: Container(
-      width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-      padding: const EdgeInsets.all(12),
-      child:Column(
+            child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  //borderRadius: BorderRadius.circular(12.0),
+                  image: DecorationImage(
+                      image: AssetImage('assets/white.jpg'),
+                      fit: BoxFit.cover
+                  ),
+                ),
+        child:Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(name, style: const TextStyle(color:  Color(0xff003b5c), fontWeight: FontWeight.bold, fontSize: 15)),

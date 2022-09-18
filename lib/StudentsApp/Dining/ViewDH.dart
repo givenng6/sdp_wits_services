@@ -18,47 +18,68 @@ class ViewDH extends HookWidget{
               crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                  image: const DecorationImage(
+                      image: const AssetImage('assets/breakfast.jpg'),
+                      fit: BoxFit.cover
+                  ),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("Breakfast", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                    const Text("Option A", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.bfA),
-                    const Text("Option B", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.bfB),
-                    const Text("Option C", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.bfC),
+                    listMeals(dining.bfA, "1"),
+                    listMeals(dining.bfB, "2"),
+                    listMeals(dining.bfC, "3"),
                   ],
                 ),
               ),
               Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                  image: const DecorationImage(
+                      image: const AssetImage('assets/junk.jpg'),
+                      fit: BoxFit.cover
+                  ),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("Lunch", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                    const Text("Option A", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.lA),
-                    const Text("Option B", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.lB),
-                    const Text("Option C", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.lC),
+                    listMeals(dining.lA, "1"),
+                    listMeals(dining.lB, "2"),
+                    listMeals(dining.lC, "3"),
                   ],
                 ),
               ),
               Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(12),
                 margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.0),
+                  image: const DecorationImage(
+                      image: const AssetImage('assets/dinner.jpg'),
+                      fit: BoxFit.cover
+                  ),
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("Dinner", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
-                    const Text("Option A", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.dA),
-                    const Text("Option B", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.dB),
-                    const Text("Option C", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),
-                    listMeals(dining.dC),
+                    listMeals(dining.dA, "1"),
+                    listMeals(dining.dB, "2"),
+                    listMeals(dining.dC, "3"),
                   ],
                 ),
               ),
@@ -68,12 +89,23 @@ class ViewDH extends HookWidget{
     );
   }
 
-  Widget listMeals(List<dynamic> meals){
+  Widget listMeals(List<dynamic> meals, String opt){
     List<Widget> items = [];
+
+    items.add(Text("Option $opt", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),);
     for(String meal in meals){
-      items.add(Text(meal));
+      items.add(Text(meal, style: TextStyle(fontWeight: FontWeight.w600),));
     }
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: items);
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        color: const Color(0x80ffffff),
+      ),child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: items),
+    );
+   ;
   }
 }

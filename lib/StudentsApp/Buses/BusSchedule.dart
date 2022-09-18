@@ -28,9 +28,16 @@ class BusSchedule extends HookWidget{
       //color: Colors.white70,
         elevation: 2,
         child: Container(
-      width: double.infinity,
-      margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-      padding: const EdgeInsets.all(12),
+        width: double.infinity,
+        padding: const EdgeInsets.all(12),
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            //borderRadius: BorderRadius.circular(12.0),
+            image: DecorationImage(
+                image: AssetImage('assets/white.jpg'),
+                fit: BoxFit.cover
+            ),
+          ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
