@@ -21,7 +21,7 @@ class _SelectOptionItemsState extends State<SelectOptionItems> {
   bool showFloatingBtn = false;
   bool loading = false;
   List<String> original = [];
-  List<String> newList = [];//selected
+  List<String> newList = [];
   List<String> old = [];
 
   @override
