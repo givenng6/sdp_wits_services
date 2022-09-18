@@ -12,7 +12,7 @@ class DiningWidget extends HookWidget{
   List<String> option1Meals = [];
   List<String> option2Meals = [];
   List<String> option3Meals = [];
-  String meal = "Lunch";
+  String meal = "Dinner";
 
   @override
   Widget build(BuildContext context){
@@ -101,7 +101,7 @@ class DiningWidget extends HookWidget{
           none ?
           const Text("No Data", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),)
           :
-          MenuItem(dhName, "Lunch", "11:00 - 14:00", "kkk"),
+          MenuItem(dhName, meal, "11:00 - 14:00", "kkk"),
         ],
       ),
     );
