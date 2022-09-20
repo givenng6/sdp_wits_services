@@ -64,21 +64,24 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
             centerTitle: true,
             actions: <Widget>[
               InkWell(
-                child: Container(
-                  margin:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                  child: CircleAvatar(
-                    backgroundColor: const Color(0xFF013152),
-                    child: Text(
-                      username[0],
-                      style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        vertical: 10.0, horizontal: 10.0),
+                    child: CircleAvatar(
+                      backgroundColor: const Color(0xFF013152),
+                      child: Text(
+                        username[0],
+                        style: const TextStyle(
+                            fontSize: 20.0, color: Colors.white),
+                      ),
                     ),
                   ),
-                ),
                   onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Profile(email, username)));
-              })
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Profile(email, username)));
+                  })
               /*PopupMenuButton(
                   child: Container(
                     margin:

@@ -12,6 +12,7 @@ void main() {
     testWidgets("Staff Buses", (tester) async {
       app.main();
       await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 5));
       Widget createWidgetForTesting({required Widget child}) {
         return MaterialApp(
           home: child,
@@ -23,7 +24,8 @@ void main() {
       preferences.setBool( 'onShift', false);
       preferences.setString('username', username);
       preferences.setString('email', email);
-
+      await tester.pump(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
       await tester.pumpWidget(createWidgetForTesting(child: const buses.BusesMain()));
       await tester.pumpAndSettle();
       final witsServices = find.text('Buses');
@@ -38,6 +40,7 @@ void main() {
     testWidgets("Staff Profile", (tester) async {
       app.main();
       await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
       Widget createWidgetForTesting({required Widget child}) {
         return MaterialApp(
           home: child,
@@ -48,7 +51,8 @@ void main() {
       SharedPreferences preferences = await SharedPreferences.getInstance();
       preferences.setString('username', username);
       preferences.setString('email', email);
-
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 1));
       await tester.pumpWidget(createWidgetForTesting(child: profile.Profile(email, username)));
       await tester.pumpAndSettle();
       final findUsername = find.text(username);

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sdp_wits_services/main.dart' as app;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'utils.dart';
 
@@ -22,6 +23,9 @@ void main() {
       final continueAsStaff = find.text('Continue as Staff');
       expect(continueAsStaff, findsOneWidget);
 
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.clear();
+      await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 1));
       await tester.tap(continueAsStudentButton);
       await Future.delayed(const Duration(seconds: 1));
@@ -80,8 +84,8 @@ void main() {
       await Future.delayed(const Duration(seconds: 1));
       await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 1));
-      await tester.tap(find.text('SIGNUP'))
-      ;await tester.pumpAndSettle();
+      await tester.tap(find.text('SIGNUP'));
+      await tester.pumpAndSettle();
 
       await Future.delayed(const Duration(seconds: 3));
       await Future.delayed(const Duration(seconds: 1));
@@ -111,6 +115,9 @@ void main() {
       app.main();
       await tester.pumpAndSettle();
       await tester.pump(const Duration(milliseconds: 5000));
+      await tester.pumpAndSettle();
+      SharedPreferences preferences = await SharedPreferences.getInstance();
+      preferences.clear();
       await tester.pumpAndSettle();
       await Future.delayed(const Duration(seconds: 1));
       await tester.tap(continueAsStaffButton);
