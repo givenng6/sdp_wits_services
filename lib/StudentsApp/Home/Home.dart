@@ -87,7 +87,11 @@ class Home extends HookWidget {
               List<BusObject> tempSchedule = [];
               for(var data in toJSON){
                 //print(data['name']);
-                tempSchedule.add(BusObject(data['name'], data['id'], data['stops']));
+                String pos = "";
+                if(data['position'] != null){
+                  pos = data['position'];
+                }
+                tempSchedule.add(BusObject(data['name'], data['id'], data['stops'], data['status'], pos));
               }
               busSchedule.value = tempSchedule;
 

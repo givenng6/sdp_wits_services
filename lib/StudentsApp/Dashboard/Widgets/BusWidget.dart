@@ -49,7 +49,7 @@ class BusWidget extends HookWidget{
     );
   }
 
-  Widget BusItem(String route, String status, String nextStop, String timeEstimate){
+  Widget BusItem(String route, String status, String nextStop){
     return Container(
       width: double.infinity,
       margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
@@ -63,8 +63,10 @@ class BusWidget extends HookWidget{
         children: [
           Text(route, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
           Text("Status: " + status, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
-          Text("Next Stop: " + nextStop, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
-          Text("Arriving In: " + timeEstimate, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          nextStop != "" ?
+          Text("Location: " + nextStop, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c)))
+          :
+          Text("")
         ],
       ),
     );
@@ -76,7 +78,11 @@ class BusWidget extends HookWidget{
       for(int i = 0; i < busSchedule.length; i++){
           String id = busSchedule[i].getID();
           if(id == bus){
-            buses.add(BusItem(busSchedule[i].getRouteName(), "Enroute", "Yale Village", "5 mins"),);
+            String pos = "";
+            if(busSchedule[i].getStatus() != "OFF"){
+              pos = busSchedule[i].getPosition();
+            }
+            buses.add(BusItem(busSchedule[i].getRouteName(), busSchedule[i].getStatus(), pos),);
             break;
           }
       }
