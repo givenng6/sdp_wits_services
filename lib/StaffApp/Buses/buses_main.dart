@@ -48,7 +48,6 @@ class _BusesMainState extends State<BusesMain> {
         fabDecoration.text = 'End Shift';
         fabDecoration.color = const Color(0xFF851318);
         clickingEnabled = false;
-        debugPrint('$selectedCardIndex');
         assignDriverToRoute();
       }else{
         fabDecoration.text = 'Start Shift';

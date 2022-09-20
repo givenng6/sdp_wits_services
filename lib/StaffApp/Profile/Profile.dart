@@ -39,6 +39,4 @@ class Profile extends HookWidget {
     const SizedBox(height: 4),
     Text(email!, style: const TextStyle(color: Colors.grey))
   ]);
-
-
 }

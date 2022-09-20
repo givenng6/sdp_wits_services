@@ -6,6 +6,7 @@ import '../StaffApp/Dining/mealSelectionPage.dart';
 import '../StaffApp/StaffPage.dart';
 import '../StudentsApp/Home/Home.dart';
 import 'StaffSignin.dart';
+import 'package:sdp_wits_services/globals.dart' as globals;
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
@@ -22,21 +23,17 @@ class _App extends State<App> {
   }
   List? routes;
   _getData() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    String? username = sharedPreferences.getString('username');
-    String? email = sharedPreferences.getString('email');
-    String? kind = sharedPreferences.getString('kind');
-    String? department = sharedPreferences.getString('department');
-    if (username != "" && username != null && kind == 'Student') {
-      _navigateToHome(email, username);
+    await Future.delayed(const Duration(milliseconds: 1));
+    if (globals.username != "" && globals.username != null && globals.kind == 'Student') {
+      _navigateToHome(globals.email, globals.username);
     }
-    else if (username != "" && username != null && kind == 'Staff' && department == 'Bus Services') {
+    else if (globals.username != "" && globals.username != null && globals.kind == 'Staff' && globals.department == 'Bus Services') {
       _navigateToBusesMain();
     }
-    else if (username != "" && username != null && kind == 'Staff' && department == 'Dining Services') {
+    else if (globals.username != "" && globals.username != null && globals.kind == 'Staff' && globals.department == 'Dining Services') {
       _navigateToDinningServices();
     }
-    else if (username != "" && username != null && kind == 'Staff') {
+    else if (globals.username != "" && globals.username != null && globals.kind == 'Staff') {
       _navigateToStaffPage();
     }
   }

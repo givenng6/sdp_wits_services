@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'SignupAndLogin/app.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'globals.dart' as globals;
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,10 +14,21 @@ void main() async{
   runApp(const Main());
 }
 
-class Main extends StatelessWidget {
+class Main extends StatefulWidget {
   const Main({Key? key}) : super(key: key);
+
+  @override
+  State<Main> createState() => _MainState();
+}
+
+class _MainState extends State<Main> {
+  get getTo{
+    globals.getSharedPreferences();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // globals.getSharedPreferences();
     return MaterialApp(
       title: 'Wits Services',
       theme: ThemeData(
@@ -28,6 +40,7 @@ class Main extends StatelessWidget {
         animationDuration: const Duration(milliseconds: 1000),
         splashTransition: SplashTransition.slideTransition,
         backgroundColor: const Color(0xff003b5c),
+        function: getTo,
         splash: Image.asset("assets/white_logo_nb.png"),
         nextScreen: const App(),
       ),
