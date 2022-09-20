@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../StaffApp/Buses/buses_main.dart';
 import '../StaffApp/Dining/mealSelectionPage.dart';
 import '../StaffApp/StaffPage.dart';
@@ -56,7 +55,7 @@ class _App extends State<App> {
   _navigateToDinningServices() {
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (BuildContext context) => mealSelecionPage(dateTime: DateTime.now())),
+        MaterialPageRoute(builder: (BuildContext context) => mealSelecionPage()),
             (Route<dynamic> route) => false);
   }
 

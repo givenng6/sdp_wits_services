@@ -178,7 +178,7 @@ class StaffLoginScreen extends StatelessWidget {
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) =>  mealSelecionPage(dateTime: DateTime.now())),
+                builder: (BuildContext context) =>  mealSelecionPage()),
                 (Route<dynamic> route) => false);
       }else if(dep=="Bus Services"){
         Navigator.pushAndRemoveUntil(

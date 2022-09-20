@@ -25,12 +25,14 @@ void main() {
       preferences.setString('email', email);
 
       await tester.pumpWidget(createWidgetForTesting(child: const buses.BusesMain()));
+      await tester.pumpAndSettle();
       final witsServices = find.text('Buses');
       expect(witsServices, findsOneWidget);
 
       await tester.pump(const Duration(seconds: 1));
       final circleAvatar = find.byType(CircleAvatar);
       expect(circleAvatar, findsOneWidget);
+      preferences.clear();
       await tester.pumpAndSettle();
     });
     testWidgets("Staff Profile", (tester) async {
@@ -48,6 +50,7 @@ void main() {
       preferences.setString('email', email);
 
       await tester.pumpWidget(createWidgetForTesting(child: profile.Profile(email, username)));
+      await tester.pumpAndSettle();
       final findUsername = find.text(username);
       final findEmail = find.text(email);
       final findIconButtons = find.byType(IconButton);
@@ -58,6 +61,7 @@ void main() {
       expect(findIcon, findsWidgets);
       expect(findIconButtons, findsWidgets);
       expect(findClipOval, findsWidgets);
+      preferences.clear();
       await tester.pump(const Duration(seconds: 1));
 
     });

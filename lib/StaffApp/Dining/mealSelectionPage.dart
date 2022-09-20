@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
-import 'package:sdp_wits_services/SignupAndLogin/app.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import '../../SudentsApp/Profile/Profile.dart';
@@ -11,11 +9,10 @@ import '../DiningGlobals.dart' as globals;
 import 'selectDinnerPage.dart';
 
 class mealSelecionPage extends StatefulWidget {
-  final DateTime dateTime;
+  // final DateTime dateTime;
 
   mealSelecionPage({
     Key? key,
-    required this.dateTime,
   }) : super(key: key);
 
   @override
@@ -114,11 +111,9 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
             ),
           ),
           body: TabBarView(children: [
-            selectBrakefastPage(
-              dateTime: widget.dateTime,
-            ),
-            selectLunchPage(dateTime: widget.dateTime),
-            selectDinnerPage(dateTime: widget.dateTime),
+            selectBrakefastPage(),
+            selectLunchPage(),
+            selectDinnerPage(),
           ])),
     );
   }
