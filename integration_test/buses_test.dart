@@ -61,16 +61,16 @@ Future<void> _busesTests(WidgetTester tester) async{
   await tester.pumpAndSettle();
 
   final findBusText = find.text('Buses');
-  final findRoute1 = find.text('Route 1 - Full Circuit');
-  final findRoute2 = find.text('Route 2 - WEC | REN');
-  final findRoute3A = find.text('Route 3A - WJ | AMIC');
-  final findRoute3B = find.text('Route 3B - WJ | WEC');
-  final findRoute3C = find.text('Route 3C WJ | WEC | AMIC');
-  final findRoute4A = find.text('Route 4A - WEC | AMIC');
-  final findFloatingActionButton = find.byType(FloatingActionButton);
-  final findStartShiftText = find.text('Start Shift');
-  final findEndShiftText = find.text('End Shift');
-  final findUserInitial = find.text('N');
+  // final findRoute1 = find.text('Route 1 - Full Circuit');
+  // final findRoute2 = find.text('Route 2 - WEC | REN');
+  // final findRoute3A = find.text('Route 3A - WJ | AMIC');
+  // final findRoute3B = find.text('Route 3B - WJ | WEC');
+  // final findRoute3C = find.text('Route 3C WJ | WEC | AMIC');
+  // final findRoute4A = find.text('Route 4A - WEC | AMIC');
+  // final findFloatingActionButton = find.byType(FloatingActionButton);
+  // final findStartShiftText = find.text('Start Shift');
+  // final findEndShiftText = find.text('End Shift');
+  // final findUserInitial = find.text('N');
   final circleAvatar = find.byType(CircleAvatar);
   final findIcon = find.byType(Icon);
   expect(findBusText, findsOneWidget);

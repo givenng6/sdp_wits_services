@@ -32,7 +32,7 @@ class MenuAppBar extends HookWidget{
               child: Row(
                 children: [
                   utilityWidget.CircularProfile(username),
-                  Text(username, style: TextStyle(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 20)),
+                  Text(username, style: const TextStyle(fontWeight: FontWeight.w500, color: Colors.white, fontSize: 20)),
                 ],
               ),
               onTap: (){
