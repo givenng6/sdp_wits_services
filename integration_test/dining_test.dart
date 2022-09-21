@@ -5,11 +5,27 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   group('description', () {
-    testWidgets("Staff Dining", _diningTests);
+    testWidgets("Staff Dining", _staffDiningTests);
+    testWidgets("Student Dining", _studentStaffDiningTests);
   });
 }
 
-Future<void> _diningTests(WidgetTester tester) async{
+Future<void> _studentStaffDiningTests(WidgetTester tester) async{
+  const username = 'Lindokuhle Mabena';
+  const email = 'a2355285@wits.ac.za';
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('username', username);
+  preferences.setString('email', email);
+  await tester.pump();
+
+  Widget widget = MaterialApp(
+    home: mealSelecionPage(),
+  );
+  await tester.pumpWidget(widget);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _staffDiningTests(WidgetTester tester) async{
   const username = 'Lindokuhle Mabena';
   const email = 'a2355285@wits.ac.za';
   const dhName = 'Ernest Openheimer';
