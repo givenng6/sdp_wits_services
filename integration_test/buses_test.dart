@@ -78,7 +78,7 @@ Future<void> _busesTests(WidgetTester tester) async{
   expect(findIcon, findsOneWidget);
 
   // await tester.pumpAndSettle();
-  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.pumpAndSettle(const Duration(seconds: 15));
   expect(findUserInitial, findsOneWidget);
   expect(findRoute1, findsOneWidget);
   expect(findRoute2, findsOneWidget);
