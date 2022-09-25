@@ -1,7 +1,7 @@
 # Wits Services
 
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/givenng6/sdp_wits_services/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/givenng6/sdp_wits_services/tree/master)
-![Codecov](https://img.shields.io/codecov/c/github/givenng6/sdp_wits_services?style=flat-square)
+[![Codecov](https://img.shields.io/codecov/c/github/givenng6/sdp_wits_services?style=flat-square)](https://app.codecov.io/gh/givenng6/sdp_wits_services)
 
 
 
