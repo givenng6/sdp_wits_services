@@ -26,6 +26,7 @@ class Buses extends HookWidget {
   Widget build(BuildContext context) {
     var isSubscribed = useState(false);
 
+    var isSubscribed = useState(false);
     List<BusObject> busSchedule2 = [];
 
     if (subs.value.contains(service)) {
