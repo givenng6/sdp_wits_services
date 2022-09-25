@@ -8,7 +8,6 @@ import './BusObject.dart';
 class Buses extends HookWidget {
   UtilityWidget utilityWidget = UtilityWidget();
 
-  var isSubscribed = useState(false);
   String title = "Bus Services";
   String email = "";
   String service = "bus_service";
@@ -24,6 +23,7 @@ class Buses extends HookWidget {
   @override
   Widget build(BuildContext context) {
 
+    var isSubscribed = useState(false);
     List<BusObject> busSchedule2 = [];
 
     if(subs.value.contains(service)){

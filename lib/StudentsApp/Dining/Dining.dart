@@ -8,7 +8,7 @@ import '../Utilities/AddSub.dart';
 class Dining extends HookWidget {
   UtilityWidget utilityWidget = UtilityWidget();
 
-  var isSubscribed = useState(false);
+
   String title = "Dining Services";
   String email = "";
   String service = "dining_service";
@@ -23,7 +23,7 @@ class Dining extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    var isSubscribed = useState(false);
     List<DiningObject> diningHalls2 = [];
 
     if(subs.value.contains(service)){
