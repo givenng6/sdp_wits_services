@@ -20,12 +20,12 @@ class ViewDH extends HookWidget{
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.0),
                   image: const DecorationImage(
-                      image: const AssetImage('assets/breakfast.jpg'),
+                      image: AssetImage('assets/breakfast.jpg'),
                       fit: BoxFit.cover
                   ),
                 ),
@@ -42,12 +42,12 @@ class ViewDH extends HookWidget{
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.0),
                   image: const DecorationImage(
-                      image: const AssetImage('assets/junk.jpg'),
+                      image: AssetImage('assets/junk.jpg'),
                       fit: BoxFit.cover
                   ),
                 ),
@@ -64,12 +64,12 @@ class ViewDH extends HookWidget{
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(12),
-                margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 12),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.0),
                   image: const DecorationImage(
-                      image: const AssetImage('assets/dinner.jpg'),
+                      image: AssetImage('assets/dinner.jpg'),
                       fit: BoxFit.cover
                   ),
                 ),
@@ -92,9 +92,9 @@ class ViewDH extends HookWidget{
   Widget listMeals(List<dynamic> meals, String opt){
     List<Widget> items = [];
 
-    items.add(Text("Option $opt", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),);
+    items.add(Text("Option $opt", style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),),);
     for(String meal in meals){
-      items.add(Text(meal, style: TextStyle(fontWeight: FontWeight.w600),));
+      items.add(Text(meal, style: const TextStyle(fontWeight: FontWeight.w600),));
     }
 
     return Container(
@@ -106,6 +106,5 @@ class ViewDH extends HookWidget{
         color: const Color(0x80ffffff),
       ),child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: items),
     );
-   ;
   }
 }

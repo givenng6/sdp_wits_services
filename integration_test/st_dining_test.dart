@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/Dining.dart';
+import 'package:sdp_wits_services/StudentsApp/Dining/ViewDH.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -12,14 +13,15 @@ import 'package:http/http.dart' as http;
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end students dining test", () {
-    testWidgets("Students Dining", _diningTests);
+    testWidgets("Students Dining", _subbedDiningTests);
+    testWidgets("Main Dining", _mainDiningTests);
   });
 }
 String uri = "https://web-production-8fed.up.railway.app/";
-Future<void> _diningTests(WidgetTester tester)async{
+
+Future<void> _subbedDiningTests(WidgetTester tester)async{
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
-  const menu = 'Menu';
   var subs = ['dining_service', 'Bus Services', 'Campus Control'];
   var diningHalls = [];
   var dhFollowing = 'DH4';
@@ -59,24 +61,98 @@ Future<void> _diningTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
-  final findDiningServicesText = find.text('Dining Services');
-  final findUserInitial = find.text(username[0]);
-  final findIcon = find.byType(Icon);
-  final findMenuText = find.text(menu);
-  expect(findDiningServicesText, findsOneWidget);
-  // expect(findUserInitial, findsOneWidget);
-  // expect(findIcon, findsWidgets);
-  // expect(findMenuText, findsOneWidget);
-  //
-  // expect(find.text('Buses'), findsOneWidget);
-  // expect(find.text('Dining Services'), findsOneWidget);
-  // expect(find.text('Protection'), findsOneWidget);
-  // expect(find.text('Campus Health'), findsOneWidget);
-  // expect(find.text('CCDU'), findsOneWidget);
-  // expect(find.text('Events'), findsOneWidget);
+  expect(find.text('Dining Services'), findsOneWidget);
+  expect(find.text('Follow'), findsWidgets);
+  expect(find.text('Following'), findsOneWidget);
+  expect(find.text('Main'), findsOneWidget);
+  expect(find.text('Jubilee'), findsOneWidget);
+  expect(find.text('Convocation'), findsOneWidget);
+  expect(find.text('Highfield'), findsOneWidget);
+  expect(find.text('Ernest Openheimer'), findsOneWidget);
+  expect(find.text('Knockando'), findsOneWidget);
+  expect(find.text('A44 Wits East Campus'), findsWidgets);
 
-  // expect(find.text('version 1.0.2 (sprint2)'), findsOneWidget);
-
-  // await tester.pump(const Duration(seconds: 10));
+  await tester.pump(const Duration(seconds: 3));
   preferences.clear();
 }
+
+Future<void> _mainDiningTests(WidgetTester tester)async{
+  const username = 'Nkosinathi Chuma';
+  const email = '2375736@students.wits.ac.za';
+  var diningHalls = [];
+
+  await http.get(Uri.parse("${uri}db/getDiningHalls/"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      }).then((response) {
+    var toJSON = jsonDecode(response.body);
+    for (var data in toJSON) {
+      diningHalls.add(DiningObject(
+          data['name'],
+          data['id'],
+          data['breakfast']['optionA'],
+          data['breakfast']['optionB'],
+          data['breakfast']['optionC'],
+          data['lunch']['optionA'],
+          data['lunch']['optionB'],
+          data['lunch']['optionC'],
+          data['dinner']['optionA'],
+          data['dinner']['optionB'],
+          data['dinner']['optionC']));
+    }
+  });
+
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('username', username);
+  preferences.setString('email', email);
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.pumpWidget(HookBuilder(builder: (context) {
+    return MaterialApp(home: ViewDH(diningHalls[0]));
+  }));
+
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  expect(find.text('Main'), findsOneWidget);
+  expect(find.text('Breakfast'), findsWidgets);
+  expect(find.text('Lunch'), findsWidgets);
+  expect(find.text('Dinner'), findsWidgets);
+  expect(find.text('Option 1'), findsWidgets);
+  expect(find.text('Option 2'), findsWidgets);
+  expect(find.text('Option 3'), findsWidgets);
+
+  for(int i = 0; i < diningHalls[0].bfA.length; i++) {
+    expect(find.text(diningHalls[0].bfA[i]), findsWidgets);
+  }
+  for(int i = 0; i < diningHalls[0].bfB.length; i++) {
+    expect(find.text(diningHalls[0].bfB[i]), findsWidgets);
+  }
+  for(int i = 0; i < diningHalls[0].bfC.length; i++) {
+    expect(find.text(diningHalls[0].bfC[i]), findsWidgets);
+  }
+  for(int i = 0; i < diningHalls[0].lA.length; i++) {
+    expect(find.text(diningHalls[0].lA[i]), findsWidgets);
+  }
+  for(int i = 0; i < diningHalls[0].lB.length; i++) {
+    expect(find.text(diningHalls[0].lB[i]), findsWidgets);
+  }
+  for(int i = 0; i < diningHalls[0].lC.length; i++) {
+    expect(find.text(diningHalls[0].lC[i]), findsWidgets);
+  }
+  for(int i = 0; i < diningHalls[0].dA.length; i++) {
+    expect(find.text(diningHalls[0].dA[i]), findsWidgets);
+  }
+  for(int i = 0; i < diningHalls[0].dB.length; i++) {
+    expect(find.text(diningHalls[0].dB[i]), findsWidgets);
+  }
+  for(int i = 0; i < diningHalls[0].dC.length; i++) {
+    expect(find.text(diningHalls[0].dC[i]), findsWidgets);
+  }
+
+  await tester.pump(const Duration(seconds: 10));
+  preferences.clear();
+}
+

@@ -62,7 +62,7 @@ class DiningCard extends HookWidget{
                 :
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                    primary: const Color(0xff003b5c)
+                    backgroundColor: const Color(0xff003b5c)
                 ),
                 onPressed: (){
               followDH(id);
