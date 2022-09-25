@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:sdp_wits_services/StudentsApp/Dining/Dining.dart';
+import 'package:sdp_wits_services/StudentsApp/Dashboard/Dashboard.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,15 +11,14 @@ import 'package:http/http.dart' as http;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  group("end-to-end students dining test", () {
-    testWidgets("Students Dining", _diningTests);
+  group("end-to-end dashboard test", () {
+    testWidgets("dashboard", _diningTests);
   });
 }
 String uri = "https://web-production-8fed.up.railway.app/";
 Future<void> _diningTests(WidgetTester tester)async{
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
-  const menu = 'Menu';
   var subs = ['dining_service', 'Bus Services', 'Campus Control'];
   var diningHalls = [];
   var dhFollowing = 'DH4';
@@ -53,30 +52,43 @@ Future<void> _diningTests(WidgetTester tester)async{
   await tester.pump(const Duration(seconds: 1));
 
   await tester.pumpWidget(HookBuilder(builder: (context) {
-    return MaterialApp(home: Dining(email, subs, diningHalls, dhFollowing));
+    return MaterialApp(home: Dashboard(false, subs, const [], const [], diningHalls, dhFollowing, 'dinner'));
   }));
 
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
-  final findDiningServicesText = find.text('Dining Services');
-  final findUserInitial = find.text(username[0]);
+  final findDiningServicesText = find.text('Suggestions:');
+  final findCampusHealthText = find.text('Campus Health');
+  final findEventsText = find.text('Events');
+  final findCCDUText = find.text('CCDU');
   final findIcon = find.byType(Icon);
-  final findMenuText = find.text(menu);
   expect(findDiningServicesText, findsOneWidget);
-  // expect(findUserInitial, findsOneWidget);
+  expect(findCampusHealthText, findsOneWidget);
+  expect(findEventsText, findsOneWidget);
+  expect(findCCDUText, findsOneWidget);
+  expect(findIcon, findsWidgets);
+
+  await tester.pumpAndSettle();
+  final findDiningMenuText = find.text('Dining Menu');
+  final findHighfieldText = find.text('Highfield');
+  final findMealText = find.text('Meal: dinner');
+  final findTimeText = find.text('Time: 16:00 - 19:00');
+  final findOption1Text = find.text('Option 1');
+  final findOption2Text = find.text('Option 2');
+  final findOption3Text = find.text('Option 3');
+  // final findIcon = find.byType(Icon);
+  expect(findDiningMenuText, findsOneWidget);
+  expect(findHighfieldText, findsOneWidget);
+  expect(findMealText, findsOneWidget);
+  expect(findTimeText, findsOneWidget);
+  expect(findOption1Text, findsOneWidget);
+  expect(findOption2Text, findsOneWidget);
+  expect(findOption3Text, findsOneWidget);
   // expect(findIcon, findsWidgets);
-  // expect(findMenuText, findsOneWidget);
-  //
-  // expect(find.text('Buses'), findsOneWidget);
-  // expect(find.text('Dining Services'), findsOneWidget);
-  // expect(find.text('Protection'), findsOneWidget);
-  // expect(find.text('Campus Health'), findsOneWidget);
-  // expect(find.text('CCDU'), findsOneWidget);
-  // expect(find.text('Events'), findsOneWidget);
 
-  // expect(find.text('version 1.0.2 (sprint2)'), findsOneWidget);
 
-  // await tester.pump(const Duration(seconds: 10));
+
+  await tester.pump(const Duration(seconds: 300));
   preferences.clear();
 }

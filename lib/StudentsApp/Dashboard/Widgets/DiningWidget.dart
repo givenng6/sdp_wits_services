@@ -44,7 +44,7 @@ class DiningWidget extends HookWidget{
              option3Meals.add(bfC[i]);
            }
          }else if(mealTime.value == "Lunch"){
-           times = "11:00 - 14;00";
+           times = "11:00 - 14:00";
            List<dynamic> A = data.lA;
            List<dynamic> B = data.lB;
            List<dynamic> C = data.lC;

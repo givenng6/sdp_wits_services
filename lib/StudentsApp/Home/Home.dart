@@ -139,6 +139,7 @@ class Home extends HookWidget {
                 data['dinner']['optionC']));
           }
           diningHalls.value = tempList;
+
         });
       }
 
@@ -151,10 +152,10 @@ class Home extends HookWidget {
     }, []);
 
     _screens = [
-      Dashboard(isFetching, subs, busSchedule, busFollowing, diningHalls,
-          dhFollowing, mealTime),
+      Dashboard(isFetching.value, subs.value, busSchedule.value, busFollowing.value, diningHalls.value,
+          dhFollowing.value, mealTime.value),
       Buses(email, subs, busSchedule, busFollowing),
-      Dining(email, subs, diningHalls, dhFollowing),
+      Dining(email, subs.value, diningHalls.value, dhFollowing.value),
       Protection(email, subs),
       Menu(email, username, subs.value)
     ];

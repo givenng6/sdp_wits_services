@@ -7,10 +7,10 @@ import './MenuItems.dart';
 class Menu extends HookWidget {
 
   String email = "", username = "";
-  var subss = [];
+  var nSubs = [];
   var subs = useState([]);
-  Menu(this.email, this.username, this.subss,{Key? key}) : super(key: key){
-    subs.value = subss;
+  Menu(this.email, this.username, this.nSubs,{Key? key}) : super(key: key){
+    subs.value = nSubs;
   }
 
   @override

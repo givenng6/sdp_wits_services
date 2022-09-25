@@ -12,7 +12,15 @@ import './Widgets/HealthWidget.dart';
 class Dashboard extends HookWidget{
 
   // list of dashboard widgets to show to user...
-  List<Widget> _cards = [];
+  final List<Widget> _cards = [];
+
+  var nIsFetching = true;
+  var nSubs = [];
+  var nBusSchedule = [];
+  var nBusFollowing = [];
+  var nDiningHalls = [];
+  var nDhFollowing = "";
+  var nMealTime = "";
 
   var isFetching = useState(true);
   var subs = useState([]);
@@ -21,7 +29,15 @@ class Dashboard extends HookWidget{
   var diningHalls = useState([]);
   var dhFollowing = useState("");
   var mealTime = useState("");
-  Dashboard(this.isFetching, this.subs, this.busSchedule, this.busFollowing, this.diningHalls, this.dhFollowing, this.mealTime, {Key? key}) : super(key: key);
+  Dashboard(this.nIsFetching, this.nSubs, this.nBusSchedule, this.nBusFollowing, this.nDiningHalls, this.nDhFollowing, this.nMealTime, {Key? key}) : super(key: key){
+    isFetching.value = nIsFetching;
+    subs.value = nSubs;
+    busSchedule.value = nBusSchedule;
+    busFollowing.value = nBusFollowing;
+    diningHalls.value = nDiningHalls;
+    dhFollowing.value = nDhFollowing;
+    mealTime.value = nMealTime;
+  }
 
   @override
   Widget build(BuildContext context){
