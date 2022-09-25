@@ -5,6 +5,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
+import 'package:sdp_wits_services/StudentsApp/Buses/BusObject.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end buses test", () {
     testWidgets('unsubscribed student buses main', _unSubbedBusesTests);
+    testWidgets('subscribed student buses main', _subbedBusesTests);
     testWidgets('staff buses main', _busesTests);
   });
 }
@@ -49,6 +51,68 @@ Future<void> _unSubbedBusesTests(WidgetTester tester)async{
   expect(find.text('Subscribe'), findsOneWidget);
 
   await tester.pump(const Duration(seconds: 3));
+  preferences.clear();
+}
+
+Future<void> _subbedBusesTests(WidgetTester tester)async{
+  const username = 'Nkosinathi Chuma';
+  const email = '2375736@students.wits.ac.za';
+  var subs = ['bus_service', 'Campus Control'];
+  var busSchedule = [];
+  var busFollowing = [];
+
+  await http.get(Uri.parse("${uri}db/getBusSchedule/"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      }).then((response) {
+    var toJSON = jsonDecode(response.body);
+    List<BusObject> tempSchedule = [];
+    for (var data in toJSON) {
+      String pos = "";
+      if (data['position'] != null) {
+        pos = data['position'];
+      }
+      tempSchedule.add(BusObject(
+          data['name'], data['id'], data['stops'], data['status'], pos));
+    }
+    busSchedule = tempSchedule;
+  });
+
+  await http
+      .post(Uri.parse("${uri}db/getBusFollowing/"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: jsonEncode(<String, String>{
+        "email": email,
+      }))
+      .then((value) {
+    var busData = jsonDecode(value.body);
+    busFollowing = busData;
+  });
+
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('username', username);
+  preferences.setString('email', email);
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.pumpWidget(HookBuilder(builder: (context) {
+    return MaterialApp(home: Buses(email, subs, busSchedule, busFollowing));
+  }));
+
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  expect(find.text('Bus Services'), findsOneWidget);
+  expect(find.text('Status'), findsWidgets);
+  expect(find.text('Follow'), findsWidgets);
+  expect(find.text('Route 1 - Full Circuit'), findsOneWidget);
+  expect(find.text('Yale Village'), findsOneWidget);
+
+  await tester.pump(const Duration(seconds: 30));
   preferences.clear();
 }
 
