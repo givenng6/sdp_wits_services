@@ -1,48 +1,56 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
-// import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end buses test", () {
-    // testWidgets("Staff Profile", _profileTests);
+    testWidgets('unsubscribed student buses main', _unSubbedBusesTests);
     testWidgets('staff buses main', _busesTests);
   });
 }
 
-// Future<void> _profileTests(WidgetTester tester)async{
-//   const username = 'Nkosinathi Chuma';
-//   const email = 'a2375736@wits.ac.za';
-//   SharedPreferences preferences = await SharedPreferences.getInstance();
-//   preferences.setString('username', username);
-//   preferences.setString('email', email);
-//   await tester.pumpAndSettle();
-//   await tester.pump(const Duration(seconds: 1));
-//
-//   Widget widget = MaterialApp(
-//     home: Profile(email, username),
-//   );
-//   await tester.pumpWidget(widget);
-//   await tester.pumpAndSettle();
-//
-//   await tester.pumpAndSettle();
-//   final findUsername = find.text(username);
-//   final findEmail = find.text(email);
-//   final findIconButtons = find.byType(IconButton);
-//   final findIcon = find.byType(Icon);
-//   final findClipOval = find.byType(ClipOval);
-//   expect(findUsername, findsOneWidget);
-//   expect(findEmail, findsOneWidget);
-//   expect(findIcon, findsWidgets);
-//   expect(findIconButtons, findsWidgets);
-//   expect(findClipOval, findsWidgets);
-//   preferences.clear();
-//   await tester.pump(const Duration(seconds: 1));
-//   preferences.clear();
-// }
+String uri = "https://web-production-8fed.up.railway.app/";
+
+Future<void> _unSubbedBusesTests(WidgetTester tester)async{
+  const username = 'Nkosinathi Chuma';
+  const email = '2375736@students.wits.ac.za';
+  var subs = ['Bus Services', 'Campus Control'];
+
+  await http.get(Uri.parse("${uri}db/getDiningHalls/"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      }).then((response) {
+  });
+
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('username', username);
+  preferences.setString('email', email);
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.pumpWidget(HookBuilder(builder: (context) {
+    return MaterialApp(home: Buses(email, subs, const [], const []));
+  }));
+
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  expect(find.text('Bus Services'), findsOneWidget);
+  expect(find.text('To access this service you must be subscribed'), findsWidgets);
+  expect(find.text('Subscribe'), findsOneWidget);
+
+  await tester.pump(const Duration(seconds: 3));
+  preferences.clear();
+}
 
 Future<void> _busesTests(WidgetTester tester) async{
   const username = 'Nkosinathi Chuma';

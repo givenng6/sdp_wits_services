@@ -13,11 +13,62 @@ import 'package:http/http.dart' as http;
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end students dining test", () {
-    testWidgets("Students Dining", _subbedDiningTests);
+    testWidgets("Unsubscribed Students Dining", _unSubbedDiningTests);
+    testWidgets("Subscribed Students Dining", _subbedDiningTests);
     testWidgets("Main Dining", _mainDiningTests);
   });
 }
 String uri = "https://web-production-8fed.up.railway.app/";
+
+Future<void> _unSubbedDiningTests(WidgetTester tester)async{
+  const username = 'Nkosinathi Chuma';
+  const email = '2375736@students.wits.ac.za';
+  var subs = ['Bus Services', 'Campus Control'];
+  var diningHalls = [];
+  var dhFollowing = 'DH4';
+
+  await http.get(Uri.parse("${uri}db/getDiningHalls/"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      }).then((response) {
+    var toJSON = jsonDecode(response.body);
+    for (var data in toJSON) {
+      diningHalls.add(DiningObject(
+          data['name'],
+          data['id'],
+          data['breakfast']['optionA'],
+          data['breakfast']['optionB'],
+          data['breakfast']['optionC'],
+          data['lunch']['optionA'],
+          data['lunch']['optionB'],
+          data['lunch']['optionC'],
+          data['dinner']['optionA'],
+          data['dinner']['optionB'],
+          data['dinner']['optionC']));
+    }
+  });
+
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('username', username);
+  preferences.setString('email', email);
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.pumpWidget(HookBuilder(builder: (context) {
+    return MaterialApp(home: Dining(email, subs, diningHalls, dhFollowing));
+  }));
+
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  expect(find.text('Dining Services'), findsOneWidget);
+  expect(find.text('To access this service you must be subscribed'), findsWidgets);
+  expect(find.text('Subscribe'), findsOneWidget);
+
+  await tester.pump(const Duration(seconds: 3));
+  preferences.clear();
+}
 
 Future<void> _subbedDiningTests(WidgetTester tester)async{
   const username = 'Nkosinathi Chuma';

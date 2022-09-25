@@ -12,14 +12,21 @@ class Buses extends HookWidget {
   String email = "";
   String service = "bus_service";
   List<String> data = [];
-  var busSchedule = useState([]);
 
+  var nBusSchedule = [];
+  var nSubs = [];
+  var nBusFollowing = [];
+
+  var busSchedule = useState([]);
   var subs = useState([]);
   var busFollowing = useState([]);
 
-  Buses(this.email, this.subs, this.busSchedule, this.busFollowing, {Key? key})
+  Buses(this.email, this.nSubs, this.nBusSchedule, this.nBusFollowing, {Key? key})
       : super(key: key) {
     data = [email, title, service];
+    subs.value = nSubs;
+    busSchedule.value = nBusSchedule;
+    busFollowing.value = nBusFollowing;
   }
 
   @override

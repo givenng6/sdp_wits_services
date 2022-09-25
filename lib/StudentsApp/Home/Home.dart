@@ -154,7 +154,7 @@ class Home extends HookWidget {
     _screens = [
       Dashboard(isFetching.value, subs.value, busSchedule.value, busFollowing.value, diningHalls.value,
           dhFollowing.value, mealTime.value),
-      Buses(email, subs, busSchedule, busFollowing),
+      Buses(email, subs.value, busSchedule.value, busFollowing.value),
       Dining(email, subs.value, diningHalls.value, dhFollowing.value),
       Protection(email, subs),
       Menu(email, username, subs.value)
