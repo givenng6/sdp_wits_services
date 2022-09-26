@@ -72,7 +72,7 @@ class DiningCard extends HookWidget{
                 // show this button if not following the dining hall...
                 // when clicked should follow the dh...
                 style: ElevatedButton.styleFrom(
-                    primary : const Color(0xff003b5c)
+                    primary: const Color(0xff003b5c)
                 ),
                 onPressed: (){
               followDH(id);

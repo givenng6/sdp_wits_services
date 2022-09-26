@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sdp_wits_services/globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import '../../SudentsApp/Profile/Profile.dart';
@@ -9,9 +10,7 @@ import '../DiningGlobals.dart' as globals;
 import 'selectDinnerPage.dart';
 
 class mealSelecionPage extends StatefulWidget {
-  // final DateTime dateTime;
-
-  mealSelecionPage({
+  const mealSelecionPage({
     Key? key,
   }) : super(key: key);
 
@@ -29,7 +28,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
     setState(() {});
   }
 
-  void getName() async {
+  void _getSharedPreferences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     username = sharedPreferences.getString('username')!;
     email = sharedPreferences.getString('email')!;
@@ -39,7 +38,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
 
   @override
   void initState() {
-    getName();
+    _getSharedPreferences();
     getMenus();
     super.initState();
   }
@@ -82,26 +81,6 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
                         MaterialPageRoute(
                             builder: (context) => Profile(email, username)));
                   })
-              /*PopupMenuButton(
-                  child: Container(
-                    margin:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-                    child: CircleAvatar(
-                      backgroundColor: const Color(0xFF013152),
-                      child: Text(
-                        username[0],
-                        style: const TextStyle(fontSize: 20.0, color: Colors.white),
-                      ),
-                    ),
-                  ),
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                        PopupMenuItem(
-                          child: ListTile(
-                            ,
-                            title: Text('Logout'),
-                          ),
-                        ),
-                      ])*/
             ],
             bottom: const TabBar(
               tabs: [
@@ -113,7 +92,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
               ],
             ),
           ),
-          body: TabBarView(children: [
+          body: const TabBarView(children: [
             selectBrakefastPage(),
             selectLunchPage(),
             selectDinnerPage(),

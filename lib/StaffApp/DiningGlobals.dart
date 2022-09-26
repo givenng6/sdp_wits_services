@@ -38,7 +38,6 @@ parse(curr) {
 
 parseSelected(curr) {
   List<Package> output = [];
-  // debugPrint("$curr");
   output.add(Package(
       packageName: "Option A",
       items: curr["optionA"].cast<String>(),
@@ -74,7 +73,6 @@ Future<void> getMenus() async {
   selectedLunch = parseSelected(json["selected"]["selectedLunch"]);
   selectedDinner = parseSelected(json["selected"]["selectedDinner"]);
 
-  debugPrint("hellllllooo");
 
   ready = true;
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'AccordionWidget.dart';
 
+//Diner tab
+
 class selectDinnerPage extends StatefulWidget {
   const selectDinnerPage({
     Key? key,
@@ -14,7 +16,7 @@ class _selectDinnerPageState extends State<selectDinnerPage> {
   @override
 
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: AccordionWidget(type: "dinner"),
     );
   }

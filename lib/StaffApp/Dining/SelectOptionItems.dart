@@ -1,10 +1,12 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/Package.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../DiningGlobals.dart' as globals;
+
+// SelectedOptionItems page
+// Shows a list of all the selected items in green then the unselected ones in white
 
 class SelectOptionItems extends StatefulWidget {
   final Package package;
@@ -19,13 +21,15 @@ class SelectOptionItems extends StatefulWidget {
 
 class _SelectOptionItemsState extends State<SelectOptionItems> {
   bool showFloatingBtn = false;
-  bool loading = false;
-  List<String> original = [];
-  List<String> newList = [];
-  List<String> old = [];
+  bool loading = false; // show loading animation on the floating button when updating the list.
+  List<String> original = [];// Original list of all the items a package can have
+  List<String> newList = []; // Newly selected items + the old ones
+  List<String> old = []; // Old or items that were already selected.
 
   @override
   void initState() {
+    //By default the old list and new list are the same.
+
     if (widget.type == "breakfast") {
       for (int i = 0; i < globals.selectedBreakfast.length; i++) {
         Package item = globals.selectedBreakfast[i];
@@ -64,22 +68,29 @@ class _SelectOptionItemsState extends State<SelectOptionItems> {
     super.initState();
   }
 
-  bool handleTileColor(int index) {
+  bool handleTileColor(int index) { // Determines the color if each list item
     if (newList.contains(original[index])) return true;
     return false;
   }
 
   void handleOnTab(int index) {
+    // Called when an item in the list is clicked.
+    // if the item item is already in the new list then we remove it
+    // else we add it.
+    // Toggle each item in the list
     if (newList.contains(original[index])) {
       newList.remove(original[index]);
     } else {
       newList.add(original[index]);
     }
+
+    // Determines whether or not to show the floating action button.
     showFloatingBtn = handleShowFloatingBtn();
 
   }
 
   void handleOnPressed() async {
+    // called when te floating action button is pressed to confirm that we are changing the list of items for that package.
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
 
     Map<String, List<String>> selected;
@@ -98,7 +109,7 @@ class _SelectOptionItemsState extends State<SelectOptionItems> {
       };
     }
 
-    Map<String, dynamic> data = {
+    Map<String, dynamic> data = {// data sent to the backend to update the list of items in a package
       "dhName": sharedPreferences.getString("dhName") as String,
       "type": widget.type,
       "selected": selected
@@ -114,13 +125,16 @@ class _SelectOptionItemsState extends State<SelectOptionItems> {
 
     var res = await jsonDecode(req.body);
 
-    debugPrint("$res");
     await globals.getMenus();
 
-    Navigator.pop(context);
+    Navigator.pop(context); // go back
   }
 
   bool handleShowFloatingBtn() {
+    // Checks if the new list and the old list are different.
+    // if they are then we show the floating action button
+    // else we don't
+
     if (newList.length != old.length) return true;
 
     for (int i = 0; i < newList.length; i++) {
@@ -130,7 +144,7 @@ class _SelectOptionItemsState extends State<SelectOptionItems> {
     return false;
   }
 
-  get itemBuilder => (context, index) => Card(
+  get itemBuilder => (context, index) => Card( // Card for each list item
         child: ListTile(
           tileColor: handleTileColor(index) ? Colors.green : Colors.white,
           onTap: () {
@@ -148,22 +162,18 @@ class _SelectOptionItemsState extends State<SelectOptionItems> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFF013152),
-        title: Text("Select Items"),
+        title: const Text("Select Items"),
         centerTitle: true,
       ),
-      body: Container(
-        child: ListView.builder(
-          itemCount: original.length,
-          itemBuilder: itemBuilder,
-        ),
+      body: ListView.builder(
+        itemCount: original.length,
+        itemBuilder: itemBuilder,
       ),
       floatingActionButton: !showFloatingBtn?null:FloatingActionButton(
         backgroundColor: const Color(0xFF003b5c),
         onPressed: loading?null:() {
           loading  = true;
-          setState(() {
-
-          });
+          setState(() {});
           handleOnPressed();
         },
         child: loading?const CircularProgressIndicator(color: Colors.white,): const Icon(Icons.check),
