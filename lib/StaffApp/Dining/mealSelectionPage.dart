@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:sdp_wits_services/globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // import '../../SudentsApp/Profile/Profile.dart';
@@ -92,7 +91,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
               ],
             ),
           ),
-          body: const TabBarView(children: [
+          body: TabBarView(children: [
             selectBrakefastPage(),
             selectLunchPage(),
             selectDinnerPage(),

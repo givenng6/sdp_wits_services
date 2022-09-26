@@ -112,7 +112,7 @@ Future<void> _subbedBusesTests(WidgetTester tester)async{
   expect(find.text('Route 1 - Full Circuit'), findsOneWidget);
   expect(find.text('Yale Village'), findsOneWidget);
 
-  await tester.pump(const Duration(seconds: 30));
+  await tester.pump(const Duration(seconds: 1));
   preferences.clear();
 }
 

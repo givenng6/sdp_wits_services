@@ -14,11 +14,9 @@ class selectBrakefastPage extends StatefulWidget {
 
 class _selectBrakefastPageState extends State<selectBrakefastPage> {
 
-
-
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: AccordionWidget(type: "breakfast"),
     );
   }
