@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+// the dashboard app bar with the wits logo on the left
+// stateless widget
+//
+
 class DashAppBar extends StatelessWidget{
   const DashAppBar({Key? key}) : super(key: key);
 

@@ -12,9 +12,12 @@ class BusSchedule extends HookWidget{
   List<BusObject> busSchedule = [];
   var busFollowing = useState([]);
   String email = "";
+
+  // constructor...
+  // init data...
   BusSchedule(this.email, this.busSchedule, this.busFollowing,{Key? key}) : super(key: key);
 
-
+  // build and show the bus routes...
   @override
   Widget build(BuildContext context){
     return Container(
@@ -25,7 +28,7 @@ class BusSchedule extends HookWidget{
 
   Widget BusItem(String route, String id, List<dynamic> stops, bool isFollowing, BuildContext context){
     return Card(
-      //color: Colors.white70,
+        //color: Colors.white70,
         elevation: 2,
         child: Container(
         width: double.infinity,
@@ -54,8 +57,11 @@ class BusSchedule extends HookWidget{
                         primary: Colors.white
                     ),
                     onPressed: (){
+
                       String status = "";
                       String pos = "Not available";
+
+                      // search the route from the routes list...
                       for(BusObject bus in busSchedule){
                         if(id == bus.getID()){
                           status = bus.getStatus();
@@ -64,7 +70,9 @@ class BusSchedule extends HookWidget{
                           }
                         }
                       }
-                      showModalBottomSheet(context: context, 
+
+                      // bottom modal with the route data...
+                      showModalBottomSheet(context: context,
                           builder: (builder) => Container(
                             padding: const EdgeInsets.all(12),
                             height: 150,
@@ -77,16 +85,21 @@ class BusSchedule extends HookWidget{
                               ],
                             ),
                           ));
-                    }, 
+                    },
                     child: const Text("Status", style: TextStyle(color: Color(0xff003b5c), fontSize: 14,fontWeight: FontWeight.bold),))
               ),
 
+              // conditional rendering of the buttons...
               isFollowing ?
               const OutlinedButton(
+                  // if already following this route...
+                  // when pressed should do nothing...
                   onPressed: null,
                   child: Text("Following"))
               :
               ElevatedButton(
+                  // show this button if not following the route...
+                  // when clicked should follow the route...
                   style: ElevatedButton.styleFrom(
                     primary: const Color(0xff003b5c)
                   ),
@@ -100,6 +113,7 @@ class BusSchedule extends HookWidget{
     ));
   }
 
+  // iterate through the stops list and add text
   Widget showList(List<dynamic> stops){
       List<Widget> items = [];
       for(var location in stops){
@@ -109,6 +123,7 @@ class BusSchedule extends HookWidget{
       return Column(crossAxisAlignment: CrossAxisAlignment.start, children: items);
   }
 
+  // Iterate the bus routes and create card for each route...
   Widget showNames(BuildContext context){
     List<Widget> items = [];
     for(BusObject object in busSchedule){
@@ -116,9 +131,11 @@ class BusSchedule extends HookWidget{
       items.add(BusItem(object.getRouteName(), object.getID(), object.getStops(), isFollowing, context));
     }
 
+    // return a column since it will accommodate many items...
     return Column(children: items);
   }
 
+  // API call to follow a bus route...
   Future<void> followBus(String busID) async{
     await http.post(Uri.parse("${uri}db/followBus/"),
         headers: <String, String>{
@@ -130,6 +147,8 @@ class BusSchedule extends HookWidget{
           "id": busID,
         })).then((value) {
       var json = jsonDecode(value.body);
+      // update the bus following list...
+      // the whole should update...
       busFollowing.value = json;
     });
   }

@@ -15,6 +15,9 @@ class DiningCard extends HookWidget{
   List<DiningObject> diningHalls = [];
   var dhFollowing = useState("");
   String email = "";
+
+  // constructor...
+  // init data...
   DiningCard(this.email, this.diningHalls, this.dhFollowing, {Key? key}) : super(key: key);
 
   Widget build(BuildContext context){
@@ -25,6 +28,8 @@ class DiningCard extends HookWidget{
 
       Widget DHItem(String name, String id, isFollowing, BuildContext context){
       return GestureDetector(
+        // when tab a dh card
+        // must open the whole menu of the dining hall
         onTap: (){
           int index = int.parse(id[2]) - 1;
           Navigator.push(
@@ -55,14 +60,19 @@ class DiningCard extends HookWidget{
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
+            // conditional rendering of the buttons...
             isFollowing ?
             const OutlinedButton(
+                // if already following this dh...
+                // when pressed should do nothing...
                 onPressed: null,
                 child: Text("Following"))
                 :
             ElevatedButton(
+                // show this button if not following the dining hall...
+                // when clicked should follow the dh...
                 style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff003b5c)
+                    primary : const Color(0xff003b5c)
                 ),
                 onPressed: (){
               followDH(id);
@@ -73,6 +83,7 @@ class DiningCard extends HookWidget{
 
   }
 
+  // Iterate the dining halls and create card for each dh...
   Widget listDH(BuildContext context){
     List<Widget> items = [];
     for(DiningObject data in diningHalls){
@@ -80,9 +91,11 @@ class DiningCard extends HookWidget{
       items.add(DHItem(data.getDiningName(), data.getID(), isFollowing, context));
     }
 
+    // return a column since it will accommodate many items...
     return Column(children: items);
   }
 
+  // API call to follow a bus route...
   Future<void> followDH(String dhID) async{
     await http.post(Uri.parse("${uri}db/followDiningHall/"),
         headers: <String, String>{
@@ -94,6 +107,8 @@ class DiningCard extends HookWidget{
           "id": dhID,
         })).then((value) {
       var data = jsonDecode(value.body);
+      // update the bus following list...
+      // the whole should update...
       dhFollowing.value = data['id'];
     });
   }

@@ -6,6 +6,9 @@ class BusWidget extends HookWidget{
 
   var busSchedule = useState([]);
   var busFollowing = useState([]);
+
+  // constructor...
+  // init data...
   BusWidget(this.busSchedule, this.busFollowing, {Key? key}) : super(key: key);
 
   @override
@@ -13,6 +16,7 @@ class BusWidget extends HookWidget{
     List<BusObject> busSchedule2 = [];
     List<String> busFollowing2 = [];
 
+    // copying data from hooks to native lists...
     for(BusObject data in busSchedule.value){
       busSchedule2.add(data);
     }
@@ -49,6 +53,7 @@ class BusWidget extends HookWidget{
     );
   }
 
+  // the body of each bus card
   Widget BusItem(String route, String status, String nextStop){
     return Container(
       width: double.infinity,
@@ -71,7 +76,8 @@ class BusWidget extends HookWidget{
       ),
     );
   }
-  
+
+  // iterate through the bus following list and show bus cards...
   Widget showBus(List<String> busFollowing, List<BusObject> busSchedule){
     List<Widget> buses = [];
     for(var bus in busFollowing){
@@ -88,6 +94,8 @@ class BusWidget extends HookWidget{
       }
     }
 
+    // if a user is not following anything show text
+    // NO DATA
     if(busFollowing.isEmpty){
       buses.add(Text("No Data", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),));
     }

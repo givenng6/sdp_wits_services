@@ -14,6 +14,7 @@ class Dashboard extends HookWidget{
   // list of dashboard widgets to show to user...
   final List<Widget> _cards = [];
 
+  // variables for testing...
   var nIsFetching = true;
   var nSubs = [];
   var nBusSchedule = [];
@@ -22,6 +23,7 @@ class Dashboard extends HookWidget{
   var nDhFollowing = "";
   var nMealTime = "";
 
+  // variables to be passed to other widgets...
   var isFetching = useState(true);
   var subs = useState([]);
   var busSchedule = useState([]);
@@ -29,6 +31,9 @@ class Dashboard extends HookWidget{
   var diningHalls = useState([]);
   var dhFollowing = useState("");
   var mealTime = useState("");
+
+  // constructor
+  // init data...
   Dashboard(this.nIsFetching, this.nSubs, this.nBusSchedule, this.nBusFollowing, this.nDiningHalls, this.nDhFollowing, this.nMealTime, {Key? key}) : super(key: key){
     isFetching.value = nIsFetching;
     subs.value = nSubs;
@@ -42,6 +47,7 @@ class Dashboard extends HookWidget{
   @override
   Widget build(BuildContext context){
 
+    // display all the widgets for the services sub to..
     for(String service in subs.value){
       switch (service){
         case 'bus_service':
@@ -61,6 +67,9 @@ class Dashboard extends HookWidget{
           break;
       }
     }
+
+    // conditional rendering
+    // show loading view if the data is not ready yet...
     return Scaffold(
       body: Column(
         children: [

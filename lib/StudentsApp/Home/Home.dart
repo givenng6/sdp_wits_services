@@ -32,6 +32,7 @@ class Home extends HookWidget {
     var dhFollowing = useState("");
     var mealTime = useState("");
 
+    // use effect for API calls
     useEffect(() {
       Future<void> getSubs() async {
         await http
