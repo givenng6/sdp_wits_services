@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/SelectOptionItems.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -26,11 +27,9 @@ Future<void> _selectDHtest(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  // Package package = Package(packageName: packageName, items: items, id: id);
-
   await tester.pumpWidget(HookBuilder(builder: (context) {
-    var package;
-    return MaterialApp(home: SelectOptionItems(package: package, type: "breakfast"));
+
+    return const MaterialApp(home: SelectDH());
   }));
 
   await tester.pumpAndSettle();
