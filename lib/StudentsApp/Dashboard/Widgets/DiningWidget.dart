@@ -8,6 +8,9 @@ class DiningWidget extends HookWidget{
   var diningHalls = useState([]);
   var dhFollowing = useState("");
   var mealTime = useState("");
+
+  // constructor...
+  // init data...
   DiningWidget(this.diningHalls, this.dhFollowing, this.mealTime, {Key? key}) : super(key: key);
 
   List<String> option1Meals = [];
@@ -19,9 +22,13 @@ class DiningWidget extends HookWidget{
   @override
   Widget build(BuildContext context){
 
+    // flag used to know if the user is following any dining hall...
     bool none = true;
     String dhName = "";
 
+    // update times based on the time of the day
+    // if is following dh update the flag
+    // get the correct meals to show based on the time of the day
     for(DiningObject data in diningHalls.value){
       if(data.getID() == dhFollowing.value){
         dhName = data.getDiningName();
@@ -80,6 +87,7 @@ class DiningWidget extends HookWidget{
       }
     }
 
+    // the dining service main card shown on the dashboard
     return Container(
       //height: 300,
       width: double.infinity,
@@ -94,6 +102,9 @@ class DiningWidget extends HookWidget{
         ),
       ),
 
+      // conditional rendering
+      // if not following a dh show text
+      // NO DATA
       child: Column(
         children: [
           Row(
@@ -112,6 +123,7 @@ class DiningWidget extends HookWidget{
     );
   }
 
+  // the card with intel...
   Widget MenuItem(String dh, String meal, String times){
     return Container(
       width: double.infinity,
@@ -149,6 +161,7 @@ class DiningWidget extends HookWidget{
     );
   }
 
+  // iterating on all the meals available...
   Widget listItems(String optionNo, List<String> meals){
     List<Widget> items = [];
     for(String meal in meals){
