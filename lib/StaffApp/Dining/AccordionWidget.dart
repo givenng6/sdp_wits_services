@@ -14,7 +14,7 @@ class AccordionWidget extends StatefulWidget {
   final String
       type; // can be breakfast,lunch or dinner to know which page is using this widget.
 
-  const AccordionWidget({Key? key, required this.type}) : super(key: key);
+  AccordionWidget({Key? key, required this.type}) : super(key: key);
 
   @override
   State<AccordionWidget> createState() => _AccordionWidgetState();
@@ -43,6 +43,7 @@ class _AccordionWidgetState extends State<AccordionWidget> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Second in build");
     if (first) {
       // make sure we run this block once
       if (widget.type == "breakfast") {
