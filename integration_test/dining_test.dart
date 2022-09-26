@@ -35,9 +35,10 @@ Future<void> _staffDiningTests(WidgetTester tester) async{
   preferences.setString('dhName', dhName);
   await tester.pump();
 
-  Widget widget = MaterialApp(
+  Widget widget = const MaterialApp(
     home: mealSelecionPage(),
   );
+  debugPrint('here');
   await tester.pumpWidget(widget);
   await tester.pumpAndSettle();
 

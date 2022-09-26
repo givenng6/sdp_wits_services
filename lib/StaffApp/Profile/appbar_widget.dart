@@ -36,6 +36,7 @@ AppBar BuildAppBar(BuildContext context) {
         onPressed: () {},
       ),
       IconButton(
+        key: const Key('Logout'),
         color: Colors.redAccent,
         icon: const Icon(Icons.logout_rounded),
         onPressed: () {

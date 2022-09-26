@@ -205,5 +205,5 @@ Future<void> _continueAsStaffTests(WidgetTester tester) async{
   await tester.pumpAndSettle();
   expect(find.text('Email'), findsOneWidget);
 
-  await Future.delayed(const Duration(seconds: 2));
+  await Future.delayed(const Duration(seconds: 1));
 }
