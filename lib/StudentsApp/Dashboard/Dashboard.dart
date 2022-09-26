@@ -88,12 +88,12 @@ class Dashboard extends HookWidget{
   Widget DashHeader(){
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.fromLTRB(4, 0, 4, 0),
-      margin: EdgeInsets.fromLTRB(0, 0, 0, 12),
+      padding: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Suggestions:"),
+          const Text("Suggestions:"),
           //Text("My Dashboard", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -110,16 +110,16 @@ class Dashboard extends HookWidget{
 
   Widget SuggestedItem(String title){
     return Container(
-      padding: EdgeInsets.fromLTRB(6, 4, 6, 4),
-      margin: EdgeInsets.all(4),
+      padding: const EdgeInsets.fromLTRB(6, 4, 6, 4),
+      margin: const EdgeInsets.all(4),
       decoration: BoxDecoration(
-        color: Color(0xff003b5c),
+        color: const Color(0xff003b5c),
         borderRadius: BorderRadius.circular(20)
       ),
       child: Row(
         children: [
           _getIcon(title),
-          Text(title, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white))
+          Text(title, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.white))
         ],
       ),
     );
@@ -129,17 +129,13 @@ class Dashboard extends HookWidget{
   Widget _getIcon(String title){
     switch (title){
       case 'Campus Health':
-        return Icon(Icons.health_and_safety, color: Colors.red, size: 19,);
-        break;
+        return const Icon(Icons.health_and_safety, color: Colors.red, size: 19,);
       case 'Events':
-        return Icon(Icons.event, color: Colors.white, size: 19,);
-        break;
+        return const Icon(Icons.event, color: Colors.white, size: 19,);
       case 'CCDU':
-        return Icon(Icons.health_and_safety_outlined, color: Colors.green, size: 19,);
-        break;
+        return const Icon(Icons.health_and_safety_outlined, color: Colors.green, size: 19,);
       default:
-        return Icon(Icons.home, color: Colors.white, size: 19,);
-        break;
+        return const Icon(Icons.home, color: Colors.white, size: 19, key: Key('HomeIcon'),);
     }
   }
 }

@@ -23,12 +23,12 @@ class BusWidget extends HookWidget{
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(12),
-      margin: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0),
-        image: DecorationImage(
+        image: const DecorationImage(
             image: AssetImage('assets/hall.jpg'),
             fit: BoxFit.cover
         ),
@@ -37,7 +37,7 @@ class BusWidget extends HookWidget{
       child: Column(
         children: [
           Row(
-            children: [
+            children: const [
               Icon(Icons.bus_alert, color:  Color(0xff003b5c),),
               Text("Bus Services",
                 style: TextStyle(fontWeight: FontWeight.bold, color:  Color(0xff003b5c)),)
@@ -52,21 +52,21 @@ class BusWidget extends HookWidget{
   Widget BusItem(String route, String status, String nextStop){
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
-      padding: EdgeInsets.all(12),
+      margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Color(0x80ffffff),
+        color: const Color(0x80ffffff),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(route, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-          Text("Status: " + status, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text(route, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
+          Text("Status: $status", style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
           nextStop != "" ?
-          Text("Location: " + nextStop, style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c)))
+          Text("Location: $nextStop", style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c)))
           :
-          Text("")
+          const Text("")
         ],
       ),
     );
@@ -89,7 +89,7 @@ class BusWidget extends HookWidget{
     }
 
     if(busFollowing.isEmpty){
-      buses.add(Text("No Data", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),));
+      buses.add(const Text("No Data", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),));
     }
 
     return Column(children: buses);
