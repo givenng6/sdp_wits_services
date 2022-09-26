@@ -5,8 +5,14 @@ import '../DiningGlobals.dart' as globals;
 import 'Package.dart';
 import 'SelectOptionItems.dart';
 
+/*
+* This is the body the the three tabs.
+* It returns a accordion widget with three accordion sections
+*/
+
 class AccordionWidget extends StatefulWidget {
-  final String type;
+  final String
+      type; // can be breakfast,lunch or dinner to know which page is using this widget.
 
   const AccordionWidget({Key? key, required this.type}) : super(key: key);
 
@@ -15,20 +21,21 @@ class AccordionWidget extends StatefulWidget {
 }
 
 class _AccordionWidgetState extends State<AccordionWidget> {
-  final _headerStyle = const TextStyle(
-      color: Color(0xffffffff), fontSize: 15, fontWeight: FontWeight.bold);
+  List<Package> selectedPackages =
+      []; // All the packages with the selected items.
+  List<Package> packages =
+      []; // All the packages with all the items that can be chosen.
 
-  List<Package> selectedPackages = [];
-  List<Package> packages = [];
-
-  bool showFloatingButton = false;
   bool first = true;
-  bool loading = false;
-
 
   String buildItemListAsString(List<String> arr) {
+    // Change a list of items from a string list to one string separated by a comma.
     String stringOfItems = "";
     for (int i = 0; i < arr.length; i++) {
+      if (i == arr.length - 1) {
+        stringOfItems = "$stringOfItems and ${arr[i]}";
+        continue;
+      }
       stringOfItems = "$stringOfItems${arr[i]}, ";
     }
     return stringOfItems;
@@ -36,8 +43,8 @@ class _AccordionWidgetState extends State<AccordionWidget> {
 
   @override
   Widget build(BuildContext context) {
-
     if (first) {
+      // make sure we run this block once
       if (widget.type == "breakfast") {
         packages = globals.breakfast;
         selectedPackages = globals.selectedBreakfast;
@@ -50,9 +57,8 @@ class _AccordionWidgetState extends State<AccordionWidget> {
       }
     }
 
-
     return Scaffold(
-      body: !globals.ready
+      body: !globals.ready // While fetching the data show loading animation.
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -69,7 +75,11 @@ class _AccordionWidgetState extends State<AccordionWidget> {
                         headerBackgroundColor: const Color(0xFF003b5c),
                         contentBorderColor: const Color(0xFF003b5c),
                         headerBackgroundColorOpened: const Color(0xFF003b5c),
-                        header: Text(package.packageName, style: _headerStyle),
+                        header: Text(package.packageName,
+                            style: const TextStyle(
+                                color: Color(0xffffffff),
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold)),
                         content: Row(
                           children: [
                             Expanded(
@@ -81,13 +91,16 @@ class _AccordionWidgetState extends State<AccordionWidget> {
                               child: InkWell(
                                 child: const Icon(Icons.edit),
                                 onTap: () async {
-                                  var res = await Navigator.push(
+                                  await Navigator.push(
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
                                               SelectOptionItems(
-                                                  package: package,type: widget.type,)));
-                                  debugPrint("hey");
+                                                package: package,
+                                                type: widget.type,
+                                              )));
+                                  // Wait for the SelectedOptionItems page to return then re render the whole page
+                                  // So that we get the updated list of items.
                                   setState(() {});
                                 },
                               ),
