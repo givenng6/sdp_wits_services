@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:sdp_wits_services/StaffApp/Dining/AccordionWidget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-// import '../../SudentsApp/Profile/Profile.dart';
 import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart';
-import 'selectBeakfastPage.dart';
-import 'selectLunchPage.dart';
 import '../DiningGlobals.dart' as globals;
-import 'selectDinnerPage.dart';
 
 class mealSelecionPage extends StatefulWidget {
   const mealSelecionPage({
@@ -24,6 +20,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
 
   getMenus() async {
     await globals.getMenus();
+    debugPrint("in here");
     setState(() {});
   }
 
@@ -45,6 +42,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
   @override
   Widget build(BuildContext context) {
     // getName();
+    debugPrint("In build.... ${globals.ready}");
     return DefaultTabController(
       length: 3,
       child: Scaffold(
@@ -92,9 +90,9 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
             ),
           ),
           body: TabBarView(children: [
-            selectBrakefastPage(),
-            selectLunchPage(),
-            selectDinnerPage(),
+            AccordionWidget(type: "breakfast"),
+            AccordionWidget(type: "lunch"),
+            AccordionWidget(type: "dinner"),
           ])),
     );
   }

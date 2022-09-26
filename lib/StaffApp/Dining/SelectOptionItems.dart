@@ -29,6 +29,10 @@ class _SelectOptionItemsState extends State<SelectOptionItems> {
   @override
   void initState() {
     //By default the old list and new list are the same.
+    debugPrint(widget.package.id);
+    debugPrint(widget.package.packageName);
+    debugPrint("${widget.package.items}");
+
 
     if (widget.type == "breakfast") {
       for (int i = 0; i < globals.selectedBreakfast.length; i++) {
