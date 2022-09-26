@@ -8,9 +8,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end buses test", () {
-    testWidgets("Staff Profile", _staffProfileTests);
-
     testWidgets("Students Profile", _studentsProfileTests);
+
+    testWidgets("Staff Profile", _staffProfileTests);
   });
 }
 
@@ -49,8 +49,14 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
   expect(findBusServicesText, findsOneWidget);
   expect(findProtectionServicesText, findsOneWidget);
   expect(findSubscriptionsText, findsOneWidget);
-  // preferences.clear();
-  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.byKey(const Key('Logout')));
+  await tester.pumpAndSettle();
+  expect(find.text('Are you sure you want to Sign Out?'), findsOneWidget);
+  expect(find.text('Sign Out'), findsOneWidget);
+  expect(find.text('Cancel'), findsOneWidget);
+
+  await tester.pump(const Duration(seconds: 10));
   preferences.clear();
 }
 
@@ -80,7 +86,13 @@ Future<void> _staffProfileTests(WidgetTester tester)async{
   expect(findIcon, findsWidgets);
   expect(findIconButtons, findsWidgets);
   expect(findClipOval, findsWidgets);
-  preferences.clear();
-  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.byKey(const Key('Logout')));
+  await tester.pumpAndSettle();
+  expect(find.text('Are you sure you want to Sign Out?'), findsOneWidget);
+  expect(find.text('Sign Out'), findsOneWidget);
+  expect(find.text('Cancel'), findsOneWidget);
+
+  await tester.pump(const Duration(seconds: 0));
   preferences.clear();
 }
