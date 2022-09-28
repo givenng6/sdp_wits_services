@@ -14,7 +14,7 @@ class MenuItems extends HookWidget {
     Department(title: "Dining Services", icon: Icons.restaurant),
     Department(title: "Protection Services", icon: Icons.security),
     Department(title: "Campus Health", icon: Icons.health_and_safety),
-    Department(title: "CCDU", icon: Icons.psychology_outlined),
+    Department(title: "Counselling Careers Development Unit", icon: Icons.psychology_outlined),
     Department(title: "Events", icon: Icons.event),
   ];
 
@@ -46,19 +46,19 @@ class MenuItems extends HookWidget {
             case 3 :
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Health()),
+                MaterialPageRoute(builder: (context) => Health(email)),
               );
               break;
             case 4 :
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => CCDU()),
+                MaterialPageRoute(builder: (context) => CCDU(email)),
               );
               break;
             case 5 :
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Events()),
+                MaterialPageRoute(builder: (context) => Events(email)),
               );
               break;
           }
