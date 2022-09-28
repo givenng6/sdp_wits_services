@@ -9,7 +9,8 @@ class Menu extends HookWidget {
   String email = "", username = "";
   var nSubs = [];
   var subs = useState([]);
-  Menu(this.email, this.username, this.nSubs,{Key? key}) : super(key: key){
+  var screenIndex = useState(0);
+  Menu(this.email, this.username, this.nSubs, this.screenIndex, {Key? key}) : super(key: key){
     subs.value = nSubs;
   }
 
@@ -19,7 +20,7 @@ class Menu extends HookWidget {
       body: Column(
         children: [
            MenuAppBar(email, username, subs),
-           MenuItems(email, username, subs)
+           MenuItems(email, username, subs, screenIndex)
         ],
       ),
     );

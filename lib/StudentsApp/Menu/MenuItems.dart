@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Menu/Department.dart';
 
-const String APP_VERSION = "version 1.0.2 (sprint2)";
+const String APP_VERSION = "version 1.0.3 (sprint3)";
 
 class MenuItems extends HookWidget {
   List<Department> cardNames = [
 
-    Department(title: "Buses", icon: Icons.directions_bus),
+    Department(title: "Bus Services", icon: Icons.directions_bus),
     Department(title: "Dining Services", icon: Icons.restaurant),
-    Department(title: "Protection", icon: Icons.security),
+    Department(title: "Protection Services", icon: Icons.security),
     Department(title: "Campus Health", icon: Icons.health_and_safety),
     Department(title: "CCDU", icon: Icons.psychology_outlined),
     Department(title: "Events", icon: Icons.event),
@@ -17,8 +17,9 @@ class MenuItems extends HookWidget {
 
   String email = "", username = "";
   var subs = useState([]);
+  var screenIndex = useState(0);
 
-  MenuItems(this.email, this.username, this.subs, {Key? key}) : super(key: key);
+  MenuItems(this.email, this.username, this.subs, this.screenIndex, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +36,15 @@ class MenuItems extends HookWidget {
   Widget ViewCard(int index, BuildContext context){
     return GestureDetector(
       onTap: (){
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(builder: (context) => Protection(email, subs)),
-        // );
+        if(index < 3){
+          screenIndex.value = index + 1;
+        }else{
+          print("TO Implement");
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(builder: (context) => Protection(email, subs)),
+          // );
+        }
       },
       child: Container(
         width: double.infinity,
