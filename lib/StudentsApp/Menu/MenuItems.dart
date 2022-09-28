@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDU.dart';
+import 'package:sdp_wits_services/StudentsApp/Events/Events.dart';
+import 'package:sdp_wits_services/StudentsApp/Health/Health.dart';
 import 'package:sdp_wits_services/StudentsApp/Menu/Department.dart';
 
 const String APP_VERSION = "version 1.0.3 (sprint3)";
@@ -39,11 +42,26 @@ class MenuItems extends HookWidget {
         if(index < 3){
           screenIndex.value = index + 1;
         }else{
-          print("TO Implement");
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(builder: (context) => Protection(email, subs)),
-          // );
+          switch (index){
+            case 3 :
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Health()),
+              );
+              break;
+            case 4 :
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CCDU()),
+              );
+              break;
+            case 5 :
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Events()),
+              );
+              break;
+          }
         }
       },
       child: Container(
