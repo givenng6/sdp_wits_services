@@ -152,9 +152,14 @@ class CCDU extends HookWidget{
                     Text('Add Description'),
                   ],
                 ),
-                TextField(
 
-                  )
+                SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
+                  child: TextField(
+
+                  ),
+                ),
+
                 ],)
               ),
           );
@@ -167,16 +172,47 @@ class CCDU extends HookWidget{
           ? SingleChildScrollView(
         child: Column(
           children: [
-           Text('Sub'),
+          appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
+          appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
+            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
+            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
+            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
+            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
+            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
+            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
+            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
+            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
+            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
+            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
+            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
+            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
           ],
         ),
       )
-          : Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AddSub(isSubscribed, data, subs),
-        ],
+          : Center(
+          child: Text('No Data', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey)),
       ),
     );
+  }
+
+  Widget appointment(int index, String date, String time, String counsellor, String status){
+    return Card(
+      elevation: 3,
+      child: Container(
+        width: double.infinity,
+        padding: EdgeInsets.all(12),
+        child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("Appointment $index", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black54)),
+          Text(""),
+          Text("Date: $date", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54)),
+          Text("Time: $time", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54)),
+          Text("Counsellor: $counsellor", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54)),
+          status == 'Confirmed'? Text(status, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green))
+          : Text(status, style: TextStyle(fontWeight: FontWeight.bold, color: Colors.orange)),
+        ],
+      ),
+    ));
   }
 }
