@@ -14,11 +14,26 @@ class CCDU extends HookWidget{
   @override 
   Widget build(BuildContext context){
     var subs = useState([]);
-    var isSubscribed = useState(false);
+    var isSubscribed = useState(true);
     data = [email, title, service];
 
     return Scaffold(
       appBar: AppBar(title: const Text('CCDU'), backgroundColor: Color(0xff003b5c),),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: (){
+          showModalBottomSheet(
+              context: context,
+              builder: (builder) => Container(
+                height: double.infinity,
+                padding: const EdgeInsets.all(12),
+                child: Text('New Session'),
+              ),
+          );
+        },
+        backgroundColor: Color(0xff003b5c),
+        icon: Icon(Icons.add),
+        label: Text('New Session'),
+      ),
       body: isSubscribed.value
           ? SingleChildScrollView(
         child: Column(
