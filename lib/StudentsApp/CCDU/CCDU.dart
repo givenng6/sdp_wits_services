@@ -22,6 +22,9 @@ class CCDU extends HookWidget{
     List<String> places = ['Online', 'OnSite'];
     List<String> counsellors = ['', 'Given', 'Mathebula'];
 
+    TimeOfDay time = TimeOfDay(hour: 09, minute: 00);
+    DateTime date = DateTime(2022, 10, 14);
+
     return Scaffold(
 
       
@@ -30,34 +33,87 @@ class CCDU extends HookWidget{
         onPressed: (){
           showModalBottomSheet(
               context: context,
+              //isScrollControlled: true,
               builder: (builder) => Container(
                 //height: double.infinity,
                 padding: const EdgeInsets.all(12),
                 child: Column(
                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                  Text('New Session', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
-                  Text("Date"),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(0, 0, 0, 25),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('New Session', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),),
+                        ElevatedButton(onPressed: (){},
+                            child: Text('Submit'),
+                            style: ElevatedButton.styleFrom(
+                              primary: Color(0xff003b5c)
+                            ),
+                        )
+                      ],
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Icon(Icons.event, color: Colors.grey,),
+                      Text("Date"),
+                    ],
+                  ),
+
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("12/12/2010"),
-                        TextButton(onPressed: (){},
+                        Text(date.day.toString().padLeft(2, '0') + '/' + date.month.toString().padLeft(2, '0') + '/' + date.year.toString(), style: TextStyle(fontWeight: FontWeight.w600)),
+                        TextButton(onPressed: ()async{
+                          DateTime? setDate = await showDatePicker(
+                              context: context,
+                              initialDate: date,
+                              firstDate: DateTime(2022),
+                              lastDate: DateTime(2100)
+                          );
+
+                          if(setDate != null){
+                            // update the date
+                            date = setDate;
+                          }
+                        },
                             child: Text('Change Date')
                         ),
                       ],
                     ),
-                  Text("Time"),
+                    Row(
+                      children: [
+                        Icon(Icons.watch_later_outlined, color: Colors.grey),
+                        Text("Time"),
+                      ],
+                    ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("12:00"),
-                      TextButton(onPressed: (){},
+                      Text(time.hour.toString().padLeft(2, '0') + ":" + time.minute.toString().padLeft(2, '0'), style: TextStyle(fontWeight: FontWeight.w600)),
+                      TextButton(onPressed: ()async{
+                        TimeOfDay? setTime = await showTimePicker(
+                            context: context, initialTime: time
+                        );
+
+                        if(setTime != null){
+                          // update time
+                          time = setTime;
+                          print(time);
+                        }
+                      },
                           child: Text('Change Time')
                       ),
                     ],
                   ),
-                  Text('Meeting Location'),
+                    Row(
+                      children: [
+                        Icon(Icons.location_pin, color: Colors.grey),
+                        Text("Meeting Location"),
+                      ],
+                    ),
                   DropdownButton(
                       isExpanded: true,
                       value: meetingLocation,
@@ -71,7 +127,12 @@ class CCDU extends HookWidget{
                         // must update value
                         meetingLocation = place!;
                       }),
-                  Text('Choose Counsellor (optional)'),
+                    Row(
+                      children: [
+                        Icon(Icons.person, color: Colors.grey),
+                        Text('Choose Counsellor (optional)'),
+                      ],
+                    ),
                   DropdownButton(
                       isExpanded: true,
                       value: theCounsellor,
@@ -85,7 +146,12 @@ class CCDU extends HookWidget{
                         // must update value
                         theCounsellor = counsellor!;
                       }),
-                Text('Add Description'),
+                Row(
+                  children: [
+                    Icon(Icons.add, color: Colors.grey),
+                    Text('Add Description'),
+                  ],
+                ),
                 TextField(
 
                   )
