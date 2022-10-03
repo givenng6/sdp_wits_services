@@ -5,13 +5,21 @@ import 'SignupAndLogin/app.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'globals.dart' as globals;
+import './StudentsApp/Providers/Subscriptions.dart';
+import 'package:provider/provider.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const Main());
+  runApp(
+      MultiProvider(providers: [
+        ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ],
+      child: const Main(),
+      ),
+  );
 }
 
 class Main extends StatefulWidget {

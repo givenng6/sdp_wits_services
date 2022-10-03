@@ -47,6 +47,9 @@ class Home extends HookWidget {
             .then((value) {
           var json = jsonDecode(value.body);
           subs.value = json["subs"];
+          print(json["subs"]);
+          // update the sub provider
+
           isFetching.value = false;
         });
       }
@@ -105,8 +108,8 @@ class Home extends HookWidget {
       }
 
       Future<void> getTime() async {
-        await http
-            .get(Uri.parse("${uri}db/getTime/"), headers: <String, String>{
+        await http.get(Uri.parse("${uri}db/getTime/"),
+          headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
         }).then((response) {

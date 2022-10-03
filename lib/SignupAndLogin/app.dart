@@ -4,6 +4,7 @@ import '../StaffApp/Buses/buses_main.dart';
 import '../StaffApp/Dining/mealSelectionPage.dart';
 import '../StaffApp/StaffPage.dart';
 import '../StudentsApp/Home/Home.dart';
+import '../StudentsApp/Home/Start.dart';
 import 'StaffSignin.dart';
 import 'package:sdp_wits_services/globals.dart' as globals;
 
@@ -41,7 +42,7 @@ class _App extends State<App> {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => Home(email, username)),
+            builder: (BuildContext context) => Start()),//Home(email, username)),
         (Route<dynamic> route) => false);
   }
 

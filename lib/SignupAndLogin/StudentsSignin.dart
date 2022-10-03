@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StudentsApp/Home/Home.dart';
+import 'package:sdp_wits_services/StudentsApp/Home/Start.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -145,9 +146,11 @@ class StudentsLoginScreen extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (BuildContext context) =>
-                  Home(email!, username!)),
+                  //Home(email!, username!)),
+                  Start()),
               (Route<dynamic> route) => false);
     }
+
     return FlutterLogin(
       key: const Key('loginPage'),
       title: 'Wits Services',
