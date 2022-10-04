@@ -93,11 +93,14 @@ class _Start extends State<Start>{
         tempSchedule.add(BusObject(data['name'], data['id'], data['stops'], data['status'], pos));
       }
       context.read<Subscriptions>().setBusSchedule(tempSchedule);
+      Future.delayed(const Duration(seconds: 5), (){
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(
                 builder: (BuildContext context) =>
                     Home()),
                 (Route<dynamic> route) => false);
+      });
+
     });
   }
 

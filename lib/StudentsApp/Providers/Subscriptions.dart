@@ -14,6 +14,9 @@ class Subscriptions with ChangeNotifier{
   List<String> get subs => _subs;
   List<String> get busFollowing => _busFollowing;
   List<BusObject> get busSchedule => _busSchedule;
+  String get dhFollowing =>_dhFollowing;
+  List<DiningObject> get diningHalls => _diningHalls;
+  String get mealTime => _mealTime;
 
   void addSub(String service){
     _subs.add(service);

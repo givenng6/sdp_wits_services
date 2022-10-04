@@ -62,8 +62,8 @@ class _Home extends State<Home>{
       // Menu(email, username, subs.value, screenIndex)
       Center(child: Text("1"),),
       Buses(),
-      Center(child: Text("3"),),
-      Center(child: Text("4"),),
+      Dining(),
+      Protection(),
       Center(child: Text("5"),),
     ];
 

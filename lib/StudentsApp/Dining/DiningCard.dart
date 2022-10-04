@@ -1,26 +1,31 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
 import 'package:sdp_wits_services/StudentsApp/Dining/ViewDH.dart';
 
 // Uri to the API
 String uri = "https://web-production-8fed.up.railway.app/";
 
-class DiningCard extends HookWidget{
+class DiningCard extends StatefulWidget{
+
+  @override
+  State<DiningCard> createState() => _DiningCard();
+}
+
+class _DiningCard extends State<DiningCard>{
 
   List<DiningObject> diningHalls = [];
-  var dhFollowing = useState("");
+  String dhFollowing = "";
   String email = "";
 
-  // constructor...
-  // init data...
-  DiningCard(this.email, this.diningHalls, this.dhFollowing, {Key? key}) : super(key: key);
-
   Widget build(BuildContext context){
+    diningHalls = context.watch<Subscriptions>().diningHalls;
+    dhFollowing = context.watch<Subscriptions>().dhFollowing;
+
     return Container(
         padding: const EdgeInsets.all(12),
         child: listDH(context)
@@ -75,7 +80,7 @@ class DiningCard extends HookWidget{
                     primary: const Color(0xff003b5c)
                 ),
                 onPressed: (){
-              followDH(id);
+              followDH(id, context);
             }, child: const Text("Follow", style:  TextStyle(color: Color(0xffbf9b30), fontSize: 14,fontWeight: FontWeight.bold),))
         ],)
       ],)
@@ -87,7 +92,7 @@ class DiningCard extends HookWidget{
   Widget listDH(BuildContext context){
     List<Widget> items = [];
     for(DiningObject data in diningHalls){
-      bool isFollowing = dhFollowing.value == data.getID();
+      bool isFollowing = dhFollowing == data.getID();
       items.add(DHItem(data.getDiningName(), data.getID(), isFollowing, context));
     }
 
@@ -96,7 +101,7 @@ class DiningCard extends HookWidget{
   }
 
   // API call to follow a bus route...
-  Future<void> followDH(String dhID) async{
+  Future<void> followDH(String dhID, BuildContext context) async{
     await http.post(Uri.parse("${uri}db/followDiningHall/"),
         headers: <String, String>{
           "Accept": "application/json",
@@ -109,7 +114,7 @@ class DiningCard extends HookWidget{
       var data = jsonDecode(value.body);
       // update the bus following list...
       // the whole should update...
-      dhFollowing.value = data['id'];
+      context.read<Subscriptions>().updateDHFollowing(data['id']);
     });
   }
 }

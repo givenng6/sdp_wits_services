@@ -163,10 +163,8 @@ class _BusSchedule extends State<BusSchedule>{
       for(String sub in json){
         update.add(sub);
       }
-      context.read<Subscriptions>().updateBusFollowing(update);
       // update the bus following list...
-      // the whole should update...
-      //busFollowing.value = json;
+      context.read<Subscriptions>().updateBusFollowing(update);
     });
   }
 
