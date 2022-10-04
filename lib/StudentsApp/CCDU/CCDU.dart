@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class CCDU extends StatefulWidget{
 
@@ -58,6 +60,7 @@ class _CCDU extends State<CCDU>{
                                       primary: Color(0xff003b5c)
                                   ),
                                   onPressed: () {
+                                    addBooking(context);
                                     print(date);
                                     print(time);
                                     print(meetingLocation);
@@ -232,4 +235,26 @@ class _CCDU extends State<CCDU>{
       ),
     ));
   }
+
+  Future<void> addBooking(BuildContext context) async {
+    await http.post(Uri.parse("${uri}db/bookingCCDU/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+          "time": "12:30",
+          "date": "05/10/2022",
+          "description": "Testing via app",
+          "counsellor": "Dr Mathebula",
+          "counsellorName": "Name",
+          "location": "onsite",
+
+        })).then((value) {
+
+          //context.read<Subscriptions>().addCCDUBooking(booking);
+    });
+  }
+
 }
