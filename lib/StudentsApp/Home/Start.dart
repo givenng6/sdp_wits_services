@@ -3,6 +3,8 @@ import '../Providers/Subscriptions.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sdp_wits_services/StudentsApp/Home/Home.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -10,7 +12,6 @@ import 'dart:convert';
 String uri = "https://web-production-8fed.up.railway.app/";
 
 class Start extends StatefulWidget{
-
   @override
   State<Start> createState()=> _Start();
 }
@@ -18,6 +19,27 @@ class Start extends StatefulWidget{
 class _Start extends State<Start>{
 
   String email = "2381410@students.wits.ac.za";
+  String username = "Given";
+  bool isLoading = true;
+
+  @override
+  void initState(){
+    super.initState();
+    //getSharedPreferences();
+    getSubs(context);
+    getBusFollowing(context);
+    getBusSchedule(context);
+    getDiningHallFollowing(context);
+    getDiningHalls(context);
+    getMealTime(context);
+
+  }
+
+  // getSharedPreferences() async {
+  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   username = sharedPreferences.getString('username');
+  //   email = sharedPreferences.getString('email');
+  // }
 
   Future<void> getSubs(BuildContext context) async {
     await http.post(Uri.parse("${uri}db/getSub/"),
@@ -33,6 +55,7 @@ class _Start extends State<Start>{
           for(String service in json["subs"]){
             context.read<Subscriptions>().addSub(service);
           }
+
         });
   }
 
@@ -70,6 +93,11 @@ class _Start extends State<Start>{
         tempSchedule.add(BusObject(data['name'], data['id'], data['stops'], data['status'], pos));
       }
       context.read<Subscriptions>().setBusSchedule(tempSchedule);
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>
+                    Home()),
+                (Route<dynamic> route) => false);
     });
   }
 
@@ -110,7 +138,6 @@ class _Start extends State<Start>{
             data['dinner']['optionC']));
       }
       context.read<Subscriptions>().setDiningHalls(tempList);
-
     });
   }
 
@@ -127,12 +154,7 @@ class _Start extends State<Start>{
 
   @override
   Widget build(BuildContext context){
-    getSubs(context);
-    getBusFollowing(context);
-    getBusSchedule(context);
-    getDiningHallFollowing(context);
-    getDiningHalls(context);
-    getMealTime(context);
+
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(

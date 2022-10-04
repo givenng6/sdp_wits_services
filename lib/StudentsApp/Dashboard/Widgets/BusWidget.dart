@@ -1,29 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/BusObject.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 
-class BusWidget extends HookWidget{
+class BusWidget extends StatefulWidget{
 
-  var busSchedule = useState([]);
-  var busFollowing = useState([]);
+  @override
+  State<BusWidget> createState() => _BusWidget();
+}
 
+class _BusWidget extends State<BusWidget>{
+  List<BusObject> busSchedule = [];
+  List<String> busFollowing = [];
   // constructor...
-  // init data...
-  BusWidget(this.busSchedule, this.busFollowing, {Key? key}) : super(key: key);
+  _BusWidget(){
+   busSchedule = context.watch<Subscriptions>().busSchedule;
+   busFollowing  = context.watch<Subscriptions>().busFollowing;
+  }
 
   @override
   Widget build(BuildContext context){
-    List<BusObject> busSchedule2 = [];
-    List<String> busFollowing2 = [];
-
-    // copying data from hooks to native lists...
-    for(BusObject data in busSchedule.value){
-      busSchedule2.add(data);
-    }
-
-    for(String id in busFollowing.value){
-      busFollowing2.add(id);
-    }
 
     return Container(
       width: double.infinity,
@@ -47,7 +44,7 @@ class BusWidget extends HookWidget{
                 style: TextStyle(fontWeight: FontWeight.bold, color:  Color(0xff003b5c)),)
             ],
           ),
-          showBus(busFollowing2, busSchedule2)
+          showBus(busFollowing, busSchedule)
         ],
       ),
     );

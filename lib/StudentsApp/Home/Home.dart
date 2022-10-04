@@ -9,172 +9,68 @@ import '../Dashboard/Dashboard.dart';
 import '../Protection/Protection.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 
 // Uri to the API
 String uri = "https://web-production-8fed.up.railway.app/";
 
-class Home extends HookWidget {
+class Home extends StatefulWidget{
+
+  @override
+  State<Home> createState() => _Home();
+}
+
+class _Home extends State<Home>{
+
+  void initState(){
+    super.initState();
+  }
+
   // init var
   String username = "", email = "";
   List<Widget> _screens = [];
 
   //constructor...
-  Home(this.email, this.username, {Key? key}) : super(key: key);
+  //Home(this.email, this.username, {Key? key}) : super(key: key);
+  int screenIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+
+    // print(context.watch<Subscriptions>().subs);
+    // print(context.watch<Subscriptions>().busFollowing);
     // data to pass to other screens...
-    var busSchedule = useState([]);
-    var diningHalls = useState([]);
-    var subs = useState([]);
-    var isFetching = useState(true);
-    var busFollowing = useState([]);
-    var dhFollowing = useState("");
-    var mealTime = useState("");
+    // var busSchedule = useState([]);
+    // var diningHalls = useState([]);
+    // var subs = useState([]);
+    // var isFetching = useState(false);
+    // var busFollowing = useState([]);
+    // var dhFollowing = useState("");
+    // var mealTime = useState("");
 
     // use effect for API calls
-    useEffect(() {
-      Future<void> getSubs() async {
-        await http
-            .post(Uri.parse("${uri}db/getSub/"),
-                headers: <String, String>{
-                  "Accept": "application/json",
-                  "Content-Type": "application/json; charset=UTF-8",
-                },
-                body: jsonEncode(<String, String>{
-                  "email": email,
-                }))
-            .then((value) {
-          var json = jsonDecode(value.body);
-          subs.value = json["subs"];
-          print(json["subs"]);
-          // update the sub provider
 
-          isFetching.value = false;
-        });
-      }
 
-      Future<void> getBusFollowing() async {
-        await http
-            .post(Uri.parse("${uri}db/getBusFollowing/"),
-                headers: <String, String>{
-                  "Accept": "application/json",
-                  "Content-Type": "application/json; charset=UTF-8",
-                },
-                body: jsonEncode(<String, String>{
-                  "email": email,
-                }))
-            .then((value) {
-          var busData = jsonDecode(value.body);
-          busFollowing.value = busData;
-        });
-      }
-
-      Future<void> getDiningHallFollowing() async {
-        await http
-            .post(Uri.parse("${uri}db/getDiningHallFollowing/"),
-                headers: <String, String>{
-                  "Accept": "application/json",
-                  "Content-Type": "application/json; charset=UTF-8",
-                },
-                body: jsonEncode(<String, String>{
-                  "email": email,
-                }))
-            .then((value) {
-          var data = jsonDecode(value.body);
-          dhFollowing.value = data;
-        });
-      }
-
-      Future<void> getBusSchedule() async {
-        await http.get(Uri.parse("${uri}db/getBusSchedule/"),
-            headers: <String, String>{
-              "Accept": "application/json",
-              "Content-Type": "application/json; charset=UTF-8",
-            }).then((response) {
-          var toJSON = jsonDecode(response.body);
-          List<BusObject> tempSchedule = [];
-          for (var data in toJSON) {
-            //print(data['name']);
-            String pos = "";
-            if (data['position'] != null) {
-              pos = data['position'];
-            }
-            tempSchedule.add(BusObject(
-                data['name'], data['id'], data['stops'], data['status'], pos));
-          }
-          busSchedule.value = tempSchedule;
-        });
-      }
-
-      Future<void> getTime() async {
-        await http.get(Uri.parse("${uri}db/getTime/"),
-          headers: <String, String>{
-          "Accept": "application/json",
-          "Content-Type": "application/json; charset=UTF-8",
-        }).then((response) {
-          var data = jsonDecode(response.body);
-          print(data);
-          mealTime.value = data;
-        });
-      }
-
-      Future<void> getDiningHalls() async {
-        await http.get(Uri.parse("${uri}db/getDiningHalls/"),
-            headers: <String, String>{
-              "Accept": "application/json",
-              "Content-Type": "application/json; charset=UTF-8",
-            }).then((response) {
-          var toJSON = jsonDecode(response.body);
-          List<DiningObject> tempList = [];
-          for (var data in toJSON) {
-            //print(data['breakfast']['optionC']);
-            tempList.add(DiningObject(
-                data['name'],
-                data['id'],
-                data['breakfast']['optionA'],
-                data['breakfast']['optionB'],
-                data['breakfast']['optionC'],
-                data['lunch']['optionA'],
-                data['lunch']['optionB'],
-                data['lunch']['optionC'],
-                data['dinner']['optionA'],
-                data['dinner']['optionB'],
-                data['dinner']['optionC']));
-          }
-          diningHalls.value = tempList;
-
-        });
-      }
-
-      getSubs();
-      getBusSchedule();
-      getBusFollowing();
-      getTime();
-      getDiningHalls();
-      getDiningHallFollowing();
-    }, []);
-
-    final screenIndex = useState(0);
 
     _screens = [
-      Dashboard(isFetching.value, subs.value, busSchedule.value, busFollowing.value, diningHalls.value,
-          dhFollowing.value, mealTime.value),
-      Buses(email, subs.value, busSchedule.value, busFollowing.value),
-      Dining(email, subs.value, diningHalls.value, dhFollowing.value),
-      Protection(email, subs),
-      Menu(email, username, subs.value, screenIndex)
+      // Dashboard(isFetching.value, subs.value, busSchedule.value, busFollowing.value, diningHalls.value,
+      //     dhFollowing.value, mealTime.value),
+      // Buses(email, context.watch<Subscriptions>().subs, busSchedule.value, busFollowing.value),
+      // Dining(email, subs.value, diningHalls.value, dhFollowing.value),
+      // Protection(email, subs),
+      // Menu(email, username, subs.value, screenIndex)
+      Center(child: Text("1"),),
+      Buses(),
+      Center(child: Text("3"),),
+      Center(child: Text("4"),),
+      Center(child: Text("5"),),
     ];
 
-
-    void _onNavigate(int index) {
-      screenIndex.value = index;
-    }
-
     return Scaffold(
-      body: _screens.elementAt(screenIndex.value),
+      body: _screens.elementAt(screenIndex),
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex: screenIndex.value,
+          currentIndex: screenIndex,
           selectedItemColor: const Color(0xff003b5c),
           onTap: _onNavigate,
           type: BottomNavigationBarType.fixed,
@@ -192,6 +88,12 @@ class Home extends HookWidget {
     );
   }
 
-// method to change the bottom nav index...
+  // method to change the bottom nav index...
+  void _onNavigate(int index) {
+    setState(() {
+      screenIndex = index;
+      print(screenIndex);
+    });
+  }
 
 }

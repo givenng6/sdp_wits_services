@@ -51,7 +51,7 @@ class Dashboard extends HookWidget{
     for(String service in subs.value){
       switch (service){
         case 'bus_service':
-          _cards.add(BusWidget(busSchedule, busFollowing));
+          //_cards.add(BusWidget());
           break;
         case 'dining_service':
           _cards.add(DiningWidget(diningHalls, dhFollowing, mealTime));

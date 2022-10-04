@@ -10,6 +10,7 @@ class Subscriptions with ChangeNotifier{
   List<DiningObject> _diningHalls = [];
   String _mealTime = "";
 
+
   List<String> get subs => _subs;
   List<String> get busFollowing => _busFollowing;
   List<BusObject> get busSchedule => _busSchedule;

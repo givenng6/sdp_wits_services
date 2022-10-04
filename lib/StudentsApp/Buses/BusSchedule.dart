@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import './BusObject.dart';
@@ -7,19 +9,29 @@ import './BusObject.dart';
 // Uri to the API
 String uri = "https://web-production-8fed.up.railway.app/";
 
-class BusSchedule extends HookWidget{
+class BusSchedule extends StatefulWidget{
+
+  @override
+  State<BusSchedule> createState() => _BusSchedule();
+}
+
+class _BusSchedule extends State<BusSchedule>{
 
   List<BusObject> busSchedule = [];
-  var busFollowing = useState([]);
-  String email = "";
+  List<String> busFollowing = [];
+  String email = "2381410@students.wits.ac.za";
 
   // constructor...
   // init data...
-  BusSchedule(this.email, this.busSchedule, this.busFollowing,{Key? key}) : super(key: key);
+  _BusSchedule(){
+
+  }
 
   // build and show the bus routes...
   @override
   Widget build(BuildContext context){
+    busSchedule = context.watch<Subscriptions>().busSchedule;
+    busFollowing = context.watch<Subscriptions>().busFollowing;
     return Container(
       padding: const EdgeInsets.all(12),
       child: showNames(context)
@@ -104,7 +116,7 @@ class BusSchedule extends HookWidget{
                     primary: const Color(0xff003b5c)
                   ),
                   onPressed: (){
-                followBus(id);
+                followBus(id, context);
               }, child: const Text("Follow", style:  TextStyle(color: Color(0xffbf9b30), fontSize: 14,fontWeight: FontWeight.bold),))
             ],
           )
@@ -127,7 +139,7 @@ class BusSchedule extends HookWidget{
   Widget showNames(BuildContext context){
     List<Widget> items = [];
     for(BusObject object in busSchedule){
-      bool isFollowing = busFollowing.value.contains(object.getID());
+      bool isFollowing = busFollowing.contains(object.getID());
       items.add(BusItem(object.getRouteName(), object.getID(), object.getStops(), isFollowing, context));
     }
 
@@ -136,7 +148,7 @@ class BusSchedule extends HookWidget{
   }
 
   // API call to follow a bus route...
-  Future<void> followBus(String busID) async{
+  Future<void> followBus(String busID, BuildContext context) async{
     await http.post(Uri.parse("${uri}db/followBus/"),
         headers: <String, String>{
           "Accept": "application/json",
@@ -147,9 +159,14 @@ class BusSchedule extends HookWidget{
           "id": busID,
         })).then((value) {
       var json = jsonDecode(value.body);
+      List<String> update = [];
+      for(String sub in json){
+        update.add(sub);
+      }
+      context.read<Subscriptions>().updateBusFollowing(update);
       // update the bus following list...
       // the whole should update...
-      busFollowing.value = json;
+      //busFollowing.value = json;
     });
   }
 
