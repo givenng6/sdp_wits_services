@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
+import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
 import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,9 +27,8 @@ class _StaffPageState extends State<StaffPage> {
     Department(name: "Events", icon: Icons.event)
   ];
 
-  void chooseDep(String depName) async{
-
-    SharedPreferences sharedPreferences = await  SharedPreferences.getInstance();
+  void chooseDep(String depName) async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? email = sharedPreferences.getString("email");
 
     var result = await http.post(Uri.parse("$url/Users/AssignDep"),
@@ -36,46 +36,54 @@ class _StaffPageState extends State<StaffPage> {
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
         },
-        body: jsonEncode(<String, String>{
-          "email": email!,
-          "department":depName
-
-        }));
+        body: jsonEncode(
+            <String, String>{"email": email!, "department": depName}));
     var json = jsonDecode(result.body);
 
     debugPrint("${json["status"]}");
-
-
   }
 
-  void handleCard(int index) async{
+  void handleCard(int index) async {
     String departmentName = departments[index].name;
     chooseDep(departmentName);
 
-
     switch (departmentName) {
-      case "Campus Control":
-        {
-          Navigator.pushReplacementNamed(context, "/CampusControl");
-        }
-        break;
       case "Bus Services":
         {
           debugPrint('here here');
-          Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (BuildContext context) => const BusesMain()));
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const BusesMain()));
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Bus Services');
         }
         break;
       case "Dining Services":
         {
           debugPrint('here here');
-          Navigator.pushReplacement(context, MaterialPageRoute(
-              builder: (BuildContext context) => const SelectDH()));
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const SelectDH()));
 
-          SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Dining Services');
+        }
+        break;
+      case "Campus Control":
+        {
+          // debugPrint('here here');
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const CampusControl()));
+
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+          sharedPreferences.setString('department', 'Campus Control');
         }
         break;
       default:
@@ -85,18 +93,17 @@ class _StaffPageState extends State<StaffPage> {
     }
   }
 
-  void getName()async{
+  void getName() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     username = sharedPreferences.getString("username")!;
-    setState(() {
-    });
+    setState(() {});
   }
 
   String username = " ";
 
   @override
   void initState() {
-   getName();
+    getName();
     super.initState();
   }
 
