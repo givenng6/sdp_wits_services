@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 
+class DiningWidget extends StatefulWidget{
 
-class DiningWidget extends HookWidget{
+  @override
+  State<DiningWidget> createState() => _DiningWidget();
+}
 
-  var diningHalls = useState([]);
-  var dhFollowing = useState("");
-  var mealTime = useState("");
+class _DiningWidget extends State<DiningWidget>{
 
-  // constructor...
-  // init data...
-  DiningWidget(this.diningHalls, this.dhFollowing, this.mealTime, {Key? key}) : super(key: key);
+  List<DiningObject> diningHalls = [];
+  String dhFollowing = "";
+  String mealTime = "";
 
   List<String> option1Meals = [];
   List<String> option2Meals = [];
@@ -21,6 +25,9 @@ class DiningWidget extends HookWidget{
 
   @override
   Widget build(BuildContext context){
+    diningHalls = context.watch<Subscriptions>().diningHalls;
+    dhFollowing =  context.watch<Subscriptions>().dhFollowing;
+    mealTime =  context.watch<Subscriptions>().mealTime;
 
     // flag used to know if the user is following any dining hall...
     bool none = true;
@@ -29,12 +36,12 @@ class DiningWidget extends HookWidget{
     // update times based on the time of the day
     // if is following dh update the flag
     // get the correct meals to show based on the time of the day
-    for(DiningObject data in diningHalls.value){
-      if(data.getID() == dhFollowing.value){
+    for(DiningObject data in diningHalls){
+      if(data.getID() == dhFollowing){
         dhName = data.getDiningName();
          none = false;
 
-         if(mealTime.value == "Breakfast"){
+         if(mealTime == "Breakfast"){
            times = "06:00 - 09:00";
            List<dynamic> bfA = data.bfA;
            List<dynamic> bfB = data.bfB;
@@ -50,7 +57,7 @@ class DiningWidget extends HookWidget{
            for(int i = 0; i < bfC.length; i++){
              option3Meals.add(bfC[i]);
            }
-         }else if(mealTime.value == "Lunch"){
+         }else if(mealTime == "Lunch"){
            times = "11:00 - 14:00";
            List<dynamic> A = data.lA;
            List<dynamic> B = data.lB;
@@ -117,7 +124,7 @@ class DiningWidget extends HookWidget{
           none ?
           const Text("No Data", style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold, color: Colors.white),)
           :
-          MenuItem(dhName, mealTime.value, times),
+          MenuItem(dhName, mealTime, times),
         ],
       ),
     );

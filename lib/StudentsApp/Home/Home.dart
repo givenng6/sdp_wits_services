@@ -35,30 +35,8 @@ class _Home extends State<Home>{
 
   @override
   Widget build(BuildContext context) {
-
-    // print(context.watch<Subscriptions>().subs);
-    // print(context.watch<Subscriptions>().busFollowing);
-    // data to pass to other screens...
-    // var busSchedule = useState([]);
-    // var diningHalls = useState([]);
-    // var subs = useState([]);
-    // var isFetching = useState(false);
-    // var busFollowing = useState([]);
-    // var dhFollowing = useState("");
-    // var mealTime = useState("");
-
-    // use effect for API calls
-
-
-
     _screens = [
-      // Dashboard(isFetching.value, subs.value, busSchedule.value, busFollowing.value, diningHalls.value,
-      //     dhFollowing.value, mealTime.value),
-      // Buses(email, context.watch<Subscriptions>().subs, busSchedule.value, busFollowing.value),
-      // Dining(email, subs.value, diningHalls.value, dhFollowing.value),
-      // Protection(email, subs),
-      // Menu(email, username, subs.value, screenIndex)
-      Center(child: Text("1"),),
+      Dashboard(),
       Buses(),
       Dining(),
       Protection(),
@@ -90,7 +68,6 @@ class _Home extends State<Home>{
   void _onNavigate(int index) {
     setState(() {
       screenIndex = index;
-      print(screenIndex);
     });
   }
 

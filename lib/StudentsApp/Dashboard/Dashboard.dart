@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import './DashAppBar.dart';
 import './Widgets/BusWidget.dart';
 import './Widgets/DiningWidget.dart';
@@ -8,53 +11,31 @@ import './Widgets/ProtectionWidget.dart';
 import './Widgets/EventsWidget.dart';
 import './Widgets/HealthWidget.dart';
 
+class Dashboard extends StatefulWidget{
 
-class Dashboard extends HookWidget{
+  @override
+  State<Dashboard> createState() => _Dashboard();
+}
+
+class _Dashboard extends State<Dashboard>{
 
   // list of dashboard widgets to show to user...
   final List<Widget> _cards = [];
 
-  // variables for testing...
-  var nIsFetching = true;
-  var nSubs = [];
-  var nBusSchedule = [];
-  var nBusFollowing = [];
-  var nDiningHalls = [];
-  var nDhFollowing = "";
-  var nMealTime = "";
-
-  // variables to be passed to other widgets...
-  var isFetching = useState(true);
-  var subs = useState([]);
-  var busSchedule = useState([]);
-  var busFollowing = useState([]);
-  var diningHalls = useState([]);
-  var dhFollowing = useState("");
-  var mealTime = useState("");
-
-  // constructor
-  // init data...
-  Dashboard(this.nIsFetching, this.nSubs, this.nBusSchedule, this.nBusFollowing, this.nDiningHalls, this.nDhFollowing, this.nMealTime, {Key? key}) : super(key: key){
-    isFetching.value = nIsFetching;
-    subs.value = nSubs;
-    busSchedule.value = nBusSchedule;
-    busFollowing.value = nBusFollowing;
-    diningHalls.value = nDiningHalls;
-    dhFollowing.value = nDhFollowing;
-    mealTime.value = nMealTime;
-  }
+  List<String> subs = [];
 
   @override
   Widget build(BuildContext context){
+    subs = context.watch<Subscriptions>().subs;
 
     // display all the widgets for the services sub to..
-    for(String service in subs.value){
+    for(String service in subs){
       switch (service){
         case 'bus_service':
-          //_cards.add(BusWidget());
+          _cards.add(BusWidget());
           break;
         case 'dining_service':
-          _cards.add(DiningWidget(diningHalls, dhFollowing, mealTime));
+          _cards.add(DiningWidget());
           break;
         case 'campus_control':
           _cards.add(ProtectionWidget());
@@ -76,11 +57,9 @@ class Dashboard extends HookWidget{
           const DashAppBar(),
           DashHeader(),
           Expanded(
-              child: isFetching.value ?
-              const LoadingIndicator(
-                indicatorType: Indicator.ballPulse,
-                colors: [Colors.blueGrey],
-                strokeWidth: 2,
+              child: _cards.length == 0 ?
+              Center(
+                child: Text("Dashboard empty", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),),
               )
               :
               ListView.builder(

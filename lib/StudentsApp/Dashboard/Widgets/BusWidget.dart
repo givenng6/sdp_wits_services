@@ -13,14 +13,11 @@ class BusWidget extends StatefulWidget{
 class _BusWidget extends State<BusWidget>{
   List<BusObject> busSchedule = [];
   List<String> busFollowing = [];
-  // constructor...
-  _BusWidget(){
-   busSchedule = context.watch<Subscriptions>().busSchedule;
-   busFollowing  = context.watch<Subscriptions>().busFollowing;
-  }
 
   @override
   Widget build(BuildContext context){
+    busSchedule = context.watch<Subscriptions>().busSchedule;
+    busFollowing  = context.watch<Subscriptions>().busFollowing;
 
     return Container(
       width: double.infinity,
