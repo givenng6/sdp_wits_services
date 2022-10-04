@@ -42,7 +42,7 @@ class _App extends State<App> {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => Start()),//Home(email, username)),
+            builder: (BuildContext context) => Start(email: email, username: username)),//Home(email, username)),
         (Route<dynamic> route) => false);
   }
 

@@ -147,7 +147,7 @@ class StudentsLoginScreen extends StatelessWidget {
           MaterialPageRoute(
               builder: (BuildContext context) =>
                   //Home(email!, username!)),
-                  Start()),
+                  Start(email: email!, username: username!)),
               (Route<dynamic> route) => false);
     }
 

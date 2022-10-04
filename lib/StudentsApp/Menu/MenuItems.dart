@@ -9,6 +9,8 @@ import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import '../Utilities/AddSub.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 const String APP_VERSION = "version 1.0.3 (sprint3)";
 
@@ -31,6 +33,7 @@ class _MenuItems extends State<MenuItems> {
   String email = "";
   List<String> subs = [];
   int screenIndex = 0;
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -128,9 +131,10 @@ class _MenuItems extends State<MenuItems> {
 
     return Column(children: items,);
   }
-  
+
+
   void subDialog(BuildContext context, List<String> data, var subs){
-    bool isLoading = false;
+
     showDialog(context: context,
         builder: (BuildContext context){
         return Center(
@@ -157,8 +161,10 @@ class _MenuItems extends State<MenuItems> {
                     style: OutlinedButton.styleFrom(
                         primary: Colors.red                ),
                     onPressed: (){
-                      isLoading = true;
-                      // must push data to database
+                      setState(() {
+                        isLoading = true;
+                      });
+                      _addSub(data[0], data[2], context);
                     },
                     child: const Text("Subscribe", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.red),))
               ]
@@ -167,6 +173,26 @@ class _MenuItems extends State<MenuItems> {
         );
         }
     );
+  }
+
+  Future<void> _addSub(String email, String service, BuildContext context) async{
+    await http.post(Uri.parse("${uri}db/addSub/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+          "service": service
+        }));
+
+    await Future.delayed(const Duration(seconds: 2), (){
+      context.read<Subscriptions>().addSub(service);
+
+      setState(() {
+        isLoading = false;
+      });
+    });
   }
   
 }

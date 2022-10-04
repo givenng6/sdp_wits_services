@@ -13,14 +13,13 @@ import 'dart:convert';
 String uri = "https://web-production-8fed.up.railway.app/";
 
 class Start extends StatefulWidget{
+  String email, username;
+  Start({required this.email, required this.username});
   @override
   State<Start> createState()=> _Start();
 }
 
 class _Start extends State<Start>{
-
-  String email = "2381410@students.wits.ac.za";
-  String username = "Given";
   bool isLoading = true;
 
   @override
@@ -42,7 +41,7 @@ class _Start extends State<Start>{
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(<String, String>{
-          "email": email,
+          "email": widget.email,
         })).then((value) {
           var json = jsonDecode(value.body);
           // update the sub provider
@@ -60,7 +59,7 @@ class _Start extends State<Start>{
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(<String, String>{
-          "email": email,
+          "email": widget.email,
         })).then((value) {
         var busData = jsonDecode(value.body);
         List<String> busFollowing = [];
@@ -87,6 +86,8 @@ class _Start extends State<Start>{
         tempSchedule.add(BusObject(data['name'], data['id'], data['stops'], data['status'], pos));
       }
       context.read<Subscriptions>().setBusSchedule(tempSchedule);
+      context.read<UserData>().setEmail(widget.email);
+      context.read<UserData>().setUsername(widget.username);
       Future.delayed(const Duration(seconds: 5), (){
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(
@@ -105,7 +106,7 @@ class _Start extends State<Start>{
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(<String, String>{
-          "email": email,
+          "email": widget.email,
         })).then((value) {
         var data = jsonDecode(value.body);
         context.read<Subscriptions>().updateDHFollowing(data);
@@ -151,8 +152,6 @@ class _Start extends State<Start>{
 
   @override
   Widget build(BuildContext context){
-    context.read<UserData>().setEmail("2381410@students.wits.ac.za");
-    context.read<UserData>().setUsername("Given");
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(
