@@ -15,7 +15,8 @@ import 'dart:convert';
 const String APP_VERSION = "version 1.0.3 (sprint3)";
 
 class MenuItems extends StatefulWidget{
-
+  final Function(int index) onNavigate;
+  MenuItems({required this.onNavigate});
   @override
   State<MenuItems> createState() => _MenuItems();
 }
@@ -55,7 +56,7 @@ class _MenuItems extends State<MenuItems> {
       onTap: (){
         if(index < 3){
           // update use fx
-          screenIndex = index + 1;
+          widget.onNavigate(index + 1);
         }else{
           switch (index){
             case 3 :
@@ -79,7 +80,7 @@ class _MenuItems extends State<MenuItems> {
               if(subs.contains(service)){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CCDU(email)),
+                  MaterialPageRoute(builder: (context) => CCDU()),
                 );
               }else{
                 subDialog(context, data, subs);

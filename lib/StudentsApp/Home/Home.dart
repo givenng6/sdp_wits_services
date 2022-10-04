@@ -40,7 +40,7 @@ class _Home extends State<Home>{
       Buses(),
       Dining(),
       Protection(),
-      Menu(),
+      Menu(onNavigate: onNavigate),
     ];
 
     return Scaffold(
@@ -48,7 +48,7 @@ class _Home extends State<Home>{
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: screenIndex,
           selectedItemColor: const Color(0xff003b5c),
-          onTap: _onNavigate,
+          onTap: onNavigate,
           type: BottomNavigationBarType.fixed,
           items: const [
             BottomNavigationBarItem(
@@ -65,10 +65,11 @@ class _Home extends State<Home>{
   }
 
   // method to change the bottom nav index...
-  void _onNavigate(int index) {
+  void onNavigate(int index) {
     setState(() {
       screenIndex = index;
     });
   }
+
 
 }
