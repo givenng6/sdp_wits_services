@@ -1,16 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import './appbar_widget.dart';
 import './profile_widget.dart';
 
-class Profile extends HookWidget {
-  String username = "", email = "";
-  List<dynamic> subs = [];
+class Profile extends StatefulWidget{
 
-  Profile(this.email, this.username, this.subs, {Key? key}) : super(key: key);
+  @override
+  State<Profile> createState() => _Profile();
+}
+
+class _Profile extends State<Profile> {
+  String username = "", email = "";
+  List<String> subs = [];
 
   @override
   Widget build(BuildContext context) {
+    email = context.watch<UserData>().email;
+    username =  context.watch<UserData>().username;
+    subs =  context.watch<Subscriptions>().subs;
+
     return Scaffold(
       appBar: BuildAppBar(context),
       body: ListView(

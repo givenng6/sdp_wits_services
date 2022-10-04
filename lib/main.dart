@@ -6,6 +6,7 @@ import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'globals.dart' as globals;
 import './StudentsApp/Providers/Subscriptions.dart';
+import './StudentsApp/Providers/UserData.dart';
 import 'package:provider/provider.dart';
 
 void main() async{
@@ -16,6 +17,7 @@ void main() async{
   runApp(
       MultiProvider(providers: [
         ChangeNotifierProvider(create: (_) => Subscriptions()),
+        ChangeNotifierProvider(create: (_) => UserData()),
       ],
       child: const Main(),
       ),

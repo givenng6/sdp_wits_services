@@ -3,6 +3,7 @@ import '../Providers/Subscriptions.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
 import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StudentsApp/Home/Home.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +26,6 @@ class _Start extends State<Start>{
   @override
   void initState(){
     super.initState();
-    //getSharedPreferences();
     getSubs(context);
     getBusFollowing(context);
     getBusSchedule(context);
@@ -34,12 +34,6 @@ class _Start extends State<Start>{
     getMealTime(context);
 
   }
-
-  // getSharedPreferences() async {
-  //   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //   username = sharedPreferences.getString('username');
-  //   email = sharedPreferences.getString('email');
-  // }
 
   Future<void> getSubs(BuildContext context) async {
     await http.post(Uri.parse("${uri}db/getSub/"),
@@ -157,7 +151,8 @@ class _Start extends State<Start>{
 
   @override
   Widget build(BuildContext context){
-
+    context.read<UserData>().setEmail("2381410@students.wits.ac.za");
+    context.read<UserData>().setUsername("Given");
     return Scaffold(
       body: Center(
         child: CircularProgressIndicator(

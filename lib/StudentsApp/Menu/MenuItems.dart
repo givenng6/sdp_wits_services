@@ -4,14 +4,22 @@ import 'package:sdp_wits_services/StudentsApp/CCDU/CCDU.dart';
 import 'package:sdp_wits_services/StudentsApp/Events/Events.dart';
 import 'package:sdp_wits_services/StudentsApp/Health/Health.dart';
 import 'package:sdp_wits_services/StudentsApp/Menu/Department.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import '../Utilities/AddSub.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 
 const String APP_VERSION = "version 1.0.3 (sprint3)";
 
-class MenuItems extends HookWidget {
-  List<Department> cardNames = [
+class MenuItems extends StatefulWidget{
 
+  @override
+  State<MenuItems> createState() => _MenuItems();
+}
+
+class _MenuItems extends State<MenuItems> {
+  List<Department> cardNames = [
     Department(title: "Bus Services", icon: Icons.directions_bus),
     Department(title: "Dining Services", icon: Icons.restaurant),
     Department(title: "Protection Services", icon: Icons.security),
@@ -20,14 +28,15 @@ class MenuItems extends HookWidget {
     Department(title: "Events", icon: Icons.event),
   ];
 
-  String email = "", username = "";
-  var subs = useState([]);
-  var screenIndex = useState(0);
-
-  MenuItems(this.email, this.username, this.subs, this.screenIndex, {Key? key}) : super(key: key);
+  String email = "";
+  List<String> subs = [];
+  int screenIndex = 0;
 
   @override
   Widget build(BuildContext context) {
+    email = context.watch<UserData>().email;
+    subs = context.watch<Subscriptions>().subs;
+
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       child: Column(children: [
@@ -42,14 +51,15 @@ class MenuItems extends HookWidget {
     return GestureDetector(
       onTap: (){
         if(index < 3){
-          screenIndex.value = index + 1;
+          // update use fx
+          screenIndex = index + 1;
         }else{
           switch (index){
             case 3 :
               String title = "Campus Health";
               String service = "health";
               List<String> data = [email, title, service];
-              if(subs.value.contains(service)){
+              if(subs.contains(service)){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Health(email)),
@@ -63,7 +73,7 @@ class MenuItems extends HookWidget {
               String service = "health";
               List<String> data = [email, title, service];
 
-              if(subs.value.contains(service)){
+              if(subs.contains(service)){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CCDU(email)),
@@ -77,7 +87,7 @@ class MenuItems extends HookWidget {
               String service = "events";
               List<String> data = [email, title, service];
 
-              if(subs.value.contains(service)){
+              if(subs.contains(service)){
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Events(email)),

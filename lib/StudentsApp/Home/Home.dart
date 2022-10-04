@@ -27,8 +27,6 @@ class _Home extends State<Home>{
     super.initState();
   }
 
-  // init var
-  String username = "", email = "";
   List<Widget> _screens = [];
 
   //constructor...
@@ -64,7 +62,7 @@ class _Home extends State<Home>{
       Buses(),
       Dining(),
       Protection(),
-      Center(child: Text("5"),),
+      Menu(),
     ];
 
     return Scaffold(

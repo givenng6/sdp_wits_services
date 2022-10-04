@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sdp_wits_services/StudentsApp/Dining/ViewDH.dart';
@@ -23,6 +24,7 @@ class _DiningCard extends State<DiningCard>{
   String email = "";
 
   Widget build(BuildContext context){
+    email = context.watch<UserData>().email;
     diningHalls = context.watch<Subscriptions>().diningHalls;
     dhFollowing = context.watch<Subscriptions>().dhFollowing;
 

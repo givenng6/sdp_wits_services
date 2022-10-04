@@ -3,24 +3,23 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import './MenuAppBar.dart';
 import './MenuItems.dart';
 
+class Menu extends StatefulWidget{
 
-class Menu extends HookWidget {
+  @override
+  State<Menu> createState() => _Menu();
+}
 
-  String email = "", username = "";
-  var nSubs = [];
-  var subs = useState([]);
-  var screenIndex = useState(0);
-  Menu(this.email, this.username, this.nSubs, this.screenIndex, {Key? key}) : super(key: key){
-    subs.value = nSubs;
-  }
+class _Menu extends State<Menu> {
+
+  int screenIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-           MenuAppBar(email, username, subs),
-           MenuItems(email, username, subs, screenIndex)
+           MenuAppBar(),
+           MenuItems()
         ],
       ),
     );

@@ -4,6 +4,7 @@ import 'package:sdp_wits_services/StudentsApp/Dining/DiningCard.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import '../UtilityWidgets.dart';
 import '../Utilities/AddSub.dart';
 
@@ -30,7 +31,9 @@ class _Dining extends State<Dining> {
 
   @override
   Widget build(BuildContext context) {
+    email = context.watch<UserData>().email;
     subs = context.watch<Subscriptions>().subs;
+
     // change is sub to true if the user is sub to dining services...
     if (subs.contains(service)) {
       setState(() {
