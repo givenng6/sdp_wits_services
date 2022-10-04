@@ -57,9 +57,16 @@ class _Dining extends State<Dining> {
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //AddSub(isSubscribed, data, subs),
+                AddSub(title: title, service: service, isSubscribed: isSubscribed, setSubscribed: setSubscribed,),
               ],
             ),
     );
   }
+
+  void setSubscribed(){
+    setState(() {
+      isSubscribed = true;
+    });
+  }
+
 }

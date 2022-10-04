@@ -30,7 +30,7 @@ class Events extends HookWidget{
           : Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          AddSub(isSubscribed, data, subs),
+         // AddSub(isSubscribed, data, subs),
         ],
       ),
     );
