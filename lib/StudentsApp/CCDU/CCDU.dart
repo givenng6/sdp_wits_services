@@ -4,6 +4,7 @@ import 'package:sdp_wits_services/StudentsApp/Utilities/AddSub.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 
 class CCDU extends StatefulWidget{
 
@@ -18,7 +19,7 @@ class _CCDU extends State<CCDU>{
   String theCounsellor = '';
   List<String> places = ['Online', 'OnSite'];
   List<String> counsellors = ['', 'Given', 'Mathebula'];
-  List<String> sessions = [];
+  List<CCDUObject> sessions = [];
   String description = "";
 
   TimeOfDay time = TimeOfDay(hour: 09, minute: 00);
@@ -26,6 +27,7 @@ class _CCDU extends State<CCDU>{
 
   @override 
   Widget build(BuildContext context){
+    sessions = context.watch<Subscriptions>().ccduBookings;
     email = context.watch<UserData>().email;
 
     return Scaffold(
@@ -190,29 +192,24 @@ class _CCDU extends State<CCDU>{
       ),
       body: sessions.isNotEmpty
           ? SingleChildScrollView(
-        child: Column(
-          children: [
-          appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
-          appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
-            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
-            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
-            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
-            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
-            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
-            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
-            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
-            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
-            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
-            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
-            appointment(1, "12/12/2020", "09:00", "Dr R Mond", "Confirmed"),
-            appointment(2, "12/07/2023", "15:15", "Dr G Mathebula", "Pending"),
-          ],
-        ),
+        child: listAppointments(),
       )
           : Center(
           child: Text('No Data', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Colors.grey)),
       ),
     );
+  }
+
+  Widget listAppointments(){
+    List<Widget> items = [];
+
+    int index = 1;
+    for(CCDUObject booking in sessions){
+      items.add(appointment(index, booking.date, booking.time, booking.counsellorName, booking.status));
+      index++;
+    }
+
+    return Column(children: items);
   }
 
   Widget appointment(int index, String date, String time, String counsellor, String status){
