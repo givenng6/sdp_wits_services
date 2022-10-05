@@ -19,13 +19,20 @@ class _CCDU extends State<CCDU>{
 
   String meetingLocation = 'Online';
   String theCounsellor = '';
-  List<String> places = ['Online', 'OnSite'];
+  List<String> places = ['Online', 'In Person'];
+
+  // list of counsellors name
   List<String> counsellors = ['', 'Given', 'Mathebula'];
+  List<String> counsellorsEmail = ['', 'givenng6@gmail.com', 'a0074560@wits.ac.za'];
+
   List<CCDUObject> sessions = [];
   String description = "";
+  bool isVerifying = true;
 
   TimeOfDay time = TimeOfDay(hour: 09, minute: 00);
   DateTime date = DateTime(2022, 10, 14);
+
+  // TODO get current date and the counsellors
 
   @override 
   Widget build(BuildContext context){
@@ -60,12 +67,9 @@ class _CCDU extends State<CCDU>{
                                       primary: Color(0xff003b5c)
                                   ),
                                   onPressed: () {
-                                    addBooking(context);
-                                    print(date);
-                                    print(time);
-                                    print(meetingLocation);
-                                    print(theCounsellor);
-                                    print(description);
+                                    String timeFormat = time.hour.toString().padLeft(2, '0') + ":" + time.minute.toString().padLeft(2, '0');
+                                    String dateFormat = date.day.toString().padLeft(2, '0') + '/' + date.month.toString().padLeft(2, '0') + '/' + date.year.toString();
+                                    verify(context, timeFormat, dateFormat, theCounsellor, description, meetingLocation);
                                   },
                                 )
                               ],
@@ -215,6 +219,52 @@ class _CCDU extends State<CCDU>{
     return Column(children: items);
   }
 
+  void verify(BuildContext context, String time, String date, String counsellor, String description, String location){
+    // validate date...
+    addBooking(context, time, date);
+    showDialog(context: context,
+        builder: (BuildContext context){
+          return Center(
+            child:  Container(
+              padding: EdgeInsets.all(12),
+              width: MediaQuery.of(context).size.width / 1.1,
+              height: MediaQuery.of(context).size.height / 3.4,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20)
+              ),
+              child: isVerifying? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children:[
+                    CircularProgressIndicator(),
+                  ]
+              ):
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    children: [
+                    Text('Data Validation Failed', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                    Text(""),
+                    Text("Date cant be of the past", style: TextStyle(color: Colors.redAccent),),
+                    Text("The slot 16:00 is not available", style: TextStyle(color: Colors.redAccent),)
+                  ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                    TextButton(onPressed: (){
+                      Navigator.pop(context);
+                    }, child: Text("OK"))
+                  ],)
+                ],
+              )
+            ),
+          );
+        }
+    );
+  }
+
   Widget appointment(int index, String date, String time, String counsellor, String status){
     return Card(
       elevation: 3,
@@ -236,7 +286,13 @@ class _CCDU extends State<CCDU>{
     ));
   }
 
-  Future<void> addBooking(BuildContext context) async {
+  Future<void> addBooking(BuildContext context, String time, String date) async {
+    String id = "";
+    for(int i = 0; i < counsellors.length; i++){
+      if(counsellors[i] == theCounsellor){
+        id = counsellorsEmail[i];
+      }
+    }
     await http.post(Uri.parse("${uri}db/bookingCCDU/"),
         headers: <String, String>{
           "Accept": "application/json",
@@ -244,17 +300,32 @@ class _CCDU extends State<CCDU>{
         },
         body: jsonEncode(<String, String>{
           "email": email,
-          "time": "12:30",
-          "date": "05/10/2022",
-          "description": "Testing via app",
-          "counsellor": "Dr Mathebula",
-          "counsellorName": "Name",
-          "location": "onsite",
+          "time": time,
+          "date": date,
+          "description": description,
+          "counsellor": id,
+          "counsellorName": theCounsellor,
+          "location": meetingLocation,
 
         })).then((value) {
+          // TODO check the returned data if is valid
+          setState(() {
+            isVerifying = false;
 
-          //context.read<Subscriptions>().addCCDUBooking(booking);
+            // clear all fields..
+            theCounsellor = "";
+            description = "";
+
+            // add the session to the list...
+            CCDUObject session = new CCDUObject();
+            session.setAppointment('Pending', time, date, description, theCounsellor, 'counsellorName', meetingLocation);
+            context.read<Subscriptions>().addCCDUBooking(session);
+
+            // remove the dialog
+            Navigator.pop(context);
+          });
     });
   }
+
 
 }
