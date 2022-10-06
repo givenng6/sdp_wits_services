@@ -55,7 +55,6 @@ class _MenuItems extends State<MenuItems> {
     return GestureDetector(
       onTap: (){
         if(index < 3){
-          // update use fx
           widget.onNavigate(index + 1);
         }else{
           switch (index){
@@ -152,20 +151,14 @@ class _MenuItems extends State<MenuItems> {
                 Text(data[1], style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 Text(""),
                 const Text("To access this service you must be subscribed"),
-                isLoading ?
-                Container(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 12, 12),
-                  child: CircularProgressIndicator(),
-                )
-                    :
                 OutlinedButton(
                     style: OutlinedButton.styleFrom(
                         primary: Colors.red                ),
                     onPressed: (){
                       setState(() {
-                        isLoading = true;
+                        Navigator.pop(context);
                       });
-                      _addSub(data[0], data[2], context);
+                      _addSub(data[0], data[2]);
                     },
                     child: const Text("Subscribe", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.red),))
               ]
@@ -176,7 +169,7 @@ class _MenuItems extends State<MenuItems> {
     );
   }
 
-  Future<void> _addSub(String email, String service, BuildContext context) async{
+  Future<void> _addSub(String email, String service) async{
     await http.post(Uri.parse("${uri}db/addSub/"),
         headers: <String, String>{
           "Accept": "application/json",
@@ -185,14 +178,8 @@ class _MenuItems extends State<MenuItems> {
         body: jsonEncode(<String, String>{
           "email": email,
           "service": service
-        }));
-
-    await Future.delayed(const Duration(seconds: 2), (){
-      context.read<Subscriptions>().addSub(service);
-
-      setState(() {
-        isLoading = false;
-      });
+        })).then((value){
+        context.read<Subscriptions>().addSub(service);
     });
   }
   

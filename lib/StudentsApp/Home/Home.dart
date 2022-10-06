@@ -29,8 +29,6 @@ class _Home extends State<Home>{
 
   List<Widget> _screens = [];
 
-  //constructor...
-  //Home(this.email, this.username, {Key? key}) : super(key: key);
   int screenIndex = 0;
 
   @override
