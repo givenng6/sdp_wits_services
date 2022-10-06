@@ -27,7 +27,6 @@ class _CCDU extends State<CCDU>{
 
   List<CCDUObject> sessions = [];
   String description = "";
-  bool isVerifying = true;
 
   TimeOfDay time = TimeOfDay(hour: 09, minute: 00);
   DateTime date = DateTime(2022, 10, 14);
@@ -236,36 +235,55 @@ class _CCDU extends State<CCDU>{
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20)
               ),
-              child: isVerifying? Column(
+              child:Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children:[
                     CircularProgressIndicator(),
                   ]
-              ):
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    children: [
-                    Text('Data Validation Failed', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                    Text(""),
-                    Text("The slot $time is not available", style: TextStyle(color: Colors.redAccent),)
-                  ]),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                    TextButton(onPressed: (){
-                      Navigator.pop(context);
-                    }, child: Text("OK"))
-                  ],)
-                ],
               )
             ),
           );
         }
     );
   }
+
+  void onError(BuildContext context, String time){
+    showDialog(context: context,
+        builder: (BuildContext context){
+          return Center(
+            child:  Container(
+                padding: EdgeInsets.all(12),
+                width: MediaQuery.of(context).size.width / 1.1,
+                height: MediaQuery.of(context).size.height / 3.4,
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20)
+                ),
+                child:Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children:[
+                      Column(
+                          children: [
+                            Text('Data Validation Failed', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                            Text(""),
+                            Text("The slot $time is not available", style: TextStyle(color: Colors.redAccent),)
+                          ]),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          TextButton(onPressed: (){
+                            Navigator.pop(context);
+                          }, child: Text("OK"))
+                        ],)
+                    ],
+                )
+            ),
+          );
+        }
+    );
+  }
+
+
 
   Widget appointment(int index, String date, String time, String counsellor, String status){
     return Card(
@@ -315,24 +333,24 @@ class _CCDU extends State<CCDU>{
           print(isAvailable);
           if(isAvailable){
             setState(() {
-              isVerifying = false;
-
-              // clear all fields..
-              theCounsellor = "";
-              description = "";
-
               // add the session to the list...
               CCDUObject session = new CCDUObject();
               session.setAppointment('Pending', time, date, description, id, theCounsellor, meetingLocation);
               context.read<Subscriptions>().addCCDUBooking(session);
+
+              // clear all fields..
+              theCounsellor = "";
+              description = "";
 
               // remove the dialog
               Navigator.pop(context);
             });
           }else{
             setState(() {
-              isVerifying = false;
-              //this.time = TimeOfDay(hour: 09, minute: 00);
+              // remove the dialog
+              Navigator.pop(context);
+
+              onError(context, time);
             });
           }
     });
