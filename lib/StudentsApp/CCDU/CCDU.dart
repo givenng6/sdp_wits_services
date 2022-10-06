@@ -69,7 +69,8 @@ class _CCDU extends State<CCDU>{
                                       primary: Color(0xff003b5c)
                                   ),
                                   onPressed: () {
-                                    String timeFormat = time.hour.toString().padLeft(2, '0') + ":" + time.minute.toString().padLeft(2, '0');
+                                    int newHour = time.hour + 1;
+                                    String timeFormat = time.hour.toString().padLeft(2, '0') + ":" + time.minute.toString().padLeft(2, '0') + "-" + newHour.toString().padLeft(2, '0') + ":" + time.minute.toString().padLeft(2, '0');
                                     String dateFormat = date.day.toString().padLeft(2, '0') + '/' + date.month.toString().padLeft(2, '0') + '/' + date.year.toString();
                                     verify(context, timeFormat, dateFormat, theCounsellor, description, meetingLocation);
                                   },
@@ -249,8 +250,7 @@ class _CCDU extends State<CCDU>{
                     children: [
                     Text('Data Validation Failed', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                     Text(""),
-                    Text("Date cant be of the past", style: TextStyle(color: Colors.redAccent),),
-                    Text("The slot 16:00 is not available", style: TextStyle(color: Colors.redAccent),)
+                    Text("The slot $time is not available", style: TextStyle(color: Colors.redAccent),)
                   ]),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -311,22 +311,30 @@ class _CCDU extends State<CCDU>{
 
         })).then((value) {
           // TODO check the returned data if is valid
-          bool isAvailable = jsonDecode(value.body);
-          setState(() {
-            isVerifying = false;
+          bool isAvailable = jsonDecode(value.body)[0];
+          print(isAvailable);
+          if(isAvailable){
+            setState(() {
+              isVerifying = false;
 
-            // clear all fields..
-            theCounsellor = "";
-            description = "";
+              // clear all fields..
+              theCounsellor = "";
+              description = "";
 
-            // add the session to the list...
-            CCDUObject session = new CCDUObject();
-            session.setAppointment('Pending', time, date, description, theCounsellor, 'counsellorName', meetingLocation);
-            context.read<Subscriptions>().addCCDUBooking(session);
+              // add the session to the list...
+              CCDUObject session = new CCDUObject();
+              session.setAppointment('Pending', time, date, description, id, theCounsellor, meetingLocation);
+              context.read<Subscriptions>().addCCDUBooking(session);
 
-            // remove the dialog
-            Navigator.pop(context);
-          });
+              // remove the dialog
+              Navigator.pop(context);
+            });
+          }else{
+            setState(() {
+              isVerifying = false;
+              //this.time = TimeOfDay(hour: 09, minute: 00);
+            });
+          }
     });
   }
 
