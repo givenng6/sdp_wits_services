@@ -22,8 +22,8 @@ class _CCDU extends State<CCDU>{
   List<String> places = ['Online', 'In Person'];
 
   // list of counsellors name
-  List<String> counsellors = ['', 'Given', 'Mathebula'];
-  List<String> counsellorsEmail = ['', 'givenng6@gmail.com', 'a0074560@wits.ac.za'];
+  List<String> counsellors = [];
+  List<String> counsellorsEmail = [];
 
   List<CCDUObject> sessions = [];
   String description = "";
@@ -36,6 +36,8 @@ class _CCDU extends State<CCDU>{
 
   @override 
   Widget build(BuildContext context){
+    counsellors =  context.watch<Subscriptions>().counsellorsName;
+    counsellorsEmail = context.watch<Subscriptions>().counsellorsEmail;
     sessions = context.watch<Subscriptions>().ccduBookings;
     email = context.watch<UserData>().email;
 
@@ -309,6 +311,7 @@ class _CCDU extends State<CCDU>{
 
         })).then((value) {
           // TODO check the returned data if is valid
+          bool isAvailable = jsonDecode(value.body);
           setState(() {
             isVerifying = false;
 

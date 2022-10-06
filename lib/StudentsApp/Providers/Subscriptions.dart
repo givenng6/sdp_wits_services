@@ -11,6 +11,8 @@ class Subscriptions with ChangeNotifier{
   List<DiningObject> _diningHalls = [];
   String _mealTime = "";
   List<CCDUObject> _ccduBookings = [];
+  List<String> _counsellorsEmail = [];
+  List<String> _counsellorsName = [];
 
 
   List<String> get subs => _subs;
@@ -20,6 +22,9 @@ class Subscriptions with ChangeNotifier{
   List<DiningObject> get diningHalls => _diningHalls;
   String get mealTime => _mealTime;
   List<CCDUObject> get ccduBookings => _ccduBookings;
+  List<String> get counsellorsEmail => _counsellorsEmail;
+  List<String> get counsellorsName => _counsellorsName;
+
 
   void addSub(String service){
     _subs.add(service);
@@ -53,6 +58,12 @@ class Subscriptions with ChangeNotifier{
 
   void addCCDUBooking(CCDUObject booking){
     _ccduBookings.add(booking);
+    notifyListeners();
+  }
+
+  void addCounsellor(String email, String username){
+    _counsellorsName.add(username);
+    _counsellorsEmail.add(email);
     notifyListeners();
   }
 

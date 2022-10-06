@@ -32,6 +32,7 @@ class _Start extends State<Start>{
     getDiningHallFollowing(context);
     getDiningHalls(context);
     getCCDUBookings(context);
+    getCounsellors(context);
     getMealTime(context);
 
   }
@@ -168,6 +169,23 @@ class _Start extends State<Start>{
       session.setAppointment(object['status'], object['time'], object['date'], object['description'], object['counsellor'], object['counsellorName'], object['location']);
       context.read<Subscriptions>().addCCDUBooking(session);
       }
+    });
+  }
+
+  Future<void> getCounsellors(BuildContext context) async {
+    await http.get(Uri.parse("${uri}db/getCounsellors/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        }).then((response) {
+      var data = jsonDecode(response.body);
+
+      for(var counsellor in data){
+        String email = counsellor['email'];
+        String username = counsellor['username'];
+        context.read<Subscriptions>().addCounsellor(email, username);
+      }
+      context.read<Subscriptions>().addCounsellor("", "");
     });
   }
 
