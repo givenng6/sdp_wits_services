@@ -47,11 +47,9 @@ class _CCDU extends State<CCDU>{
         onPressed: (){
           showModalBottomSheet(
               context: context,
-              //isScrollControlled: true,
               builder: (builder) {
                 return StatefulBuilder(builder: (BuildContext context, StateSetter setState ){
-                  return  Container(
-                    //height: double.infinity,
+                  return Container(
                       padding: const EdgeInsets.all(12),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +91,7 @@ class _CCDU extends State<CCDU>{
                                 DateTime? setDate = await showDatePicker(
                                     context: context,
                                     initialDate: date,
-                                    firstDate: DateTime(2022),
+                                    firstDate: DateTime(2022, 10, 06),
                                     lastDate: DateTime(2100)
                                 );
 
