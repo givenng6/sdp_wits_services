@@ -67,20 +67,20 @@ class _Protection extends State<Protection> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 10.0,),
-                            const Text('Driver: Jabu Maluleka'),
+                            const Text('Driver: Jabu Maluleka', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                             const SizedBox(height: 10.0,),
-                            const Text('From: Wits Main Campus'),
+                            const Text('From: Wits Main Campus', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                             const SizedBox(height: 10.0,),
-                            const Text('To: Student Digz'),
+                            const Text('To: Student Digz', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                             const SizedBox(height: 10.0,),
-                            const Text('ETA: 7 mins'),
+                            const Text('ETA: 7 mins', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                             const SizedBox(height: 10.0,),
                             const Spacer(),
                             Row(
                               children: const [
-                                Text('Car Name: Honda'),
+                                Text('Car Name: Honda', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                                 Spacer(),
-                                Text('Car Reg: RGB 716 GP'),
+                                Text('Car Reg: RGB 716 GP', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                                 Spacer()
                               ],
                             ),
