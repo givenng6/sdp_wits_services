@@ -19,5 +19,5 @@ Future getSharedPreferences() async{
   // debugPrint(email);
   // debugPrint(username);
   // debugPrint(kind);
-  // debugPrint(department);
+  debugPrint(department);
 }

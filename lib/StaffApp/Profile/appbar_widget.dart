@@ -16,10 +16,7 @@ AppBar BuildAppBar(BuildContext context) {
   _logOut() async {
     // Clear th shared sharedPreferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.remove("department");
-    sharedPreferences.remove("dhName");
-    sharedPreferences.remove("username");
-    sharedPreferences.remove("email");
+    await sharedPreferences.clear();
     _gotToAppPage();
   }
 

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
+import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart';
+import 'package:sdp_wits_services/globals.dart' as globals;
+import 'CampusControlGlobals.dart' as localGlobals;
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/OnRoute.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/onDuty.dart';
 
 class Skeleton extends StatefulWidget {
   final String name;
   final String btnAction;
-  final Widget itemsList;
+  final SliverChildBuilderDelegate itemsList;
 
   const Skeleton({
     Key? key,
@@ -19,95 +24,134 @@ class Skeleton extends StatefulWidget {
 }
 
 class _SkeletonState extends State<Skeleton> {
+  ScrollController customScrollViewController = ScrollController();
+  bool load = false;
+
+  void profile() {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Profile(globals.email!, globals.username!)));
+  }
+
+  void endShift() async{
+
+    load = true;
+    setState(() {
+
+    });
+    await localGlobals.EndShift();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (contex) => const CampusControl()));
+  }
+
+  void endShiftBottomShit(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) => Container(
+              padding: const EdgeInsets.all(15),
+              height: 200,
+              child:load?const Center(child: CircularProgressIndicator(),): Column(
+                children: [
+                  const Text("Are you sure you want to end shift?",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                  TextButton(
+                      onPressed: () {
+                        endShift();
+                      },
+                      child: const Text("End Shift",
+                          style: TextStyle(color: Colors.red))),
+                  TextButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Text("Cancel")),
+                ],
+              ),
+            ));
+  }
+
+  var top = 1.0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xff003b5c),
-      appBar: AppBar(
         backgroundColor: Colors.white,
-        title: Row(
-          children: const <Widget>[
-            Icon(
-              Icons.security,
-              color: Color(0xff003b5c),
-            ),
-            SizedBox(width: 8.0),
-            Text("Campus Control", style: TextStyle(color: Color(0xff003b5c)))
-          ],
-        ),
-        actions: const <Widget>[
-          CircleAvatar(
-              backgroundColor: Color(0xff003b5c),
-              child: Text(
-                "L",
-                style: TextStyle(fontSize: 20.0, color: Colors.white),
-              ))
-        ],
-      ),
-      floatingActionButton: Container(
-        width: 130.0,
-        height: 40.0,
-        child: ElevatedButton(
-          style: ButtonStyle(
-              shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(18.0),
-              )),
-              backgroundColor:
-                  MaterialStateProperty.all(const Color(0xff003b5c))),
-          onPressed: () {
-            if (widget.name == "Next Stuff") {
-              // Navigator.pushReplacementNamed(context, "/OnRoute");
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => OnRoute()));
-            } else if (widget.name == "Destination") {
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => OnDuty()));
-
-            }
-          },
-          child: Row(
-            children: <Widget>[
-              Text(
-                widget.btnAction,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                ),
+        body: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 150.0,
+              collapsedHeight: 60,
+              pinned: true,
+              floating: true,
+              flexibleSpace: LayoutBuilder(
+                builder: (_, constraints) {
+                  top = constraints.biggest.height;
+                  debugPrint(top.toString());
+                  return AnimatedOpacity(
+                    opacity: top >= 130 ? 1 : 0,
+                    duration: const Duration(milliseconds: 300),
+                    child: FlexibleSpaceBar(
+                      collapseMode: CollapseMode.none,
+                      title: Row(
+                        children: <Widget>[
+                          const SizedBox(width: 8.0),
+                          Text(widget.name,
+                              style: const TextStyle(color: Color(0xff003b5c)))
+                        ],
+                      ),
+                    ),
+                  );
+                },
               ),
-              const SizedBox(width: 4.0),
-              const Icon(
-                Icons.navigate_next,
-                size: 40.0,
-              )
-            ],
-          ),
-        ),
-      ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: SizedBox(
-                height: 150.0,
-                child: Center(
-                  child: Text(
-                    widget.name,
-                    style: const TextStyle(fontSize: 30.0, color: Colors.white),
+              title: Row(
+                children: const <Widget>[
+                  Icon(
+                    Icons.security,
+                    color: Color(0xff003b5c),
                   ),
-                ),
+                  SizedBox(width: 8.0),
+                  Text("Campus Control",
+                      style: TextStyle(color: Color(0xff003b5c)))
+                ],
               ),
+              backgroundColor: Colors.white,
+              elevation: 0.0,
+              actions: [
+                if(widget.name=="Next Stuff")InkWell(
+                    onTap: () {
+                      endShiftBottomShit(context);
+                    },
+                    child: Icon(Icons.exit_to_app, color: Colors.red)),
+                const SizedBox(
+                  width: 10,
+                ),
+                InkWell(
+                  onTap: () {
+                    profile();
+                  },
+                  child: CircleAvatar(
+                      backgroundColor: Color(0xff003b5c),
+                      child: Text(
+                        globals.username![0],
+                        style: const TextStyle(
+                            fontSize: 20.0, color: Colors.white),
+                      )),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+              ],
             ),
-            Expanded(flex: 4, child: widget.itemsList)
+            SliverList(delegate: widget.itemsList),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 100,
+              ),
+            )
           ],
-        ),
-      ),
-    );
+        ));
   }
 }

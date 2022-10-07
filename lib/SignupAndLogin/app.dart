@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
+import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import '../StaffApp/Buses/buses_main.dart';
 import '../StaffApp/Dining/mealSelectionPage.dart';
 import '../StaffApp/StaffPage.dart';
@@ -33,6 +34,9 @@ class _App extends State<App> {
     else if (globals.username != "" && globals.username != null && globals.kind == 'Staff' && globals.department == 'Dining Services') {
       _navigateToDinningServices();
     }
+    else if (globals.username != "" && globals.username != null && globals.kind == 'Staff' && globals.department == 'Campus Control') {
+      _navigateToCampusControl();
+    }
     else if (globals.username != "" && globals.username != null && globals.kind == 'Staff') {
       _navigateToStaffPage();
     }
@@ -63,6 +67,11 @@ class _App extends State<App> {
   _navigateToBusesMain(){
     Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (BuildContext context) => const BusesMain()));
+  }
+
+  _navigateToCampusControl(){
+    Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (BuildContext context) => const CampusControl()));
   }
 
   @override
