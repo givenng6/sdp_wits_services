@@ -13,6 +13,9 @@ class Subscriptions with ChangeNotifier{
   List<CCDUObject> _ccduBookings = [];
   List<String> _counsellorsEmail = [];
   List<String> _counsellorsName = [];
+  List _residences = [];
+  List _campuses = [];
+  bool _booked = false;
 
 
   List<String> get subs => _subs;
@@ -24,6 +27,9 @@ class Subscriptions with ChangeNotifier{
   List<CCDUObject> get ccduBookings => _ccduBookings;
   List<String> get counsellorsEmail => _counsellorsEmail;
   List<String> get counsellorsName => _counsellorsName;
+  List get residences => _residences;
+  List get campuses => _campuses;
+  bool get booked => _booked;
 
 
   void addSub(String service){
@@ -67,6 +73,18 @@ class Subscriptions with ChangeNotifier{
     notifyListeners();
   }
 
+  void setResidences(List residences){
+   _residences = residences;
+   notifyListeners();
+  }
 
+  void setCampuses(List campuses){
+   _campuses = campuses;
+   notifyListeners();
+  }
 
+  void setBooked(bool booked){
+    _booked = booked;
+    notifyListeners();
+  }
 }

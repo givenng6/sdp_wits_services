@@ -1,4 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+
+import '../Providers/UserData.dart';
 
 class BookRide extends StatefulWidget {
   const BookRide({Key? key}) : super(key: key);
@@ -9,194 +16,181 @@ class BookRide extends StatefulWidget {
 
 class _BookRideState extends State<BookRide> {
   double initialChildSize = 0.6;
-  double minChildSize = 0.4;
+  double minChildSize = 0.2;
   double maxChildSize = 0.95;
 
-  final TextEditingController _controller = TextEditingController();
+  String? from;
+  String? to;
+
+  bool isButtonEnabled = true;
+
+  String email = "";
+  String username = "";
+
   @override
   Widget build(BuildContext context) {
+    getResidences(context);
+    getCampuses(context);
+    email = context.watch<UserData>().email;
+    username = context.watch<UserData>().username;
     return makeDismissible(
       child: DraggableScrollableSheet(
           initialChildSize: initialChildSize,
           minChildSize: minChildSize,
           maxChildSize: maxChildSize,
           builder: (_, controller) => Container(
-            decoration: BoxDecoration(
-                color: Colors.grey.shade50,
-                borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(20.0))),
-            child: ListView(
-              controller: controller,
-              children: [
-                // Container(
-                //   margin: const EdgeInsets.only(
-                //       left: 10.0, right: 10.0, top: 20.0),
-                //   padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                //   width: MediaQuery.of(context).size.width,
-                //   child: TextField(
-                //     controller: _controller,
-                //     decoration: InputDecoration(
-                //       alignLabelWithHint: true,
-                //       labelText: 'Caption',
-                //       labelStyle: const TextStyle(
-                //         color: Colors.black87,
-                //       ),
-                //       isDense: false,
-                //       filled: true,
-                //       fillColor: Colors.white30,
-                //       border: OutlineInputBorder(
-                //         borderRadius: BorderRadius.circular(10.0),
-                //       ),
-                //       focusedBorder: OutlineInputBorder(
-                //           borderSide:
-                //           BorderSide(color: Colors.deepPurple.shade900),
-                //           borderRadius: BorderRadius.circular(10.0)),
-                //     ),
-                //     onChanged: (message) {
-                //       announcementMessage = message;
-                //     },
-                //     minLines: 1,
-                //     maxLines: 1,
-                //   ),
-                // ),
-                // if (image != null)
-                //   Center(
-                //     child: Stack(
-                //       children: [
-                //         Container(
-                //           margin: const EdgeInsets.only(
-                //               top: 20.0, left: 20.0, right: 20.0),
-                //           child: Image.file(
-                //             image!,
-                //             // width: 200,
-                //             height: 200,
-                //           ),
-                //         ),
-                //         IconButton(
-                //             onPressed: () {
-                //               setState(() {
-                //                 image = null;
-                //               });
-                //             },
-                //             icon: Container(
-                //                 decoration: BoxDecoration(
-                //                     color: Colors.grey.shade200,
-                //                     borderRadius:
-                //                     BorderRadius.circular(20.0)),
-                //                 // color: Colors.black,
-                //                 child: const Icon(
-                //                   Icons.cancel_sharp,
-                //                   color: Colors.redAccent,
-                //                   size: 20.0,
-                //                 )))
-                //       ],
-                //     ),
-                //   ),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //   children: [
-                //     Expanded(
-                //       child: ListTile(
-                //         title: Container(
-                //           margin:
-                //           const EdgeInsets.only(left: 5.0, top: 20.0),
-                //           child: Row(
-                //             children: const [
-                //               Icon(
-                //                 Icons.add_photo_alternate_rounded,
-                //                 color: Color(0xff25C9D1),
-                //                 size: 30,
-                //               ),
-                //               SizedBox(
-                //                 width: 10.0,
-                //               ),
-                //               Text(
-                //                 'Add Photo',
-                //                 style: TextStyle(
-                //                     fontSize: 18,
-                //                     fontWeight: FontWeight.bold),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //         onTap: () => pickImage(ImageSource.gallery),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: ListTile(
-                //         title: Container(
-                //           margin:
-                //           const EdgeInsets.only(left: 5.0, top: 10.0),
-                //           child: Row(
-                //             children: const [
-                //               Icon(
-                //                 Icons.add_a_photo,
-                //                 color: Color(0xff25C9D1),
-                //                 size: 30,
-                //               ),
-                //               SizedBox(
-                //                 width: 10.0,
-                //               ),
-                //               Text(
-                //                 'Take Photo',
-                //                 style: TextStyle(
-                //                     fontSize: 18,
-                //                     fontWeight: FontWeight.bold),
-                //               ),
-                //             ],
-                //           ),
-                //         ),
-                //         onTap: () => pickImage(ImageSource.camera),
-                //       ),
-                //     ),
-                //   ],
-                // ),
-                // Container(
-                //   height: 50.0,
-                //   width: MediaQuery.of(context).size.width,
-                //   margin: const EdgeInsets.only(
-                //       top: 30.0, left: 10.0, right: 10.0),
-                //   child: ElevatedButton(
-                //     onPressed: isButtonEnabled? () {
-                //       announcementMessage = announcementMessage.trim();
-                //       if (image != null) {
-                //         setState(() {
-                //           postButtonChild = const CircularProgressIndicator();
-                //           _controller.clear();
-                //           isButtonEnabled = false;
-                //         });
-                //         post();
-                //       }else{
-                //         Get.snackbar(
-                //             'Error',
-                //             'Image Not Selected!',
-                //             snackPosition: SnackPosition.BOTTOM,
-                //             backgroundColor: Colors.red,
-                //             colorText: Colors.black
-                //         );
-                //       }
-                //     }:null,
-                //     style: ButtonStyle(
-                //       backgroundColor:
-                //       MaterialStateProperty.all(Colors.white),
-                //     ),
-                //     child: Center(
-                //       child: postButtonChild,
-                //     ),
-                //   ),
-                // ),
-              ],
-            ),
-          )),
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade50,
+                    borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(20.0))),
+                child: ListView(
+                  controller: controller,
+                  children: [
+                    Container(
+                      width: 10.0,
+                      margin: const EdgeInsets.only(
+                          left: 20.0, right: 20.0, top: 20.0),
+                      child: DropdownButton<String>(
+                        focusColor: Colors.black,
+                        hint: const Text('From', style: TextStyle(color: Colors.black),),
+                        isExpanded: true,
+                        value: from,
+                        items: context.watch<Subscriptions>().campuses
+                            .map((item) => DropdownMenuItem<String>(
+                                value: item['campusName'],
+                                child: Text(
+                                  item['campusName'],
+                                  style: const TextStyle(fontSize: 18),
+                                )))
+                            .toList(),
+                        onChanged: (item) => setState(
+                          () => from = item.toString(),
+                        ),
+                      ),
+                    ),
+                    Container(
+                        width: 10.0,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 20.0, vertical: 0.0),
+                        child: DropdownButton<String>(
+                            hint: const Text('To', style: TextStyle(color: Colors.black),),
+                            isExpanded: true,
+                            value: to,
+                            items: context.watch<Subscriptions>().residences
+                                .map((item) => DropdownMenuItem<String>(
+                                    value: item,
+                                    child: Text(
+                                      item,
+                                      style: const TextStyle(fontSize: 18),
+                                    )))
+                                .toList(),
+                            onChanged: (item) =>
+                                setState(() => to = item.toString())),
+                      ),
+                    const SizedBox(height: 30.0,),
+                    Container(
+                      height: 50.0,
+                      width: MediaQuery.of(context).size.width,
+                      margin: const EdgeInsets.only(
+                          top: 30.0, left: 10.0, right: 10.0),
+                      child: ElevatedButton(
+                        onPressed: isButtonEnabled
+                            ? () {
+                                if (from != null ||
+                                    to != null) {
+                                  setState(() {
+                                    postButtonChild =
+                                        const CircularProgressIndicator();
+                                    isButtonEnabled = false;
+                                  });
+                                  book();
+                                }
+                              }
+                            : null,
+                        style: ButtonStyle(
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.white),
+                        ),
+                        child: Center(
+                          child: postButtonChild,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+      ),
     );
   }
 
   Widget makeDismissible({required Widget child}) => GestureDetector(
-    behavior: HitTestBehavior.opaque,
-    onTap: () => Navigator.pop(context),
-    child: GestureDetector(
-      onTap: () {},
-      child: child,
-    ),
+        behavior: HitTestBehavior.opaque,
+        onTap: () => Navigator.pop(context),
+        child: GestureDetector(
+          onTap: () {},
+          child: child,
+        ),
+      );
+
+  Widget postButtonChild = const Text(
+    'Book',
+    style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
   );
+
+  String uri = "https://web-production-8fed.up.railway.app/";
+  Future<void> getResidences(BuildContext context) async{
+    // residences = context.watch<Subscriptions>().residences;
+    if(context.watch<Subscriptions>().residences.isEmpty){
+      // print(context.watch<Subscriptions>().residences);
+      await http.get(Uri.parse("${uri}db/getAllResidences"),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+          }
+      ).then((value){
+        // print(value.body);
+        List residences = jsonDecode(value.body).toList();
+        // print(residences);
+        context.read<Subscriptions>().setResidences(residences);
+        // this.residences = context.watch<Subscriptions>().residences;
+      });
+    }
+
+  }
+
+  Future<void> getCampuses(BuildContext context) async{
+    // campuses = context.watch<Subscriptions>().campuses;
+    if(context.watch<Subscriptions>().campuses.isEmpty){
+      print(context.watch<Subscriptions>().campuses);
+      await http.get(Uri.parse("${uri}db/getAllCampuses"),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+          }
+      ).then((value){
+        List campuses = jsonDecode(value.body).toList();
+        context.read<Subscriptions>().setCampuses(campuses);
+        print(campuses);
+        // this.campuses = context.watch<Subscriptions>().campuses;
+      });
+    }
+  }
+
+  Future<void> book() async{
+    await http.post(Uri.parse("${uri}db/requestRide/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String?>{
+          "email": email,
+          "username": username,
+          "from": from,
+          "to": to,
+        })
+    ).then((value){
+      context.read<Subscriptions>().setBooked(true);
+      Navigator.pop(context);
+    });
+  }
 }
