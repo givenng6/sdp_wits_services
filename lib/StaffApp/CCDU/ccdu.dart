@@ -23,7 +23,7 @@ class ccduState extends State<ccdu>{
       theme: ThemeData(
           colorSchemeSeed: const Color(0xff6750a4), useMaterial3: true),
       home: Scaffold(
-        appBar: AppBar(title: const Text('CCDU'), backgroundColor: Color(0xff003b5c),),
+        appBar: AppBar(title: const Text('CCDU', style: TextStyle(color: Colors.white)), backgroundColor: Color(0xff003b5c),),
         body: bookings.isNotEmpty?
         SingleChildScrollView(
           child: Column(
