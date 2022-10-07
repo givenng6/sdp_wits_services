@@ -54,7 +54,8 @@ class _HealthWidget extends State<HealthWidget>{
       items.add(ItemWidget("CCDU", booking.date, booking.time, booking.counsellorName));
     }
 
-    items.add(ItemWidget("Campus Health", "2022/09/06", "09:00", "Dr G Mathebula"),);
+    // once with campus health data
+    //items.add(ItemWidget("Campus Health", "2022/09/06", "09:00", "Dr G Mathebula"),);
 
     return Column(children: items);
   }
