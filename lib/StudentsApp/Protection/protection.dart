@@ -39,7 +39,6 @@ class _Protection extends State<Protection> {
           ? Column(
               children: [
                 utilityWidget.AppBar(title),
-
                 // const Spacer(),
                 TextButton(
                     onPressed: () async {
@@ -50,45 +49,46 @@ class _Protection extends State<Protection> {
                       }
                     },
                     child: const Text('About Protection Services')),
-                Card(
-                    //color: Colors.white70,
-                    elevation: 2,
-                    child: Container(
-                      width: double.infinity,
-                      height: 180.0,
-                      padding: const EdgeInsets.all(12),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        //borderRadius: BorderRadius.circular(12.0),
-                        image: DecorationImage(
-                            image: AssetImage('assets/white.jpg'),
-                            fit: BoxFit.cover),
+                if(context.watch<Subscriptions>().booked)
+                  Card(
+                      elevation: 2,
+                      child: Container(
+                        width: double.infinity,
+                        height: 180.0,
+                        padding: const EdgeInsets.all(12),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          //borderRadius: BorderRadius.circular(12.0),
+                          image: DecorationImage(
+                              image: AssetImage('assets/white.jpg'),
+                              fit: BoxFit.cover),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10.0,),
+                            const Text('Driver: Jabu Maluleka'),
+                            const SizedBox(height: 10.0,),
+                            const Text('From: Wits Main Campus'),
+                            const SizedBox(height: 10.0,),
+                            const Text('To: Student Digz'),
+                            const SizedBox(height: 10.0,),
+                            const Text('ETA: 7 mins'),
+                            const SizedBox(height: 10.0,),
+                            const Spacer(),
+                            Row(
+                              children: const [
+                                Text('Car Name: Honda'),
+                                Spacer(),
+                                Text('Car Reg: RGB 716 GP'),
+                                Spacer()
+                              ],
+                            ),
+                            const SizedBox(height: 10.0,),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 10.0,),
-                          const Text('Driver: Jabu Maluleka'),
-                          const SizedBox(height: 10.0,),
-                          const Text('From: Wits Main Campus'),
-                          const SizedBox(height: 10.0,),
-                          const Text('To: Student Digz'),
-                          const SizedBox(height: 10.0,),
-                          const Text('ETA: 7 mins'),
-                          const SizedBox(height: 10.0,),
-                          const Spacer(),
-                          Row(
-                            children: const [
-                              Text('Car Name: Honda'),
-                              SizedBox(width: 80.0,),
-                              Text('Car Registration: RGB 716 GP'),
-                            ],
-                          ),
-                          const SizedBox(height: 10.0,)
-                        ],
-                      ),
-                    ),
-                ),
+                  ),
               ],
             )
           : Column(
@@ -102,8 +102,8 @@ class _Protection extends State<Protection> {
               ],
             ),
       floatingActionButton: SizedBox(
-        height: 50.0,
-        width: 100.0,
+        height: 40.0,
+        width: 130.0,
         child: FloatingActionButton(
           backgroundColor: const Color(0xff003b5c),
           onPressed: () => showModalBottomSheet(
@@ -112,9 +112,17 @@ class _Protection extends State<Protection> {
               isScrollControlled: true,
               builder: (context) => const BookRide()),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
+            borderRadius: BorderRadius.circular(35.0),
           ),
-          child: const Text('Book Ride'),
+          child: Row(
+            children: [
+              Spacer(),
+              const Icon(Icons.book),
+              Spacer(),
+              const Text('Book Ride'),
+              Spacer()
+            ],
+          ),
         ),
       ),
     );
