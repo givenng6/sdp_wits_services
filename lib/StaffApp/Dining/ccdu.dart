@@ -87,7 +87,7 @@ class  Appoitment3 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
-        //elevation: 0,
+        elevation: 0,
         //color: Theme.of(context).colorScheme.surfaceVariant,
         child: const SizedBox(
           width: 350,
@@ -109,27 +109,90 @@ class  Appoitment4 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-    return Center(
-      child: Card(
-        //elevation: 0,
-        //color: Theme.of(context).colorScheme.surfaceVariant,
-        child: const SizedBox(
-          width: 350,
-          height: 170,
-          child: Text(''' Date:
- Time:
- Student name:
- Descprption:
-  ''''',style: TextStyle(fontSize: 20),),
-          // style: TextStyle(fontSize: 16),),
-        ),
-
+    return Scaffold(
+        appBar: AppBar(title: const Text('CCDU'), backgroundColor: Color(0xff003b5c),),
+         body : Card(
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(24),
       ),
+      child: Column(
+        children: [
+          Stack(
+            children: [
+              Ink.image(
+                image: NetworkImage(
+                  'https://www.iconsdb.com/icons/preview/white/rounded-rectangle-xxl.png',
+                ),
+                height: 240,
+                fit: BoxFit.cover,
+              ),
+              Positioned(
+                bottom: 16,
+                right: 16,
+                left: 16,
+                child: Text(
+                  'Appoitment1',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blue,
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.all(16).copyWith(bottom: 0),
+            child: Text(
+              ''''date:
+                  time:
+                  student name:
+                  descprption:
+                ''''',style: TextStyle(fontSize: 16),
+              //style: TextStyle(fontSize: 16),
+            ),
+          ),
+          ButtonBar(
+            alignment: MainAxisAlignment.start,
+            children: [
+              FlatButton(
+                child: Text('Accept'),
+                onPressed: () {},
+              ),
+              FlatButton(
+                child: Text('Reject'),
+                onPressed: () {},
+              )
+            ],
+          )
+        ],
+      ),
+    )
     );
+
   }
 }
+
+//     return Center(
+//       child: Card(
+//         //elevation: 0,
+//         //color: Theme.of(context).colorScheme.surfaceVariant,
+//         child: const SizedBox(
+//           width: 350,
+//           height: 170,
+//           child: Text(''' Date:
+//  Time:
+//  Student name:
+//  Descprption:
+//   ''''',style: TextStyle(fontSize: 20),),
+//           // style: TextStyle(fontSize: 16),),
+//         ),
+//
+//       ),
+//     );
+//   }
+// }
 
 
 //     return Scaffold(
