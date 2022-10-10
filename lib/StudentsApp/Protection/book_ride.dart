@@ -15,7 +15,7 @@ class BookRide extends StatefulWidget {
 }
 
 class _BookRideState extends State<BookRide> {
-  double initialChildSize = 0.6;
+  double initialChildSize = 0.3;
   double minChildSize = 0.2;
   double maxChildSize = 0.95;
 
@@ -29,8 +29,6 @@ class _BookRideState extends State<BookRide> {
 
   @override
   Widget build(BuildContext context) {
-    getResidences(context);
-    getCampuses(context);
     email = context.watch<UserData>().email;
     username = context.watch<UserData>().username;
     return makeDismissible(
@@ -96,7 +94,7 @@ class _BookRideState extends State<BookRide> {
                       child: ElevatedButton(
                         onPressed: isButtonEnabled
                             ? () {
-                                if (from != null ||
+                                if (from != null &&
                                     to != null) {
                                   setState(() {
                                     postButtonChild =
@@ -138,43 +136,6 @@ class _BookRideState extends State<BookRide> {
   );
 
   String uri = "https://web-production-8fed.up.railway.app/";
-  Future<void> getResidences(BuildContext context) async{
-    // residences = context.watch<Subscriptions>().residences;
-    if(context.watch<Subscriptions>().residences.isEmpty){
-      // print(context.watch<Subscriptions>().residences);
-      await http.get(Uri.parse("${uri}db/getAllResidences"),
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Content-Type": "application/json; charset=UTF-8",
-          }
-      ).then((value){
-        // print(value.body);
-        List residences = jsonDecode(value.body).toList();
-        // print(residences);
-        context.read<Subscriptions>().setResidences(residences);
-        // this.residences = context.watch<Subscriptions>().residences;
-      });
-    }
-
-  }
-
-  Future<void> getCampuses(BuildContext context) async{
-    // campuses = context.watch<Subscriptions>().campuses;
-    if(context.watch<Subscriptions>().campuses.isEmpty){
-      print(context.watch<Subscriptions>().campuses);
-      await http.get(Uri.parse("${uri}db/getAllCampuses"),
-          headers: <String, String>{
-            "Accept": "application/json",
-            "Content-Type": "application/json; charset=UTF-8",
-          }
-      ).then((value){
-        List campuses = jsonDecode(value.body).toList();
-        context.read<Subscriptions>().setCampuses(campuses);
-        print(campuses);
-        // this.campuses = context.watch<Subscriptions>().campuses;
-      });
-    }
-  }
 
   Future<void> book() async{
     await http.post(Uri.parse("${uri}db/requestRide/"),

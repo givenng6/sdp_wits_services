@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/book_ride.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:http/http.dart' as http;
 import '../UtilityWidgets.dart';
 import '../Utilities/AddSub.dart';
 import 'package:provider/provider.dart';
@@ -26,6 +29,8 @@ class _Protection extends State<Protection> {
 
   @override
   Widget build(BuildContext context) {
+    getResidences(context);
+    getCampuses(context);
     subs = context.watch<Subscriptions>().subs;
 
     if (subs.contains(service)) {
@@ -77,7 +82,7 @@ class _Protection extends State<Protection> {
                             const SizedBox(height: 10.0,),
                             const Spacer(),
                             Row(
-                              children: const [
+                              children: const <Widget>[
                                 Text('Car Name: Honda', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                                 Spacer(),
                                 Text('Car Reg: RGB 716 GP', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
@@ -93,7 +98,7 @@ class _Protection extends State<Protection> {
             )
           : Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: <Widget>[
                 AddSub(
                     title: title,
                     service: service,
@@ -115,11 +120,11 @@ class _Protection extends State<Protection> {
             borderRadius: BorderRadius.circular(35.0),
           ),
           child: Row(
-            children: [
+            children: const <Widget>[
               Spacer(),
-              const Icon(Icons.book),
+              Icon(Icons.book),
               Spacer(),
-              const Text('Book Ride'),
+              Text('Book Ride'),
               Spacer()
             ],
           ),
@@ -132,5 +137,37 @@ class _Protection extends State<Protection> {
     setState(() {
       isSubscribed = true;
     });
+  }
+
+  String uri = "https://web-production-8fed.up.railway.app/";
+  Future<void> getResidences(BuildContext context) async{
+    // residences = context.watch<Subscriptions>().residences;
+    if(context.watch<Subscriptions>().residences.isEmpty){
+      // print(context.watch<Subscriptions>().residences);
+      await http.get(Uri.parse("${uri}db/getAllResidences"),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+          }
+      ).then((value){
+        List residences = jsonDecode(value.body).toList();
+        context.read<Subscriptions>().setResidences(residences);
+      });
+    }
+
+  }
+
+  Future<void> getCampuses(BuildContext context) async{
+    if(context.watch<Subscriptions>().campuses.isEmpty){
+      await http.get(Uri.parse("${uri}db/getAllCampuses"),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+          }
+      ).then((value){
+        List campuses = jsonDecode(value.body).toList();
+        context.read<Subscriptions>().setCampuses(campuses);
+      });
+    }
   }
 }
