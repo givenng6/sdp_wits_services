@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart' as staff;
 import 'package:sdp_wits_services/StudentsApp/Profile/Profile.dart' as students;
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
@@ -17,16 +20,22 @@ void main() {
 Future<void> _studentsProfileTests(WidgetTester tester)async{
   const username = 'Nkosinathi Chuma';
   const email = 'a2375736@wits.ac.za';
-  const subs = ['Dining Services', 'Bus Services', 'Campus Control'];
+  const subs = <String>['Dining Services', 'Bus Services', 'Campus Control'];
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString('username', username);
   preferences.setString('email', email);
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  Widget widget = MaterialApp(
-    home: students.Profile(email, username, subs),
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: const MaterialApp(
+        home: students.Profile(isTesting: true, email: email, username: username, subs: subs,)),
   );
+
   await tester.pumpWidget(widget);
   await tester.pumpAndSettle();
 
@@ -40,6 +49,8 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
   final findBusServicesText = find.text(subs[1]);
   final findProtectionServicesText = find.text(subs[2]);
   final findSubscriptionsText = find.text('Subscriptions');
+
+  // await tester.pump(const Duration(seconds: 5));
   expect(findUsername, findsOneWidget);
   expect(findEmail, findsOneWidget);
   expect(findIcon, findsWidgets);
@@ -56,7 +67,7 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
   expect(find.text('Sign Out'), findsOneWidget);
   expect(find.text('Cancel'), findsOneWidget);
 
-  await tester.pump(const Duration(seconds: 10));
+  await tester.pump(const Duration(seconds: 3));
   preferences.clear();
 }
 

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import './MenuAppBar.dart';
 import './MenuItems.dart';
 
 class Menu extends StatefulWidget{
   final Function(int index) onNavigate;
-  Menu({required this.onNavigate});
+  const Menu({super.key, required this.onNavigate});
   @override
   State<Menu> createState() => _Menu();
 }
