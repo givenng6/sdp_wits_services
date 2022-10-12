@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/Dining.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/ViewDH.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -23,9 +26,7 @@ String uri = "https://web-production-8fed.up.railway.app/";
 Future<void> _unSubbedDiningTests(WidgetTester tester)async{
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
-  var subs = ['Bus Services', 'Campus Control'];
   var diningHalls = [];
-  var dhFollowing = 'DH4';
 
   await http.get(Uri.parse("${uri}db/getDiningHalls/"),
       headers: <String, String>{
@@ -55,9 +56,16 @@ Future<void> _unSubbedDiningTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  await tester.pumpWidget(HookBuilder(builder: (context) {
-    return MaterialApp(home: Dining(email, subs, diningHalls, dhFollowing));
-  }));
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: MaterialApp(
+        home: Dining()),
+  );
+
+  await tester.pumpWidget(widget);
 
   await tester.pumpAndSettle();
 
@@ -73,9 +81,7 @@ Future<void> _unSubbedDiningTests(WidgetTester tester)async{
 Future<void> _subbedDiningTests(WidgetTester tester)async{
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
-  var subs = ['dining_service', 'Bus Services', 'Campus Control'];
-  var diningHalls = [];
-  var dhFollowing = 'DH4';
+  var diningHalls = <DiningObject>[];
 
   await http.get(Uri.parse("${uri}db/getDiningHalls/"),
       headers: <String, String>{
@@ -105,11 +111,17 @@ Future<void> _subbedDiningTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  await tester.pumpWidget(HookBuilder(builder: (context) {
-    return MaterialApp(home: Dining(email, subs, diningHalls, dhFollowing));
-  }));
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: MaterialApp(
+        home: Dining(isTesting: true, email: email, diningHalls: diningHalls,)),
+  );
 
-  await tester.pumpAndSettle();
+  await tester.pumpWidget(widget);
+  await tester.pump(const Duration(seconds: 3));
 
   await tester.pumpAndSettle();
   expect(find.text('Dining Services'), findsOneWidget);
