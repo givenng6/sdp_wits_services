@@ -79,7 +79,6 @@ class _SkeletonState extends State<Skeleton> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: CustomScrollView(
-          physics: const BouncingScrollPhysics(),
           slivers: [
             SliverAppBar(
               expandedHeight: 150.0,

@@ -14,32 +14,48 @@ class OnDuty extends StatefulWidget {
 }
 
 class _OnDutyState extends State<OnDuty> {
-  List<Student> students = [];
-  void init()async{
-    await globals.GetStudents();
-    students = [...globals.students];
-    setState(() {
+  // List<Student> students = [];
 
-    });
+  void init() async {
+    await globals.GetStudents();
+    // globals.students = [...globals.students];
+    setState(() {});
   }
-  void init2() async{
-    SharedPreferences sharedPreferences =await SharedPreferences.getInstance();
+
+  void init2() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("driverState", "onDuty");
   }
+
   @override
   void initState() {
-   init();
-   init2();
+    init();
+    init2();
     super.initState();
   }
 
-  void handleCard(int index) {
+  bool contains(List<Student> arr,Student curr) {
+   for(Student student in arr){
+     if(student.email == curr.email){
+       return true;
+     }
+   }
+   return false;
+  }
 
+  void handleCard(int index) {
+    setState(() {
+      if(contains(globals.selectedStudents, globals.students[index])){
+        globals.selectedStudents.remove(globals.students[index]);
+      }else{
+        globals.selectedStudents.add(globals.students[index]);
+      }
+    });
   }
 
   SliverChildBuilderDelegate ItemList() {
     return SliverChildBuilderDelegate(
-        childCount: students.length,
+        childCount: globals.students.length,
         (context, index) => InkWell(
               onTap: () {
                 handleCard(index);
@@ -48,10 +64,12 @@ class _OnDutyState extends State<OnDuty> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
                 elevation: 10,
-                child: Container(
+                child: SizedBox(
                   height: 70.0,
                   child: ListTile(
-                    tileColor: const Color(0xff003b5c),
+                    tileColor: contains(globals.selectedStudents,globals.students[index])
+                        ? Colors.grey
+                        : const Color(0xff003b5c),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20.0)),
                     title: Padding(
@@ -62,16 +80,24 @@ class _OnDutyState extends State<OnDuty> {
                           Expanded(
                               flex: 2,
                               child: Text(
-                                students[index].name,
-                                style: const TextStyle(fontSize: 23.0,color: Colors.white),
+                                globals.students[index].name,
+                                style: const TextStyle(
+                                    fontSize: 23.0, color: Colors.white),
                               )),
                           Expanded(
                               flex: 1,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
-                                children: [Text('- ${students[index].res}',style: const TextStyle(color: Colors.white),)],
+                                children: [
+                                  Text(
+                                    '- ${globals.students[index].res}',
+                                    style: const TextStyle(color: Colors.white),
+                                  )
+                                ],
                               )),
-                          const SizedBox(height: 5.0,)
+                          const SizedBox(
+                            height: 5.0,
+                          )
                         ],
                       ),
                     ),
@@ -84,14 +110,34 @@ class _OnDutyState extends State<OnDuty> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:Skeleton(
-          name: "Next Stuff", btnAction: "Start", itemsList: ItemList()),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: (){Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (BuildContext context) => OnRoute()));},
-        child: const Text("Start",style: TextStyle(color: Color(0xff003b5c)),),
+      body: RefreshIndicator(
+
+        onRefresh: () async{
+          await globals.GetStudents();
+          setState(() {
+
+          });
+        },
+        child: Skeleton(
+            name: "Next Stuff", btnAction: "Start", itemsList: ItemList()),
       ),
+      floatingActionButton: globals.selectedStudents.isEmpty
+          ? null
+          : FloatingActionButton(
+              backgroundColor: Colors.white,
+              onPressed: () async{
+                await globals.SetDestinations();
+                globals.OnRoute();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const OnRoute()));
+              },
+              child: const Text(
+                "Start",
+                style: TextStyle(color: Color(0xff003b5c)),
+              ),
+            ),
     );
   }
 }

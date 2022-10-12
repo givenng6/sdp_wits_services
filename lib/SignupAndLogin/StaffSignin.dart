@@ -33,7 +33,7 @@ class StaffLoginScreen extends StatelessWidget {
           "email": email,
         }));
     var json = jsonDecode(result.body);
-    debugPrint("");
+    // debugPrint("");
 
     if(json["status"]=="exists"){
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/onDuty.dart';
+import 'CampusControlGlobals.dart' as globals;
 
 import 'Skeleton.dart';
 
@@ -11,42 +12,35 @@ class OnRoute extends StatefulWidget {
 }
 
 class _OnRouteState extends State<OnRoute> {
-  List<String> destinations = [
-    "Student Digz",
-    "campus Africa 49",
-    "campus Africa 56",
-    "J-One",
-    "South Point Braam center",
-    "Dakalo"
-  ];
-
-  List<String> done = []; // covered destinations
-
   void handleCard(int index) {
-    String curr = destinations[index];
+    String curr = globals.destinations[index];
     setState(() {
-      if (done.contains(curr)) {
-        done.remove(curr);
-      } else {
-        done.add(curr);
+      if (!globals.done.contains(curr)) {
+        globals.done.add(curr);
+        globals.handleArrived(curr);
       }
     });
   }
 
   void handleMove() {
+    globals.selectedStudents.clear();
+    globals.students.clear();
+    globals.arrived.clear();
+    globals.done.clear();
+    globals.destinations.clear();
     Navigator.pushReplacement(context,
-        MaterialPageRoute(builder: (BuildContext context) => OnDuty()));
+        MaterialPageRoute(builder: (BuildContext context) => const OnDuty()));
   }
 
   SliverChildBuilderDelegate ItemList() {
     return SliverChildBuilderDelegate(
-        childCount: destinations.length,
+        childCount: globals.destinations.length,
         (context, index) => Card(
               elevation: 10,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0)),
               child: ListTile(
-                tileColor: done.contains(destinations[index])
+                tileColor: globals.done.contains(globals.destinations[index])
                     ? Colors.grey
                     : const Color(0xff003b5c),
                 onTap: () {
@@ -55,7 +49,7 @@ class _OnRouteState extends State<OnRoute> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20.0)),
                 title: Text(
-                  destinations[index],
+                  globals.destinations[index],
                   style: const TextStyle(fontSize: 25.0, color: Colors.white),
                 ),
               ),
@@ -67,7 +61,7 @@ class _OnRouteState extends State<OnRoute> {
     return Scaffold(
       body: Skeleton(
           name: "Destinations", btnAction: "Done", itemsList: ItemList()),
-      floatingActionButton: destinations.length != done.length
+      floatingActionButton: globals.destinations.length != globals.done.length
           ? null
           : FloatingActionButton(
               onPressed: () {

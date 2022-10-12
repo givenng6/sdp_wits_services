@@ -1,78 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StudentsSignin.dart';
-import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
-import '../StaffApp/Buses/buses_main.dart';
-import '../StaffApp/Dining/mealSelectionPage.dart';
-import '../StaffApp/StaffPage.dart';
-import '../StudentsApp/Home/Home.dart';
-import '../StudentsApp/Home/Start.dart';
 import 'StaffSignin.dart';
-import 'package:sdp_wits_services/globals.dart' as globals;
 
-class App extends StatefulWidget {
+class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
-
-  @override
-  State<App> createState() => _App();
-}
-
-class _App extends State<App> {
-  @override
-  void initState() {
-    _getData();
-    super.initState();
-  }
-  List? routes;
-  _getData() async {
-    await Future.delayed(const Duration(milliseconds: 1));
-    if (globals.username != "" && globals.username != null && globals.kind == 'Student') {
-      _navigateToHome(globals.email, globals.username);
-    }
-    else if (globals.username != "" && globals.username != null && globals.kind == 'Staff' && globals.department == 'Bus Services') {
-      _navigateToBusesMain();
-    }
-    else if (globals.username != "" && globals.username != null && globals.kind == 'Staff' && globals.department == 'Dining Services') {
-      _navigateToDinningServices();
-    }
-    else if (globals.username != "" && globals.username != null && globals.kind == 'Staff' && globals.department == 'Campus Control') {
-      _navigateToCampusControl();
-    }
-    else if (globals.username != "" && globals.username != null && globals.kind == 'Staff') {
-      _navigateToStaffPage();
-    }
-  }
-
-  _navigateToHome(email, username) {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => Start(email: email, username: username)),//Home(email, username)),
-        (Route<dynamic> route) => false);
-  }
-
-  _navigateToStaffPage() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (BuildContext context) => const StaffPage()),
-        (Route<dynamic> route) => false);
-  }
-
-  _navigateToDinningServices() {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (BuildContext context) => mealSelecionPage()),
-            (Route<dynamic> route) => false);
-  }
-
-  _navigateToBusesMain(){
-    Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (BuildContext context) => const BusesMain()));
-  }
-
-  _navigateToCampusControl(){
-    Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (BuildContext context) => const CampusControl()));
-  }
 
   @override
   Widget build(BuildContext context) {

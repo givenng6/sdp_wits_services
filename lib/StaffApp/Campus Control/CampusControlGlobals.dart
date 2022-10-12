@@ -1,6 +1,5 @@
 library globals;
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/Student.dart';
@@ -14,7 +13,10 @@ String campusName = "";
 List<Vehicle>vehicles = [];
 List<String>campuses = [];
 List<Student>students = [];
-
+List<String>destinations = [];
+List<Student> selectedStudents = [];
+List<String> done = [];
+List<Student> arrived = [];
 Future<void> StartShift(String campusNamee)async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   String? username = sharedPreferences.getString("username");
@@ -36,8 +38,56 @@ Future<void> StartShift(String campusNamee)async {
 
   var json = jsonDecode(result.body);
 
-  debugPrint("$json");
+}
 
+Future<void> OnRoute()async{
+  List<String> emails = [];
+  // selectedStudents.map((e) => emails.add(e.email));
+  for(Student e in selectedStudents){
+    emails.add(e.email);
+  }
+  debugPrint("OnRoute$emails");
+  await http.post(Uri.parse("$url/Students/onRoute"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: jsonEncode(<String, dynamic>{"emails": emails,"campusName":campusName}));
+}
+
+void handleArrived(String resName){
+  arrived.clear();
+  for(Student e in selectedStudents){
+    if(e.res==resName) {
+      arrived.add(e);
+    }
+  }
+  Done();
+}
+
+Future<void> Done()async{
+  List<String> emails = [];
+  for(Student e in arrived){
+    emails.add(e.email);
+
+  }
+
+  await http.post(Uri.parse("$url/Students/done"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: jsonEncode(<String, dynamic>{"emails": emails,"campusName":campusName}));
+
+}
+
+Future<void> SetDestinations()async{
+  debugPrint("Setting sestinations");
+  for(Student e in selectedStudents){
+    if(!destinations.contains(e.res)) {
+      destinations.add(e.res);
+    }
+  }
 }
 
 Future<void> GetVehicles()async {
