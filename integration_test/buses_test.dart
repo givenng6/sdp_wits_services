@@ -1,11 +1,13 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/BusObject.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
 import 'package:http/http.dart' as http;
@@ -24,7 +26,6 @@ String uri = "https://web-production-8fed.up.railway.app/";
 Future<void> _unSubbedBusesTests(WidgetTester tester)async{
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
-  var subs = ['Bus Services', 'Campus Control'];
 
   await http.get(Uri.parse("${uri}db/getDiningHalls/"),
       headers: <String, String>{
@@ -39,9 +40,14 @@ Future<void> _unSubbedBusesTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  await tester.pumpWidget(HookBuilder(builder: (context) {
-    return MaterialApp(home: Buses(email, subs, const [], const []));
-  }));
+  Widget widget = MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => Subscriptions()),
+    ChangeNotifierProvider(create: (_) => UserData()),
+  ],
+    child: const MaterialApp(home: Buses()),
+  );
+
+  await tester.pumpWidget(widget);
 
   await tester.pumpAndSettle();
 
@@ -57,8 +63,7 @@ Future<void> _unSubbedBusesTests(WidgetTester tester)async{
 Future<void> _subbedBusesTests(WidgetTester tester)async{
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
-  var subs = ['bus_service', 'Campus Control'];
-  var busSchedule = [];
+  List<BusObject> busSchedule = [];
   var busFollowing = [];
 
   await http.get(Uri.parse("${uri}db/getBusSchedule/"),
@@ -99,13 +104,20 @@ Future<void> _subbedBusesTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  await tester.pumpWidget(HookBuilder(builder: (context) {
-    return MaterialApp(home: Buses(email, subs, busSchedule, busFollowing));
-  }));
+  Widget widget = MultiProvider(providers: [
+    ChangeNotifierProvider(create: (_) => Subscriptions()),
+    ChangeNotifierProvider(create: (_) => UserData()),
+  ],
+    child: MaterialApp(home: Buses(isTesting: true, busSchedule: busSchedule,)),
+  );
+
+  await tester.pumpWidget(widget);
+  await Future.delayed(const Duration(seconds: 5));
 
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
+  // await Future.delayed(const Duration(seconds: 5));
   expect(find.text('Bus Services'), findsOneWidget);
   expect(find.text('Status'), findsWidgets);
   expect(find.text('Follow'), findsWidgets);

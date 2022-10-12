@@ -6,7 +6,11 @@ import './appbar_widget.dart';
 import './profile_widget.dart';
 
 class Profile extends StatefulWidget{
-  const Profile({super.key});
+  final bool? isTesting;
+  final String? username;
+  final String? email;
+  final List<String>? subs;
+  const Profile({super.key, this.username, this.email, this.subs, this.isTesting});
 
   @override
   State<Profile> createState() => _Profile();
@@ -18,6 +22,17 @@ class _Profile extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    setForTesting() async{
+      if(widget.isTesting!=null){
+        await Future.delayed(const Duration(seconds: 1));
+        context.read<UserData>().setEmail(widget.email!);
+        context.read<UserData>().setUsername(widget.username!);
+        for(String sub in widget.subs!){
+          context.read<Subscriptions>().addSub(sub);
+        }
+      }
+    }
+    setForTesting();
     email = context.watch<UserData>().email;
     username =  context.watch<UserData>().username;
     subs =  context.watch<Subscriptions>().subs;

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
-import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 
 class DiningWidget extends StatefulWidget{
 
@@ -29,6 +27,9 @@ class _DiningWidget extends State<DiningWidget>{
     dhFollowing =  context.watch<Subscriptions>().dhFollowing;
     mealTime =  context.watch<Subscriptions>().mealTime;
 
+    debugPrint(mealTime);
+    debugPrint(diningHalls.toString());
+    debugPrint(dhFollowing.toString());
     // flag used to know if the user is following any dining hall...
     bool none = true;
     String dhName = "";
