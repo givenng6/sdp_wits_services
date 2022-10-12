@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'SignupAndLogin/app.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'globals.dart' as globals;
@@ -9,11 +8,15 @@ import './StudentsApp/Providers/Subscriptions.dart';
 import './StudentsApp/Providers/UserData.dart';
 import 'package:provider/provider.dart';
 
+Widget? nextScreen;
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
+  await globals.getSharedPreferences();
+  nextScreen = await globals.getData();
   runApp(
       MultiProvider(providers: [
         ChangeNotifierProvider(create: (_) => Subscriptions()),
@@ -52,7 +55,7 @@ class _MainState extends State<Main> {
         backgroundColor: const Color(0xff003b5c),
         function: getTo,
         splash: Image.asset("assets/white_logo_nb.png"),
-        nextScreen: const App(),
+        nextScreen: nextScreen!,
       ),
     );
   }
