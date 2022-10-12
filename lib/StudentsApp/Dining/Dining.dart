@@ -34,13 +34,16 @@ class _Dining extends State<Dining> {
 
   @override
   Widget build(BuildContext context) {
+    set(){
+      context.read<UserData>().setEmail(widget.email!);
+      context.read<Subscriptions>().addSub(service);
+      context.read<Subscriptions>().setDiningHalls(widget.diningHalls!);
+      context.read<Subscriptions>().updateDHFollowing('DH4');
+    }
     setForTesting() async{
       if(widget.isTesting!=null){
         await Future.delayed(const Duration(seconds: 1));
-        context.read<UserData>().setEmail(widget.email!);
-        context.read<Subscriptions>().addSub(service);
-        context.read<Subscriptions>().setDiningHalls(widget.diningHalls!);
-        context.read<Subscriptions>().updateDHFollowing('DH4');
+        set();
       }
     }
     setForTesting();

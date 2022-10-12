@@ -61,7 +61,7 @@ Future<void> _unSubbedDiningTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: MaterialApp(
+    child: const MaterialApp(
         home: Dining()),
   );
 

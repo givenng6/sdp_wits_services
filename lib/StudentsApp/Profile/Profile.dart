@@ -22,14 +22,17 @@ class _Profile extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    set(){
+      context.read<UserData>().setEmail(widget.email!);
+      context.read<UserData>().setUsername(widget.username!);
+      for(String sub in widget.subs!){
+        context.read<Subscriptions>().addSub(sub);
+      }
+    }
     setForTesting() async{
       if(widget.isTesting!=null){
         await Future.delayed(const Duration(seconds: 1));
-        context.read<UserData>().setEmail(widget.email!);
-        context.read<UserData>().setUsername(widget.username!);
-        for(String sub in widget.subs!){
-          context.read<Subscriptions>().addSub(sub);
-        }
+        set();
       }
     }
     setForTesting();

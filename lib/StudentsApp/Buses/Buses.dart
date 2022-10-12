@@ -32,19 +32,19 @@ class _Buses extends State<Buses>{
 
   // constructor...
   // data init...
-  _Buses(){
-
-  }
 
   bool isSubscribed = false;
 
   @override
   Widget build(BuildContext context) {
+    set(){
+      context.read<Subscriptions>().addSub(service);
+      context.read<Subscriptions>().setBusSchedule(widget.busSchedule!);
+    }
     setForTesting()async{
       if(widget.isTesting != null){
         await Future.delayed(const Duration(seconds: 2));
-        context.read<Subscriptions>().addSub(service);
-        context.read<Subscriptions>().setBusSchedule(widget.busSchedule!);
+        set();
       }
     }
     setForTesting();

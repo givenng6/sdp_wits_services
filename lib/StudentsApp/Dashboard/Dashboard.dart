@@ -39,8 +39,7 @@ class _Dashboard extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    setForTesting() async {
-      await Future.delayed(const Duration(seconds: 1));
+    set(){
       context.read<Subscriptions>().addSub('bus_service');
       context.read<Subscriptions>().addSub('dining_service');
       context.read<Subscriptions>().addSub('campus_control');
@@ -51,13 +50,15 @@ class _Dashboard extends State<Dashboard> {
       context.read<Subscriptions>().setMealTime(widget.mealTime!);
       context.read<Subscriptions>().setDiningHalls(widget.diningHalls!);
     }
+    setForTesting() async {
+      await Future.delayed(const Duration(seconds: 1));
+      set();
+    }
 
     if (widget.isTesting != null) {
       setForTesting();
     }
     subs = context.watch<Subscriptions>().subs;
-
-    print(subs);
 
     // display all the widgets for the services sub to..
     for (String service in subs) {
