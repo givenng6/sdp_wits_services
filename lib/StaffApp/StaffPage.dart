@@ -7,9 +7,9 @@ import 'package:sdp_wits_services/StaffApp/CCDU/ccdu.dart';
 import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
-import 'Dining/mealSelectionPage.dart';
+import 'DiningGlobals.dart' as globals;
 
-const String url = "http://192.168.42.155:5000";
+// const String url = "http://192.168.42.155:5000";
 
 class StaffPage extends StatefulWidget {
   const StaffPage({Key? key}) : super(key: key);
@@ -32,16 +32,14 @@ class _StaffPageState extends State<StaffPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? email = sharedPreferences.getString("email");
 
-    var result = await http.post(Uri.parse("$url/Users/AssignDep"),
+    await http.post(Uri.parse("${globals.url}/Users/AssignDep"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(
             <String, String>{"email": email!, "department": depName}));
-    var json = jsonDecode(result.body);
-
-    debugPrint("${json["status"]}");
+    // var json = jsonDecode(result.body);
   }
 
   void handleCard(int index) async {
@@ -81,10 +79,10 @@ class _StaffPageState extends State<StaffPage> {
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => const CampusControl()));
-
           SharedPreferences sharedPreferences =
               await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Campus Control');
+
         }
         break;
       case "CCDU":

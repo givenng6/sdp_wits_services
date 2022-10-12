@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:sdp_wits_services/StaffApp/Campus%20Control/onDuty.dart';
+import 'package:sdp_wits_services/StaffApp/Campus%20Control/SelectCampus.dart';
 import 'Skeleton.dart';
 import 'Vehicle.dart';
+import 'CampusControlGlobals.dart' as globals;
 
 class CampusControl extends StatefulWidget {
   const CampusControl({Key? key}) : super(key: key);
@@ -11,80 +12,107 @@ class CampusControl extends StatefulWidget {
 }
 
 class _CampusControlState extends State<CampusControl> {
+  int? currVehicleIndex;
+
+  void init()async{
+    await globals.GetVehicles();
+    setState(() {
+
+    });
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+
+  }
+
+  void startShift(){
+    globals.vehicle = globals.vehicles[currVehicleIndex!];
+    Navigator.push(context,
+        MaterialPageRoute(builder: (BuildContext context) => const SelectCampus()));
+  }
+
+  void handleCard(int index) {
+    setState(() {
+      if(currVehicleIndex != index){
+        currVehicleIndex = index;
+      }else{
+        currVehicleIndex = null;
+      }
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Skeleton(
-      name: "Vehicles",
-      btnAction: "Next",
-      itemsList: ItemList(),
+    return Scaffold(
+      body: Skeleton(
+        name: "Vehicles",
+        btnAction: "Next",
+        itemsList: ItemList(),
+      ),
+      floatingActionButton:currVehicleIndex==null?null: FloatingActionButton(
+        onPressed: () {startShift();},
+        child: Icon(
+          Icons.send,
+          color: Color(0xff003b5c),
+        ),
+        backgroundColor: Colors.white,
+      ),
     );
   }
-}
 
-class ItemList extends StatefulWidget {
-  const ItemList({Key? key}) : super(key: key);
-
-  @override
-  State<ItemList> createState() => _ItemListState();
-}
-
-class _ItemListState extends State<ItemList> {
-
-  List<Vehicle> vehicles = [
-    Vehicle(id: "CBB 734 EC", name: "Honda"),
-    Vehicle(id: "CBB 734 EC", name: "Avanza"),
-    Vehicle(id: "CBB 734 EC", name: "Honda"),
-    Vehicle(id: "CBB 734 EC", name: "Avanza"),
-    Vehicle(id: "CBB 734 EC", name: "Honda"),
-    Vehicle(id: "CBB 734 EC", name: "Avanza"),
-    Vehicle(id: "CBB 734 EC", name: "Honda"),
-    Vehicle(id: "CBB 734 EC", name: "Avanza"),
-    Vehicle(id: "CBB 734 EC", name: "Honda"),
-  ];
-
-  void handleCard(int index){
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => const OnDuty()));
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        padding:
-        const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
-        child: ListView.builder(
-            itemCount: vehicles.length,
-            itemBuilder: (context, index) => InkWell(
-              onTap: (){
+  SliverChildBuilderDelegate ItemList() {
+    return SliverChildBuilderDelegate(
+        childCount: globals.vehicles.length,
+        (context, index) => InkWell(
+              onTap: () {
                 handleCard(index);
               },
               child: Card(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                elevation: 10,
                 child: Container(
                   height: 70.0,
-                  padding: const EdgeInsets.all(5.0),
                   child: ListTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            flex: 2,
-                            child: Text(vehicles[index].name,style: const TextStyle(
-                                fontSize: 23.0
-                            ),)),
-                        Expanded(
-                            flex: 1,
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.end,
-                              children: [Text('- ${vehicles[index].id}')],
-                            ))
-                      ],
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    tileColor:index == currVehicleIndex?Colors.grey: const Color(0xff003b5c),
+                    title: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              flex: 2,
+                              child: Text(
+                                globals.vehicles[index].name,
+                                style: const TextStyle(
+                                    fontSize: 23.0, color: Colors.white),
+                              )),
+                          Expanded(
+                              flex: 1,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    '- ${globals.vehicles[index].id}',
+                                    style: TextStyle(color: Colors.white),
+                                  )
+                                ],
+                              )),
+                          SizedBox(
+                            height: 5.0,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            )));
+            ));
   }
 }

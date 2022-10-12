@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/OnRoute.dart';
-
-
+import 'package:sdp_wits_services/globals.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Skeleton.dart';
 import 'Student.dart';
+import 'CampusControlGlobals.dart' as globals;
 
 class OnDuty extends StatefulWidget {
   const OnDuty({Key? key}) : super(key: key);
@@ -13,65 +14,130 @@ class OnDuty extends StatefulWidget {
 }
 
 class _OnDutyState extends State<OnDuty> {
+  // List<Student> students = [];
 
-  List<Student> vehicles = [
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-  ];
-
-  void handleCard(int index){
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => OnRoute()));
+  void init() async {
+    await globals.GetStudents();
+    // globals.students = [...globals.students];
+    setState(() {});
   }
 
-  Widget myList(){
-    return Container(
-        padding:
-        const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
-        child: ListView.builder(
-            itemCount: vehicles.length,
-            itemBuilder: (context, index) => InkWell(
-              onTap: (){
+  void init2() async {
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    sharedPreferences.setString("driverState", "onDuty");
+  }
+
+  @override
+  void initState() {
+    init();
+    init2();
+    super.initState();
+  }
+
+  bool contains(List<Student> arr,Student curr) {
+   for(Student student in arr){
+     if(student.email == curr.email){
+       return true;
+     }
+   }
+   return false;
+  }
+
+  void handleCard(int index) {
+    setState(() {
+      if(contains(globals.selectedStudents, globals.students[index])){
+        globals.selectedStudents.remove(globals.students[index]);
+      }else{
+        globals.selectedStudents.add(globals.students[index]);
+      }
+    });
+  }
+
+  SliverChildBuilderDelegate ItemList() {
+    return SliverChildBuilderDelegate(
+        childCount: globals.students.length,
+        (context, index) => InkWell(
+              onTap: () {
                 handleCard(index);
               },
               child: Card(
-                child: Container(
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0)),
+                elevation: 10,
+                child: SizedBox(
                   height: 70.0,
-                  padding: const EdgeInsets.all(5.0),
                   child: ListTile(
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                            flex: 2,
-                            child: Text(vehicles[index].name,style: const TextStyle(
-                                fontSize: 23.0
-                            ),)),
-                        Expanded(
-                            flex: 1,
-                            child: Row(
-                              mainAxisAlignment:
-                              MainAxisAlignment.end,
-                              children: [Text('- ${vehicles[index].res}')],
-                            ))
-                      ],
+                    tileColor: contains(globals.selectedStudents,globals.students[index])
+                        ? Colors.grey
+                        : const Color(0xff003b5c),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0)),
+                    title: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                              flex: 2,
+                              child: Text(
+                                globals.students[index].name,
+                                style: const TextStyle(
+                                    fontSize: 23.0, color: Colors.white),
+                              )),
+                          Expanded(
+                              flex: 1,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    '- ${globals.students[index].res}',
+                                    style: const TextStyle(color: Colors.white),
+                                  )
+                                ],
+                              )),
+                          const SizedBox(
+                            height: 5.0,
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
-            )));
+            ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Skeleton(name: "Next Stuff", btnAction: "Start", itemsList: myList());
+    return Scaffold(
+      body: RefreshIndicator(
+
+        onRefresh: () async{
+          await globals.GetStudents();
+          setState(() {
+
+          });
+        },
+        child: Skeleton(
+            name: "Next Stuff", btnAction: "Start", itemsList: ItemList()),
+      ),
+      floatingActionButton: globals.selectedStudents.isEmpty
+          ? null
+          : FloatingActionButton(
+              backgroundColor: Colors.white,
+              onPressed: () async{
+                await globals.SetDestinations();
+                globals.OnRoute();
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (BuildContext context) => const OnRoute()));
+              },
+              child: const Text(
+                "Start",
+                style: TextStyle(color: Color(0xff003b5c)),
+              ),
+            ),
+    );
   }
 }

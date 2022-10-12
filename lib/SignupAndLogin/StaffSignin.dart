@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/mealSelectionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../StaffApp/Buses/buses_main.dart';
 import '../StaffApp/StaffPage.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdp_wits_services/globals.dart' as globals;
 import 'dart:convert';
 
 String? valid;
@@ -31,7 +33,7 @@ class StaffLoginScreen extends StatelessWidget {
           "email": email,
         }));
     var json = jsonDecode(result.body);
-    debugPrint("");
+    // debugPrint("");
 
     if(json["status"]=="exists"){
       SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -173,18 +175,25 @@ class StaffLoginScreen extends StatelessWidget {
     }
 
     handleDepartments(String dep) {
-
+      globals.getSharedPreferences();
       if(dep=="Dining Services"){
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
-                builder: (BuildContext context) =>  mealSelecionPage()),
+                builder: (BuildContext context) =>  const mealSelecionPage()),
                 (Route<dynamic> route) => false);
       }else if(dep=="Bus Services"){
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
                 builder: (BuildContext context) =>   const BusesMain()),
+                (Route<dynamic> route) => false);
+      }
+      else if(dep=="Campus Control"){
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>   const CampusControl()),
                 (Route<dynamic> route) => false);
       }
 
@@ -204,7 +213,8 @@ class StaffLoginScreen extends StatelessWidget {
             sharedPreferences.setString('username', username!);
             sharedPreferences.setString('email', email!);
             sharedPreferences.setString('kind', 'Staff');
-            debugPrint('here');
+            debugPrint("here:: ${sharedPreferences.getString("username")}");
+
             String? dep = sharedPreferences.getString("department");
             if(dep == null){
               navigateToStaffPage();
