@@ -22,15 +22,20 @@ class _BusesMainState extends State<BusesMain> {
   bool clickingEnabled = true;
   int tapped = -1;
   int selectedCardIndex = -1;
-  FabDecoration fabDecoration = FabDecoration(text: 'Start Shift', color: const Color(0xFF03560F));
+  FabDecoration fabDecoration =
+      FabDecoration(text: 'Start Shift', color: const Color(0xFF03560F));
 
-  handleCardOnTap(index){
-    setState((){
-      if(tapped == index){
+  List? routes;
+
+  List takenRoutes = [];
+
+  handleCardOnTap(index) {
+    setState(() {
+      if (tapped == index) {
         tapped = -1;
         shouldFabBeVisible = false;
-      }else{
-        tapped=index;
+      } else {
+        tapped = index;
         selectedCardIndex = index;
         shouldFabBeVisible = true;
         isFabVisible = true;
@@ -38,18 +43,18 @@ class _BusesMainState extends State<BusesMain> {
     });
   }
 
-  handleFloatingActionButton() async{
+  handleFloatingActionButton() async {
     setState(() {
       isFabVisible = false;
     });
     await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
-      if(fabDecoration.text == 'Start Shift'){
+      if (fabDecoration.text == 'Start Shift') {
         fabDecoration.text = 'End Shift';
         fabDecoration.color = const Color(0xFF851318);
         clickingEnabled = false;
         assignDriverToRoute();
-      }else{
+      } else {
         fabDecoration.text = 'Start Shift';
         fabDecoration.color = const Color(0xFF03560F);
         clickingEnabled = true;
@@ -61,32 +66,12 @@ class _BusesMainState extends State<BusesMain> {
     });
   }
 
-  assignDriverToRoute() async{
+  assignDriverToRoute() async {
     Random random = Random();
-    int randomNumber = random.nextInt(routes![selectedCardIndex]['stops'].length);
+    int randomNumber =
+        random.nextInt(routes![selectedCardIndex]['stops'].length);
     String stop = routes![selectedCardIndex]['stops'][randomNumber];
-    var response = await http.post(
-      Uri.parse("${uri}assignDriverToRoute"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      body: jsonEncode(<String, String>{
-        'routeId': routes![selectedCardIndex]['id'],
-        'driver': email!,
-        'position': stop
-      })
-    );
-
-    var json = jsonDecode(response.body);
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setBool('onShift', json['onShift']);
-    sharedPreferences.setInt('selectedCardIndex', selectedCardIndex);
-  }
-
-  removeDriverFromRoute() async{
-    var response = await http.post(
-        Uri.parse("${uri}removeDriverFromRoute"),
+    await http.post(Uri.parse("${uri}assignDriverToRoute"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
@@ -94,58 +79,67 @@ class _BusesMainState extends State<BusesMain> {
         body: jsonEncode(<String, String>{
           'routeId': routes![selectedCardIndex]['id'],
           'driver': email!,
-        })
-    );
-    var json = jsonDecode(response.body);
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setBool('onShift', json['onShift']);
-    sharedPreferences.setInt('selectedCardIndex', -1);
+          'position': stop
+        }));
+  }
+
+  removeDriverFromRoute() async {
+    await http.post(Uri.parse("${uri}removeDriverFromRoute"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          'routeId': routes![selectedCardIndex]['id'],
+          'driver': email!,
+        }));
   }
 
   getSharedPreferences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     username = sharedPreferences.getString('username');
     email = sharedPreferences.getString('email');
+    setState(() {});
   }
 
-  keepDriverOnShift() async{
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    bool? onShift = sharedPreferences.getBool('onShift');
-    debugPrint('$onShift');
-    if(onShift!){
-      int? index = sharedPreferences.getInt('selectedCardIndex');
-      tapped = index!;
-      selectedCardIndex = index;
-      shouldFabBeVisible = true;
-      isFabVisible = true;
+  keepDriverOnShift() {
+    for (int index = 0; index < routes!.length; index++) {
+      List driversOnRoute = routes![index]['driversOnRoute'].toList();
+      if (driversOnRoute.isNotEmpty && driversOnRoute[0] == email) {
+        tapped = index;
+        selectedCardIndex = index;
+        shouldFabBeVisible = true;
+        isFabVisible = true;
 
-      fabDecoration.text = 'End Shift';
-      fabDecoration.color = const Color(0xFF851318);
-      clickingEnabled = false;
+        fabDecoration.text = 'End Shift';
+        fabDecoration.color = const Color(0xFF851318);
+        clickingEnabled = false;
+      } else if (driversOnRoute.isNotEmpty && driversOnRoute[0] != email) {
+        takenRoutes.add(routes![index]);
+      }
     }
+    debugPrint(takenRoutes.toString());
   }
 
-  List? routes;
-
-  getRoutes() async {
-    var result = await http.get(
+  Future getRoutes() async {
+    await http.get(
       Uri.parse("${uri}getRoutes"),
       headers: <String, String>{
         "Accept": "application/json",
         "Content-Type": "application/json; charset=UTF-8",
       },
-    );
-    List json = jsonDecode(result.body);
-    routes = json;
-    setState(() {});
-    debugPrint('${json[0]['name']}');
+    ).then((value) {
+      List json = jsonDecode(value.body);
+      routes = json;
+      setState(() {});
+      keepDriverOnShift();
+    });
   }
 
   @override
   void initState() {
     getSharedPreferences();
     getRoutes();
-    keepDriverOnShift();
     super.initState();
   }
 
@@ -205,14 +199,18 @@ class _BusesMainState extends State<BusesMain> {
                             child: CircleAvatar(
                               backgroundColor: const Color(0xff003b5c),
                               radius: 22.0,
-                              child: Text(username![0]),
+                              child: Text(
+                                username![0],
+                                style: const TextStyle(color: Colors.white),
+                              ),
                             ),
                           ),
                           onTap: () {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Profile(email, username)));
+                                    builder: (context) =>
+                                        Profile(email, username)));
                           },
                         )
                       : Container(
@@ -229,31 +227,36 @@ class _BusesMainState extends State<BusesMain> {
                   ? SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {
-                          return Card(
-                            color: (index == tapped)? Colors.grey: const Color(0xFF003b5c),
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0)),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 0.0, vertical: 15.0),
-                                  child: ListTile(
-                                    enabled: clickingEnabled,
-                                    title: Center(
-                                      child: Text(
-                                        routes![index]['name'],
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20.0,
-                                            color: Colors.white),
+                          return InkWell(
+                            onTap: takenRoutes.contains(routes![index])?null: () => handleCardOnTap(index),
+                            child: Card(
+                              color: (index == tapped)
+                                  ? Colors.grey
+                                  : const Color(0xFF003b5c),
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0)),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 0.0, vertical: 15.0),
+                                      child: ListTile(
+                                        enabled: clickingEnabled,
+                                        title: Center(
+                                          child: Text(
+                                            routes![index]['name'],
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.0,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                        trailing: !takenRoutes.contains(routes![index])?null: const Text('TAKEN', style: TextStyle(color: Colors.white),),
                                       ),
-                                    ),
-                                    onTap: () => handleCardOnTap(index),
-                                  )
-                                ),
-                              ],
+                                  ),
+                                ],
+                              ),
                             ),
                           );
                         },
@@ -267,7 +270,7 @@ class _BusesMainState extends State<BusesMain> {
                     ),
               SliverToBoxAdapter(
                 child: Container(
-                  height: 200.0,
+                  height: MediaQuery.of(context).size.height/3,
                 ),
               )
             ],
@@ -279,7 +282,9 @@ class _BusesMainState extends State<BusesMain> {
                 width: 100.0,
                 child: FloatingActionButton(
                   backgroundColor: fabDecoration.color,
-                  onPressed: () {handleFloatingActionButton();},
+                  onPressed: () {
+                    handleFloatingActionButton();
+                  },
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15.0),
                   ),
@@ -290,11 +295,11 @@ class _BusesMainState extends State<BusesMain> {
   }
 }
 
-class FabDecoration{
+class FabDecoration {
   late String text;
   late Color color;
 
-  FabDecoration({required this.text,required this.color});
+  FabDecoration({required this.text, required this.color});
 }
 
 //  http://192.168.7.225:5000/assignDriverToRoute

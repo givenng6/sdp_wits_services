@@ -4,14 +4,13 @@ import './MenuAppBar.dart';
 import './MenuItems.dart';
 
 class Menu extends StatefulWidget{
-
+  final Function(int index) onNavigate;
+  Menu({required this.onNavigate});
   @override
   State<Menu> createState() => _Menu();
 }
 
 class _Menu extends State<Menu> {
-
-  int screenIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class _Menu extends State<Menu> {
       body: Column(
         children: [
            MenuAppBar(),
-           MenuItems()
+           MenuItems(onNavigate: widget.onNavigate)
         ],
       ),
     );

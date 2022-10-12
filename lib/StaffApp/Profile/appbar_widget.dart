@@ -1,23 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sdp_wits_services/globals.dart' as globals;
 
 import '../../SignupAndLogin/app.dart';
 
 AppBar BuildAppBar(BuildContext context) {
-  const light_dark_mode_icon = CupertinoIcons.moon_stars;
-  _gotToAppPage() {
+  const lightDarkModeIcon = CupertinoIcons.moon_stars;
+  gotToAppPage() {
     Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (BuildContext context) => const App()),
         (Route<dynamic> route) => false);
   }
 
-  _logOut() async {
-    // Clear th shared sharedPreferences
+  logOut() async {
+    // Clear the shared sharedPreferences
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     await sharedPreferences.clear();
-    _gotToAppPage();
+    await globals.getSharedPreferences();
+    gotToAppPage();
   }
 
   return AppBar(
@@ -29,7 +31,7 @@ AppBar BuildAppBar(BuildContext context) {
     actions: [
       IconButton(
         color: Colors.black87,
-        icon: const Icon(light_dark_mode_icon),
+        icon: const Icon(lightDarkModeIcon),
         onPressed: () {},
       ),
       IconButton(
@@ -47,7 +49,7 @@ AppBar BuildAppBar(BuildContext context) {
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
                     ),
                     TextButton(onPressed: (){
-                      _logOut();
+                      logOut();
                     },
                         child: const Text("Sign Out", style: TextStyle(color: Colors.red))
                     ),

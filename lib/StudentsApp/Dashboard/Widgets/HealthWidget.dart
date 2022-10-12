@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 
 class HealthWidget extends StatefulWidget{
 
@@ -8,8 +12,11 @@ class HealthWidget extends StatefulWidget{
 
 class _HealthWidget extends State<HealthWidget>{
 
+  List<CCDUObject> ccduBookings = [];
   @override
   Widget build(BuildContext context){
+    ccduBookings = context.watch<Subscriptions>().ccduBookings;
+
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(12),
@@ -33,11 +40,24 @@ class _HealthWidget extends State<HealthWidget>{
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),)
             ],
           ),
-          ItemWidget("CCDU", "2022/09/12", "14:15", "Mr G Mathebula"),
-          ItemWidget("Campus Health", "2022/09/06", "09:00", "Dr G Mathebula"),
+         showWidget(),
         ],
       ),
     );
+  }
+
+  Widget showWidget(){
+    List<Widget> items = [];
+
+    if(ccduBookings.isNotEmpty){
+      CCDUObject booking = ccduBookings[0];
+      items.add(ItemWidget("CCDU", booking.date, booking.time, booking.counsellorName));
+    }
+
+    // once with campus health data
+    //items.add(ItemWidget("Campus Health", "2022/09/06", "09:00", "Dr G Mathebula"),);
+
+    return Column(children: items);
   }
 
   // Inner cards
@@ -54,7 +74,7 @@ class _HealthWidget extends State<HealthWidget>{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(department, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-          Text("Appointment Details", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
+          Text("Appointment", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
           Text("Date: " + date, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
           Text("Time: " + time, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
           Text("Personnel: " + person, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),

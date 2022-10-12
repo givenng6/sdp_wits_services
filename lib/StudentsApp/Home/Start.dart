@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StudentsApp/Home/Home.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -30,6 +31,8 @@ class _Start extends State<Start>{
     getBusSchedule(context);
     getDiningHallFollowing(context);
     getDiningHalls(context);
+    getCCDUBookings(context);
+    getCounsellors(context);
     getMealTime(context);
 
   }
@@ -147,6 +150,42 @@ class _Start extends State<Start>{
         }).then((response) {
       var data = jsonDecode(response.body);
       context.read<Subscriptions>().setMealTime(data);
+    });
+  }
+
+  Future<void> getCCDUBookings(BuildContext context) async {
+    await http.post(Uri.parse("${uri}db/getBookingCCDU/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": widget.email,
+        })).then((value) {
+      var data = jsonDecode(value.body);
+
+      for(dynamic object in data){
+      CCDUObject session = new CCDUObject();
+      session.setAppointment(object['status'], object['time'], object['date'], object['description'], object['counsellor'], object['counsellorName'], object['location']);
+      context.read<Subscriptions>().addCCDUBooking(session);
+      }
+    });
+  }
+
+  Future<void> getCounsellors(BuildContext context) async {
+    await http.get(Uri.parse("${uri}db/getCounsellors/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        }).then((response) {
+      var data = jsonDecode(response.body);
+
+      for(var counsellor in data){
+        String email = counsellor['email'];
+        String username = counsellor['username'];
+        context.read<Subscriptions>().addCounsellor(email, username);
+      }
+      context.read<Subscriptions>().addCounsellor("", "");
     });
   }
 

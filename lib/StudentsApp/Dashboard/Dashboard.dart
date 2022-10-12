@@ -28,6 +28,8 @@ class _Dashboard extends State<Dashboard>{
   Widget build(BuildContext context){
     subs = context.watch<Subscriptions>().subs;
 
+    print(subs);
+
     // display all the widgets for the services sub to..
     for(String service in subs){
       switch (service){
