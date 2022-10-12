@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/BusObject.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 
 class BusWidget extends StatefulWidget{
+  const BusWidget({super.key});
 
   @override
   State<BusWidget> createState() => _BusWidget();
