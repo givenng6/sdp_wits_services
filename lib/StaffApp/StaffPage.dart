@@ -75,13 +75,14 @@ class _StaffPageState extends State<StaffPage> {
       case "Campus Control":
         {
           // debugPrint('here here');
-          SharedPreferences sharedPreferences =
-              await SharedPreferences.getInstance();
-          sharedPreferences.setString('department', 'Campus Control');
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (BuildContext context) => const CampusControl()));
+          SharedPreferences sharedPreferences =
+              await SharedPreferences.getInstance();
+          sharedPreferences.setString('department', 'Campus Control');
+
         }
         break;
       case "CCDU":

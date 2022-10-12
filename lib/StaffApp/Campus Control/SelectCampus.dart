@@ -27,10 +27,10 @@ class _SelectCampusState extends State<SelectCampus> {
 
   void startShift() {
     globals.StartShift(campuses[currIndex]);
-    Navigator.pushReplacement(
+    Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-            builder: (BuildContext context) => const OnDuty()));
+            builder: (BuildContext context) => const OnDuty()),(Route<dynamic> route) => false);
   }
 
   SliverChildBuilderDelegate ItemList() {

@@ -1,6 +1,10 @@
 class Student{
-  String name;
-  String res;
+  late String name,email,res,status;
 
-  Student({required this.name,required this.res});
+  Student(obj){
+    name = obj['username'];
+    res = obj['to'];
+    email = obj['email'];
+    status = obj['status'];
+  }
 }

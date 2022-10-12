@@ -8,6 +8,7 @@ String? username;
 String? email;
 String? kind;
 String? department;
+String? driverState;
 
 Future getSharedPreferences() async{
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -15,9 +16,5 @@ Future getSharedPreferences() async{
   email = sharedPreferences.getString('email');
   kind = sharedPreferences.getString('kind');
   department = sharedPreferences.getString('department');
-  debugPrint('called');
-  // debugPrint(email);
-  // debugPrint(username);
-  // debugPrint(kind);
-  debugPrint(department);
+  driverState = sharedPreferences.getString('driverState');
 }

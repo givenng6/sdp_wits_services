@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdp_wits_services/StaffApp/Campus%20Control/Student.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/Vehicle.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,6 +13,7 @@ late Vehicle vehicle;
 String campusName = "";
 List<Vehicle>vehicles = [];
 List<String>campuses = [];
+List<Student>students = [];
 
 Future<void> StartShift(String campusNamee)async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -61,12 +63,30 @@ Future<void> GetVehicles()async {
 }
 
 Future<void> EndShift()async {
-  var result = await http.post(Uri.parse("$url/CampusControl/EndShift"),
+   await http.post(Uri.parse("$url/CampusControl/EndShift"),
       headers: <String, String>{
         "Accept": "application/json",
         "Content-Type": "application/json; charset=UTF-8",
       },
       body: jsonEncode(<String, dynamic>{"campusName": campusName,"numPlate":vehicle.id}));
+
+}
+
+Future<void> GetStudents()async{
+
+  var res = await http.post(Uri.parse("$url/Students/GetStudents"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: jsonEncode(<String, dynamic>{"campusName": campusName}));
+
+  var myList = jsonDecode(res.body).toList();
+  students.clear();
+  for(int i =0;i<myList.length;i++){
+    students.add(Student(myList[i]));
+  }
+
 
 }
 

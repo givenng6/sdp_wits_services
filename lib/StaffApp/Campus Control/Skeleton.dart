@@ -84,6 +84,7 @@ class _SkeletonState extends State<Skeleton> {
             SliverAppBar(
               expandedHeight: 150.0,
               collapsedHeight: 60,
+              automaticallyImplyLeading: false,
               pinned: true,
               floating: true,
               flexibleSpace: LayoutBuilder(
@@ -106,7 +107,9 @@ class _SkeletonState extends State<Skeleton> {
                   );
                 },
               ),
+              centerTitle: false,
               title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: const <Widget>[
                   Icon(
                     Icons.security,
@@ -128,6 +131,7 @@ class _SkeletonState extends State<Skeleton> {
                 const SizedBox(
                   width: 10,
                 ),
+
                 InkWell(
                   onTap: () {
                     profile();

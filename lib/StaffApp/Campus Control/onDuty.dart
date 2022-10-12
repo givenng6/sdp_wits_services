@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/OnRoute.dart';
+import 'package:sdp_wits_services/globals.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Skeleton.dart';
 import 'Student.dart';
+import 'CampusControlGlobals.dart' as globals;
 
 class OnDuty extends StatefulWidget {
   const OnDuty({Key? key}) : super(key: key);
@@ -11,22 +14,24 @@ class OnDuty extends StatefulWidget {
 }
 
 class _OnDutyState extends State<OnDuty> {
-  List<Student> students = [
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-    Student(name: "Lindokuhle", res: "Student Digz"),
-    Student(name: "Sabelo", res: "Campus Africa 49"),
-  ];
+  List<Student> students = [];
+  void init()async{
+    await globals.GetStudents();
+    students = [...globals.students];
+    setState(() {
+
+    });
+  }
+  void init2() async{
+    SharedPreferences sharedPreferences =await SharedPreferences.getInstance();
+    sharedPreferences.setString("driverState", "onDuty");
+  }
+  @override
+  void initState() {
+   init();
+   init2();
+    super.initState();
+  }
 
   void handleCard(int index) {
 
