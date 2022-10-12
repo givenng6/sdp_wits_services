@@ -13,13 +13,10 @@ class CampusControl extends StatefulWidget {
 
 class _CampusControlState extends State<CampusControl> {
   int? currVehicleIndex;
-  List<Vehicle> vehicles = [
-  ];
 
   void init()async{
     await globals.GetVehicles();
     setState(() {
-      vehicles = [...globals.vehicles];
 
     });
   }
@@ -32,7 +29,7 @@ class _CampusControlState extends State<CampusControl> {
   }
 
   void startShift(){
-    globals.vehicle = vehicles[currVehicleIndex!];
+    globals.vehicle = globals.vehicles[currVehicleIndex!];
     Navigator.push(context,
         MaterialPageRoute(builder: (BuildContext context) => const SelectCampus()));
   }
@@ -69,7 +66,7 @@ class _CampusControlState extends State<CampusControl> {
 
   SliverChildBuilderDelegate ItemList() {
     return SliverChildBuilderDelegate(
-        childCount: vehicles.length,
+        childCount: globals.vehicles.length,
         (context, index) => InkWell(
               onTap: () {
                 handleCard(index);
@@ -92,7 +89,7 @@ class _CampusControlState extends State<CampusControl> {
                           Expanded(
                               flex: 2,
                               child: Text(
-                                vehicles[index].name,
+                                globals.vehicles[index].name,
                                 style: const TextStyle(
                                     fontSize: 23.0, color: Colors.white),
                               )),
@@ -102,7 +99,7 @@ class _CampusControlState extends State<CampusControl> {
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   Text(
-                                    '- ${vehicles[index].id}',
+                                    '- ${globals.vehicles[index].id}',
                                     style: TextStyle(color: Colors.white),
                                   )
                                 ],
