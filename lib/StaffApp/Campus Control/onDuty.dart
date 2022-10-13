@@ -56,55 +56,54 @@ class _OnDutyState extends State<OnDuty> {
   SliverChildBuilderDelegate ItemList() {
     return SliverChildBuilderDelegate(
         childCount: globals.students.length,
-        (context, index) => InkWell(
+        (context, index) => Card(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)),
+          elevation: 10,
+          child: SizedBox(
+            height: 70.0,
+            child: ListTile(
+              key: Key(globals.students[index].email),
               onTap: () {
                 handleCard(index);
               },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
-                elevation: 10,
-                child: SizedBox(
-                  height: 70.0,
-                  child: ListTile(
-                    tileColor: contains(globals.selectedStudents,globals.students[index])
-                        ? Colors.grey
-                        : const Color(0xff003b5c),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    title: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              flex: 2,
-                              child: Text(
-                                globals.students[index].name,
-                                style: const TextStyle(
-                                    fontSize: 23.0, color: Colors.white),
-                              )),
-                          Expanded(
-                              flex: 1,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    '- ${globals.students[index].res}',
-                                    style: const TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              )),
-                          const SizedBox(
-                            height: 5.0,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+              tileColor: contains(globals.selectedStudents,globals.students[index])
+                  ? Colors.grey
+                  : const Color(0xff003b5c),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 2,
+                        child: Text(
+                          globals.students[index].name,
+                          style: const TextStyle(
+                              fontSize: 23.0, color: Colors.white),
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              '- ${globals.students[index].res}',
+                              style: const TextStyle(color: Colors.white),
+                            )
+                          ],
+                        )),
+                    const SizedBox(
+                      height: 5.0,
+                    )
+                  ],
                 ),
               ),
-            ));
+            ),
+          ),
+        ));
   }
 
   @override
@@ -124,6 +123,7 @@ class _OnDutyState extends State<OnDuty> {
       floatingActionButton: globals.selectedStudents.isEmpty
           ? null
           : FloatingActionButton(
+              key: Key("start"),
               backgroundColor: Colors.white,
               onPressed: () async{
                 await globals.SetDestinations();

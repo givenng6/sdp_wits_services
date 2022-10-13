@@ -67,52 +67,51 @@ class _CampusControlState extends State<CampusControl> {
   SliverChildBuilderDelegate ItemList() {
     return SliverChildBuilderDelegate(
         childCount: globals.vehicles.length,
-        (context, index) => InkWell(
+        (context, index) => Card(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0)),
+          elevation: 10,
+          child: SizedBox(
+            height: 70.0,
+            child: ListTile(
+              key: Key(globals.vehicles[index].id),
               onTap: () {
                 handleCard(index);
               },
-              child: Card(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0)),
-                elevation: 10,
-                child: Container(
-                  height: 70.0,
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0)),
-                    tileColor:index == currVehicleIndex?Colors.grey: const Color(0xff003b5c),
-                    title: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Expanded(
-                              flex: 2,
-                              child: Text(
-                                globals.vehicles[index].name,
-                                style: const TextStyle(
-                                    fontSize: 23.0, color: Colors.white),
-                              )),
-                          Expanded(
-                              flex: 1,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Text(
-                                    '- ${globals.vehicles[index].id}',
-                                    style: TextStyle(color: Colors.white),
-                                  )
-                                ],
-                              )),
-                          SizedBox(
-                            height: 5.0,
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0)),
+              tileColor:index == currVehicleIndex?Colors.grey: const Color(0xff003b5c),
+              title: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        flex: 2,
+                        child: Text(
+                          globals.vehicles[index].name,
+                          style: const TextStyle(
+                              fontSize: 23.0, color: Colors.white),
+                        )),
+                    Expanded(
+                        flex: 1,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text(
+                              '- ${globals.vehicles[index].id}',
+                              style: TextStyle(color: Colors.white),
+                            )
+                          ],
+                        )),
+                    SizedBox(
+                      height: 5.0,
+                    )
+                  ],
                 ),
               ),
-            ));
+            ),
+          ),
+        ));
   }
 }
