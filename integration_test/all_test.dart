@@ -42,7 +42,7 @@ void main() {
     // Dashboard
     testWidgets("dashboard", _dashboardTests);
     testWidgets("dining breakfast", _diningBreakfastTests);
-    testWidgets("dining lunch", _diningLunchTests);
+//     testWidgets("dining lunch", _diningLunchTests);
 
     // Dining
     testWidgets("Staff Dining", _staffDiningTests);
