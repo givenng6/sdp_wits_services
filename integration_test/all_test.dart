@@ -68,27 +68,22 @@ void main() {
     testWidgets("Main Dining", _mainDiningTests);
 
     // Stuff Campus Control
-
     testWidgets("Campus Control tests", _campusControlTest);
 
     //
-
     testWidgets("SelectDepartment", _selectDepTest);
     testWidgets("Check Buses", _checkBuses);
     testWidgets("Check Campus Control", _checkCampusControl);
 
     // Campus Control Students
-
     testWidgets("Unsubscribed Campus Control", _campusControlUnsubscribedTest);
     testWidgets("Subscribed Campus Control", _campusControlSubscribedTest);
 
     // CCDU Students
-
     testWidgets("Unsubscribed ccdu", _ccduUnsubscribedTest);
     testWidgets("Subscribed ccdu", _ccduSubscribedTest);
 
     // Start
-
     testWidgets("start", _start);
   });
 }
@@ -864,8 +859,19 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: const MaterialApp(
-        home: students.Profile(isTesting: true, email: email, username: username, subs: subs,)),
+    builder: (context, _){
+      set()async{
+        await Future.delayed(const Duration(seconds: 1));
+        context.read<UserData>().setEmail(email);
+        context.read<UserData>().setUsername(username);
+        for(String sub in subs){
+          context.read<Subscriptions>().addSub(sub);
+        }
+      }set();
+
+      return const MaterialApp(
+          home: students.Profile());
+    },
   );
 
   await tester.pumpWidget(widget);
@@ -899,7 +905,23 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
   expect(find.text('Sign Out'), findsWidgets);
   expect(find.text('Cancel'), findsWidgets);
 
-  await tester.pump(const Duration(seconds: 3));
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.text('Cancel'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.byKey(const Key('Logout')));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.text('Sign Out'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
   preferences.clear();
 }
 

@@ -54,8 +54,8 @@ class _CCDU extends State<CCDU> {
                     builder: (BuildContext context, StateSetter setState) {
                   return Container(
                       padding: const EdgeInsets.all(12),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: ListView(
+                        // crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
                             margin: const EdgeInsets.fromLTRB(0, 0, 0, 25),
