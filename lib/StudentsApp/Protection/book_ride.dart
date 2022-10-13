@@ -79,6 +79,7 @@ class _BookRideState extends State<BookRide> {
                                     value: item,
                                     child: Text(
                                       item,
+                                      key: Key(item),
                                       style: const TextStyle(fontSize: 18),
                                     )))
                                 .toList(),

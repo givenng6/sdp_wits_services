@@ -13,10 +13,13 @@ import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:sdp_wits_services/StaffApp/StaffPage.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/BusObject.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDU.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 import 'package:sdp_wits_services/StudentsApp/Dashboard/Dashboard.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/Dining.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/ViewDH.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:sdp_wits_services/main.dart' as app;
@@ -73,7 +76,15 @@ void main() {
     testWidgets("Check Buses", _checkBuses);
     testWidgets("Check Campus Control", _checkCampusControl);
 
+    // Campus Control Students
 
+    testWidgets("Unsubscribed Campus Control", _campusControlUnsubscribedTest);
+    testWidgets("Subscribed Campus Control", _campusControlSubscribedTest);
+
+    // CCDU Students
+
+    testWidgets("Unsubscribed ccdu", _ccduUnsubscribedTest);
+    testWidgets("Subscribed ccdu", _ccduSubscribedTest);
   });
 }
 
@@ -319,6 +330,7 @@ Future<void> _subbedBusesTests(WidgetTester tester)async{
   const email = '2375736@students.wits.ac.za';
   List<BusObject> busSchedule = [];
   var busFollowing = [];
+  busFollowing;
 
   await http.get(Uri.parse("${uri}db/getBusSchedule/"),
       headers: <String, String>{
@@ -1490,4 +1502,150 @@ Future<void> _checkCampusControl(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
   sharedPreferences.clear();
+}
+
+// Campus Control Students
+
+Future<void> _campusControlUnsubscribedTest(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: const MaterialApp(home: Protection()),
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(
+      find.text('To access this service you must be subscribed'), findsWidgets);
+  expect(find.text('Campus Control'), findsWidgets);
+  expect(find.text('Subscribe'), findsWidgets);
+  expect(find.text('Book Ride'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
+}
+
+Future<void> _campusControlSubscribedTest(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    builder: (context, child){
+      set() async{
+        await Future.delayed(const Duration(seconds: 1));
+        context.read<Subscriptions>().addSub('campus_control');
+      }set();
+
+      return const MaterialApp(
+          home: Protection());
+    },
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text('About Protection Services'), findsWidgets);
+  expect(find.text('Campus Control'), findsWidgets);
+  expect(find.text('Book Ride'), findsWidgets);
+  expect(find.byType(Icon), findsWidgets);
+
+  await tester.tap(find.text('Book Ride'));
+  await tester.pumpAndSettle();
+
+  expect(find.text('From'), findsWidgets);
+  expect(find.text('To'), findsWidgets);
+  expect(find.text('Book'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.text('To'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text('Student digz'), findsWidgets);
+
+  await tester.tap(find.text('Campus Control'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.text('From'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  expect(find.text('Main Campus'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
+}
+
+// CCDU Students
+
+Future<void> _ccduUnsubscribedTest(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: const MaterialApp(home: CCDU()),
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text('CCDU'), findsWidgets);
+  // expect(find.text('Campus Control'), findsWidgets);
+  expect(find.text('No Data'), findsWidgets);
+  expect(find.text('New Session'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
+}
+
+Future<void> _ccduSubscribedTest(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    builder: (context, child) {
+      set()async{
+        await Future.delayed(const Duration(seconds: 1));
+        CCDUObject session = CCDUObject();
+        session.setAppointment(
+            'Pending',
+            '12:30-13:30',
+            '06/10/2022',
+            'Meeting',
+            't2375736@wits.ac.za',
+            'Dr AP Chuma',
+            'Online');
+        context.read<Subscriptions>().addCCDUBooking(session);
+      }set();
+      return const MaterialApp(home: CCDU());
+    },
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text('CCDU'), findsWidgets);
+  // expect(find.text('Campus Control'), findsWidgets);
+  expect(find.text('Appointment 1'), findsWidgets);
+  expect(find.text('Date: 06/10/2022'), findsWidgets);
+  expect(find.text('Time: 12:30-13:30'), findsWidgets);
+  expect(find.text('Counsellor: Dr AP Chuma'), findsWidgets);
+  expect(find.text('Pending'), findsWidgets);
+  expect(find.text('New Session'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
 }
