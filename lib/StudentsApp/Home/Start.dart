@@ -15,7 +15,7 @@ String uri = "https://web-production-8fed.up.railway.app/";
 class Start extends StatefulWidget {
   String email, username;
 
-  Start({required this.email, required this.username});
+  Start({super.key, required this.email, required this.username});
 
   @override
   State<Start> createState() => _Start();
@@ -203,7 +203,7 @@ class _Start extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(
           color: Color(0xff003b5c),
