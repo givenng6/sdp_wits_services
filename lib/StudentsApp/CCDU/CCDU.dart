@@ -181,6 +181,7 @@ class _CCDU extends State<CCDU> {
                             ],
                           ),
                           DropdownButton(
+                            key: const Key('Choose Counsellor'),
                               isExpanded: true,
                               value: theCounsellor,
                               items: counsellors.map((String counsellors) {
