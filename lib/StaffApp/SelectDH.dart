@@ -40,7 +40,7 @@ class _SelectDHState extends State<SelectDH> {
     String? email = sharedPreferences.getString("email");
     sharedPreferences.setString('dhName', dhName);
 
-    var result = await http.post(Uri.parse("${globals.url}/Users/AssignDep"),
+    await http.post(Uri.parse("${globals.url}/Users/AssignDep"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
@@ -50,9 +50,6 @@ class _SelectDHState extends State<SelectDH> {
           "department": "Dining Services",
           "dhName": dhName
         }));
-    var json = jsonDecode(result.body);
-
-
 
   }
 

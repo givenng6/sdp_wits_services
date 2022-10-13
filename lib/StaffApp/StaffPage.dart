@@ -49,7 +49,7 @@ class _StaffPageState extends State<StaffPage> {
     switch (departmentName) {
       case "Bus Services":
         {
-          debugPrint('here here');
+          // debugPrint('here here');
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -61,7 +61,7 @@ class _StaffPageState extends State<StaffPage> {
         break;
       case "Dining Services":
         {
-          debugPrint('here here');
+          // debugPrint('here here');
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -124,7 +124,7 @@ class _StaffPageState extends State<StaffPage> {
     return Scaffold(
         backgroundColor: const Color(0xff003b5c),
         appBar: AppBar(
-          title: Image.asset("assets/NewLogo.jpg", fit: BoxFit.cover),
+          title: Image.asset("assets/NewLogo.jpg", fit: BoxFit.cover,key: const Key("logoImg"),),
           actions: <Widget>[
             Container(
               margin:
@@ -133,7 +133,7 @@ class _StaffPageState extends State<StaffPage> {
                 backgroundColor: Color(0xff31AFB4),
                 child: Text(
                   username[0],
-                  style: TextStyle(fontSize: 20.0, color: Colors.white),
+                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
                 ),
               ),
             )

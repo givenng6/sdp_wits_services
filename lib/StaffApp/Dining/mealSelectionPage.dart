@@ -83,9 +83,17 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
               tabs: [
                 Tab(
                     text: 'Breakfast',
-                    icon: Icon(Icons.breakfast_dining_rounded)),
-                Tab(text: 'Lunch', icon: Icon(Icons.lunch_dining_rounded)),
-                Tab(text: 'Dinner', icon: Icon(Icons.dinner_dining_rounded)),
+                    icon: Icon(
+                        key: Key('breakfastTab'),
+                        Icons.breakfast_dining_rounded)),
+                Tab(
+                    text: 'Lunch',
+                    icon:
+                        Icon(key: Key('lunchTab'), Icons.lunch_dining_rounded)),
+                Tab(
+                    text: 'Dinner',
+                    icon: Icon(
+                        key: Key('dinnerTab'), Icons.dinner_dining_rounded)),
               ],
             ),
           ),

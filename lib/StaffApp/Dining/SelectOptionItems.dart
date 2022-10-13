@@ -180,7 +180,7 @@ class _SelectOptionItemsState extends State<SelectOptionItems> {
           setState(() {});
           handleOnPressed();
         },
-        child: loading?const CircularProgressIndicator(color: Colors.white,): const Icon(Icons.check),
+        child: loading?const CircularProgressIndicator(key:Key('loading'),color: Colors.white,): const Icon(Icons.check),
       ),
     );
   }

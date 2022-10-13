@@ -43,7 +43,7 @@ class _AccordionWidgetState extends State<AccordionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint("Second in build");
+    // debugPrint("Second in build");
     if (first) {
       // make sure we run this block once
       if (widget.type == "breakfast") {
@@ -90,6 +90,7 @@ class _AccordionWidgetState extends State<AccordionWidget> {
                             Expanded(
                               flex: 1,
                               child: InkWell(
+                                key: Key("${package.packageName} ${widget.type} Edit"),
                                 child: const Icon(Icons.edit),
                                 onTap: () async {
                                   await Navigator.push(
