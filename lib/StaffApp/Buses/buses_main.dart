@@ -131,7 +131,7 @@ class _BusesMainState extends State<BusesMain> {
     ).then((value) {
       List json = jsonDecode(value.body);
       routes = json;
-      setState(() {});
+      // setState(() {});
       keepDriverOnShift();
     });
   }
