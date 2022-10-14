@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
-import 'package:sdp_wits_services/StaffApp/CCDU/ccdu.dart';
 import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -83,19 +82,6 @@ class _StaffPageState extends State<StaffPage> {
               await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Campus Control');
 
-        }
-        break;
-      case "CCDU":
-        {
-          // debugPrint('here here');
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => const ccdu()));
-
-          SharedPreferences sharedPreferences =
-          await SharedPreferences.getInstance();
-          sharedPreferences.setString('department', 'CCDU');
         }
         break;
       default:
