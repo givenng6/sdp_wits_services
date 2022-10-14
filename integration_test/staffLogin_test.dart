@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sdp_wits_services/SignupAndLogin/StaffSignin.dart';
+import 'package:sdp_wits_services/SignupAndLogin/app.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/SelectOptionItems.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:sdp_wits_services/globals.dart' as globals;
+import 'package:sdp_wits_services/main.dart' as app;
 
 import 'utils.dart';
 
@@ -17,7 +19,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end dashboard test", () {
     testWidgets("stuff SignUp ", _staffSignupTest);
-    // testWidgets("stuff Recover ", _staffRecoverTest);
+    testWidgets("stuff Recover ", _staffRecoverTest);
     testWidgets("stuff Login", _staffloginTest);
 
   });
@@ -25,13 +27,20 @@ void main() {
 
 Future<void> _staffloginTest(WidgetTester tester) async {
 
-  await tester.pumpWidget(HookBuilder(builder: (context) {
-
-    return const MaterialApp(home: StaffLoginScreen());
-  }));
+  await tester.pumpWidget(const MaterialApp(
+    home: App(),
+  ));
   await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 3));
+
+  final staffBtn = find.text("Continue as Staff");
+  expect(staffBtn,findsWidgets);
+
+  await tester.tap(staffBtn);
+  await tester.pumpAndSettle();
+
+  await Future.delayed(const Duration(seconds: 2));
 
   final email = findNameTextField();
   final password = findPasswordTextField();
@@ -73,13 +82,20 @@ Future<void> _staffloginTest(WidgetTester tester) async {
 
 Future<void> _staffSignupTest(WidgetTester tester) async {
 
-  await tester.pumpWidget(HookBuilder(builder: (context) {
-
-    return const MaterialApp(home: StaffLoginScreen());
-  }));
+  await tester.pumpWidget(const MaterialApp(
+    home: App(),
+  ));
   await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 3));
+
+  final staffBtn = find.text("Continue as Staff");
+  expect(staffBtn,findsWidgets);
+
+  await tester.tap(staffBtn);
+  await tester.pumpAndSettle();
+
+  await Future.delayed(const Duration(seconds: 2));
 
   final email = findNameTextField();
   final password = findPasswordTextField();
@@ -146,14 +162,18 @@ Future<void> _staffSignupTest(WidgetTester tester) async {
 }
 
 Future<void> _staffRecoverTest(WidgetTester tester) async {
-  await tester.pumpWidget(HookBuilder(builder: (context) {
+  // final continueAsStaffButton = find.byKey(const Key('Continue as Staff'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.clear();
 
-    return const MaterialApp(home: StaffLoginScreen());
-  }));
+  final staffBtn = find.text("Continue as Staff");
+  expect(staffBtn,findsWidgets);
+
+  await tester.tap(staffBtn);
   await tester.pumpAndSettle();
 
-  await Future.delayed(const Duration(seconds: 3));
-
+  await Future.delayed(const Duration(seconds: 2));
 
   final btn = find.text("Forgot Password?");
   expect(btn,findsWidgets);
