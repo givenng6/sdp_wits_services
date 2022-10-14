@@ -17,7 +17,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end dashboard test", () {
     testWidgets("stuff SignUp ", _staffSignupTest);
-    testWidgets("stuff Recover ", _staffRecoverTest);
+    // testWidgets("stuff Recover ", _staffRecoverTest);
     testWidgets("stuff Login", _staffloginTest);
 
   });
@@ -163,7 +163,7 @@ Future<void> _staffRecoverTest(WidgetTester tester) async {
   await Future.delayed(const Duration(seconds: 2));
 
   await tester.enterText(findNameTextField(), "a2355285@wits.ac.za");
-  // FocusManager.instance.primaryFocus?.unfocus();
+  FocusManager.instance.primaryFocus?.unfocus();
   final recoverBtn = find.text("RECOVER");
   expect(recoverBtn,findsWidgets);
   await tester.tap(recoverBtn);
