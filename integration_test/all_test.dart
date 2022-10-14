@@ -13,10 +13,14 @@ import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:sdp_wits_services/StaffApp/StaffPage.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/BusObject.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDU.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 import 'package:sdp_wits_services/StudentsApp/Dashboard/Dashboard.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/Dining.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/DiningObject.dart';
 import 'package:sdp_wits_services/StudentsApp/Dining/ViewDH.dart';
+import 'package:sdp_wits_services/StudentsApp/Home/Start.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:sdp_wits_services/main.dart' as app;
@@ -32,8 +36,13 @@ import 'utils.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end app test", () {
-    // App
+    // App Student
     testWidgets("continue as student", _continueAsStudentTests);
+    testWidgets("login as student", _logInAsStudentTests);
+    testWidgets("signIn as student", _signInAsStudentTests);
+    testWidgets("_recover email student", _recoverStudentTests);
+
+    // App Staff
     testWidgets("continue as staff", _continueAsStaffTests);
 
     // Buses
@@ -64,16 +73,23 @@ void main() {
     testWidgets("Main Dining", _mainDiningTests);
 
     // Stuff Campus Control
-
     testWidgets("Campus Control tests", _campusControlTest);
 
     //
-
     testWidgets("SelectDepartment", _selectDepTest);
     testWidgets("Check Buses", _checkBuses);
     testWidgets("Check Campus Control", _checkCampusControl);
 
+    // Campus Control Students
+    testWidgets("Unsubscribed Campus Control", _campusControlUnsubscribedTest);
+    testWidgets("Subscribed Campus Control", _campusControlSubscribedTest);
 
+    // CCDU Students
+    testWidgets("Unsubscribed ccdu", _ccduUnsubscribedTest);
+    testWidgets("Subscribed ccdu", _ccduSubscribedTest);
+
+    // Start
+    testWidgets("start", _start);
   });
 }
 
@@ -177,6 +193,132 @@ Future<void> _continueAsStudentTests(WidgetTester tester)async{
   await tester.tap(find.text('BACK'));
   await tester.pumpAndSettle();
   expect(find.text('Email'), findsWidgets);
+}
+
+Future<void> _logInAsStudentTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStudent = find.text('Continue as Student');
+  expect(continueAsStudent, findsWidgets);
+  final continueAsStaff = find.text('Continue as Staff');
+  expect(continueAsStaff, findsWidgets);
+
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(continueAsStudentButton);
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  final witsServices = find.text('Wits Services');
+  expect(witsServices, findsWidgets);
+
+  await tester.pumpAndSettle();
+  await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('LOGIN'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+}
+
+Future<void> _signInAsStudentTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStudent = find.text('Continue as Student');
+  expect(continueAsStudent, findsWidgets);
+  final continueAsStaff = find.text('Continue as Staff');
+  expect(continueAsStaff, findsWidgets);
+
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(continueAsStudentButton);
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  final witsServices = find.text('Wits Services');
+  expect(witsServices, findsWidgets);
+
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('SIGNUP'));
+  await tester.pumpAndSettle();
+  await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findConfirmPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('SIGNUP'));
+  await tester.pumpAndSettle();
+
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findNthField(0), 'Nathi');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('SUBMIT'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+}
+
+Future<void> _recoverStudentTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStudent = find.text('Continue as Student');
+  expect(continueAsStudent, findsWidgets);
+  final continueAsStaff = find.text('Continue as Staff');
+  expect(continueAsStaff, findsWidgets);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(continueAsStudentButton);
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  final witsServices = find.text('Wits Services');
+  expect(witsServices, findsWidgets);
+
+  await tester.enterText(findNameTextField(), '23123456@students.wits.ac.za');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Forgot Password?'));
+  await tester.pumpAndSettle();
+
+
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('RECOVER'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
 }
 
 Future<void> _continueAsStaffTests(WidgetTester tester) async{
@@ -319,6 +461,7 @@ Future<void> _subbedBusesTests(WidgetTester tester)async{
   const email = '2375736@students.wits.ac.za';
   List<BusObject> busSchedule = [];
   var busFollowing = [];
+  busFollowing;
 
   await http.get(Uri.parse("${uri}db/getBusSchedule/"),
       headers: <String, String>{
@@ -847,8 +990,19 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: const MaterialApp(
-        home: students.Profile(isTesting: true, email: email, username: username, subs: subs,)),
+    builder: (context, _){
+      set()async{
+        await Future.delayed(const Duration(seconds: 1));
+        context.read<UserData>().setEmail(email);
+        context.read<UserData>().setUsername(username);
+        for(String sub in subs){
+          context.read<Subscriptions>().addSub(sub);
+        }
+      }set();
+
+      return const MaterialApp(
+          home: students.Profile());
+    },
   );
 
   await tester.pumpWidget(widget);
@@ -882,7 +1036,23 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
   expect(find.text('Sign Out'), findsWidgets);
   expect(find.text('Cancel'), findsWidgets);
 
-  await tester.pump(const Duration(seconds: 3));
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.text('Cancel'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.byKey(const Key('Logout')));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.text('Sign Out'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
   preferences.clear();
 }
 
@@ -1490,4 +1660,223 @@ Future<void> _checkCampusControl(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
   sharedPreferences.clear();
+}
+
+// Campus Control Students
+
+Future<void> _campusControlUnsubscribedTest(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: const MaterialApp(home: Protection()),
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(
+      find.text('To access this service you must be subscribed'), findsWidgets);
+  expect(find.text('Campus Control'), findsWidgets);
+  expect(find.text('Subscribe'), findsWidgets);
+  expect(find.text('Book Ride'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
+}
+
+Future<void> _campusControlSubscribedTest(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    builder: (context, child){
+      set() async{
+        await Future.delayed(const Duration(seconds: 1));
+        context.read<Subscriptions>().addSub('campus_control');
+      }set();
+
+      return const MaterialApp(
+          home: Protection());
+    },
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text('About Protection Services'), findsWidgets);
+  expect(find.text('Campus Control'), findsWidgets);
+  expect(find.text('Book Ride'), findsWidgets);
+  expect(find.byType(Icon), findsWidgets);
+
+  await tester.tap(find.text('Book Ride'));
+  await tester.pumpAndSettle();
+
+  expect(find.text('From'), findsWidgets);
+  expect(find.text('To'), findsWidgets);
+  expect(find.text('Book'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.text('To'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text('Student digz'), findsWidgets);
+
+  await tester.tap(find.text('Campus Control'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.text('From'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  expect(find.text('Main Campus'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
+}
+
+// CCDU Students
+
+Future<void> _ccduUnsubscribedTest(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: const MaterialApp(home: CCDU()),
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text('CCDU'), findsWidgets);
+  // expect(find.text('Campus Control'), findsWidgets);
+  expect(find.text('No Data'), findsWidgets);
+  expect(find.text('New Session'), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
+}
+
+Future<void> _ccduSubscribedTest(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    builder: (context, child) {
+      set()async{
+        await Future.delayed(const Duration(seconds: 1));
+        CCDUObject session = CCDUObject();
+        session.setAppointment(
+            'Pending',
+            '12:30-13:30',
+            '06/10/2022',
+            'Meeting',
+            't2375736@wits.ac.za',
+            'Dr AP Chuma',
+            'Online');
+        context.read<Subscriptions>().addCCDUBooking(session);
+      }set();
+      return const MaterialApp(home: CCDU());
+    },
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text('CCDU'), findsWidgets);
+  // expect(find.text('Campus Control'), findsWidgets);
+  expect(find.text('Appointment 1'), findsWidgets);
+  expect(find.text('Date: 06/10/2022'), findsWidgets);
+  expect(find.text('Time: 12:30-13:30'), findsWidgets);
+  expect(find.text('Counsellor: Dr AP Chuma'), findsWidgets);
+  expect(find.text('Pending'), findsWidgets);
+  expect(find.text('New Session'), findsWidgets);
+
+  await tester.tap(find.text('New Session'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 2));
+
+  // expect(find.text('New Session'), findsWidgets);
+  // expect(find.text('Submit'), findsWidgets);
+  // expect(find.text('Date'), findsWidgets);
+  // expect(find.text('Change Date'), findsWidgets);
+  // expect(find.text('Time'), findsWidgets);
+  // expect(find.text('09:00'), findsWidgets);
+  // expect(find.text('Change Time'), findsWidgets);
+  // expect(find.text('Meeting Location'), findsWidgets);
+  // expect(find.text('Online'), findsWidgets);
+  // expect(find.text('Choose Counsellor (optional)'), findsWidgets);
+  // expect(find.text('Add Description'), findsWidgets);
+  expect(find.byType(Icon), findsWidgets);
+
+  await tester.tap(find.text('Online'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.text('Date'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  // await tester.pump(const Duration(seconds: 2));
+
+  // await tester.tap(find.byKey(const Key('Choose Counsellor')), warnIfMissed: false);
+  // await tester.pumpAndSettle();
+  //
+  // await tester.pump(const Duration(seconds: 10));
+  //
+  // expect(find.text('Dr AP Chuma'), findsWidgets);
+  //
+  // await tester.pump(const Duration(seconds: 2));
+  //
+  // await tester.tap(find.text('Date'), warnIfMissed: false);
+  // await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 2));
+
+  await tester.tap(find.text('Submit'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 2));
+}
+
+// Start
+
+Future<void> _start(WidgetTester tester) async {
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: MaterialApp(home: Start(email: '2375736@students.wits.ac.za', username: 'Nathi',)),
+  );
+
+  await tester.pumpWidget(widget);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 20));
+
+  // expect(find.text('Campus Control'), findsWidgets);
+  // expect(find.text('Ride Request'), findsWidgets);
+  // expect(find.text('Dashboard'), findsWidgets);
+  // expect(find.text('Buses'), findsWidgets);
+  // expect(find.text('Dining Hall'), findsWidgets);
+  // expect(find.text('Protection'), findsWidgets);
+  // expect(find.text('Menu'), findsWidgets);
+  // expect(find.byType(Icon), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 2));
 }
