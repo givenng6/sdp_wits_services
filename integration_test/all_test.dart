@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:provider/provider.dart';
-import 'package:sdp_wits_services/SignupAndLogin/StaffSignin.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/Package.dart';
@@ -1169,6 +1168,9 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
 
   await tester.pump(const Duration(seconds: 1));
 
+  await tester.tap(find.byKey(const Key('lightDarkModeIcon Student')));
+  await tester.pumpAndSettle();
+
   await tester.tap(find.byKey(const Key('Logout')));
   await tester.pumpAndSettle();
 
@@ -1215,7 +1217,25 @@ Future<void> _staffProfileTests(WidgetTester tester)async{
   expect(find.text('Sign Out'), findsWidgets);
   expect(find.text('Cancel'), findsWidgets);
 
-  await tester.pump(const Duration(seconds: 0));
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.text('Cancel'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.byKey(const Key('lightDarkModeIcon Staff')));
+  await tester.pumpAndSettle();
+
+  await tester.tap(find.byKey(const Key('Logout')));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.text('Sign Out'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
   preferences.clear();
 }
 
