@@ -30,6 +30,7 @@ AppBar BuildAppBar(BuildContext context) {
     elevation: 0,
     actions: [
       IconButton(
+        key: const Key('lightDarkModeIcon Staff'),
         color: Colors.black87,
         icon: const Icon(lightDarkModeIcon),
         onPressed: () {},

@@ -4,7 +4,6 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:provider/provider.dart';
-import 'package:sdp_wits_services/SignupAndLogin/StaffSignin.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/Package.dart';
@@ -45,6 +44,9 @@ void main() {
 
     // App Staff
     testWidgets("continue as staff", _continueAsStaffTests);
+    testWidgets("login as staff", _logInAsStaffTests);
+    testWidgets("signIn as staff", _signInAsStaffTests);
+    testWidgets("_recover email staff", _recoverStaffTests);
 
     // Buses
     testWidgets('unsubscribed student buses main', _unSubbedBusesTests);
@@ -94,7 +96,7 @@ void main() {
   });
 }
 
-// App
+// App Student
 
 Future<void> _continueAsStudentTests(WidgetTester tester)async{
   final continueAsStudentButton =
@@ -322,6 +324,8 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
   await tester.pump(const Duration(seconds: 1));
 }
 
+// App Staff
+
 Future<void> _continueAsStaffTests(WidgetTester tester) async{
   final continueAsStaffButton = find.byKey(const Key('Continue as Staff'));
   app.main();
@@ -415,130 +419,251 @@ Future<void> _continueAsStaffTests(WidgetTester tester) async{
 
   //Recovery
 
-  final btn = find.text("Forgot Password?");
-  expect(btn,findsWidgets);
-  await tester.tap(btn);
-  await tester.pumpAndSettle();
-
-  await Future.delayed(const Duration(seconds: 2));
-
-  await tester.enterText(findNameTextField(), "a2355285@wits.ac.za");
-  FocusManager.instance.primaryFocus?.unfocus();
-  final recoverBtn = find.text("RECOVER");
-  expect(recoverBtn,findsWidgets);
-  await tester.tap(recoverBtn);
-  await tester.pumpAndSettle(const Duration(seconds: 1));
-  await tester.pump();
-
-  //SignUp
-
-  await Future.delayed(const Duration(seconds: 2));
-
-  final emailTextField = findNameTextField();
-  final passwordTextField = findPasswordTextField();
-  final confirmPasswordTextField = findConfirmPasswordTextField();
-  final signupBtnTextField = find.text("SIGNUP");
-
-
-
-  expect(emailTextField,findsWidgets);
-  expect(passwordTextField,findsWidgets);
-  expect(confirmPasswordTextField,findsWidgets);
-  // expect(signupBtn,findsWidgets);
-
-  await tester.tap(signupBtnTextField);
-  await tester.pumpAndSettle();
-
-  await tester.enterText(emailTextField, "");
-  await tester.enterText(emailTextField, "23552855@students.wits.ac.za");
-  await tester.enterText(passwordTextField, "23552855");
-  await tester.enterText(confirmPasswordTextField, "23552855");
-  await tester.tap(signupBtnTextField);
-  await tester.pumpAndSettle(const Duration(seconds: 4));
-
-  await tester.enterText(findNameTextField(), "Tester");
-  await tester.tap(find.text("SUBMIT"));
-  await tester.pumpAndSettle();
-  await tester.tap(find.text("BACK"));
-  await tester.pumpAndSettle();
-
-  //Wrong email
-  await tester.tap(signupBtnTextField);
-  await tester.pumpAndSettle();
-
-  await tester.enterText(emailTextField, "");
-  await tester.enterText(emailTextField, "2355285@gmail.com");
-  await tester.enterText(passwordTextField, "");
-  await tester.enterText(passwordTextField, "23552855");
-  await tester.enterText(confirmPasswordTextField, "");
-  await tester.enterText(confirmPasswordTextField, "23552855");
-  await tester.tap(signupBtnTextField);
-  await tester.pumpAndSettle(const Duration(seconds: 2));
-
-  await tester.enterText(findNameTextField(), "Tester");
-  await tester.tap(find.text("SUBMIT"));
-  await tester.pumpAndSettle();
-  await tester.tap(find.text("BACK"));
-  await tester.pumpAndSettle();
-
-  //Good
-
-  await tester.tap(signupBtnTextField);
-  await tester.pumpAndSettle();
-
-  await tester.enterText(emailTextField, "");
-  await tester.enterText(emailTextField, "2355285@wits.ac.za");
-  await tester.enterText(passwordTextField, "");
-  await tester.enterText(passwordTextField, "2355285");
-  await tester.enterText(confirmPasswordTextField, "");
-  await tester.enterText(confirmPasswordTextField, "2355285");
-  await tester.tap(signupBtnTextField);
-
-  await tester.pumpAndSettle();
-
-  await tester.enterText(findNameTextField(), "Sabelo Mabena");
-  await tester.tap(find.text("SUBMIT"));
-  await tester.pumpAndSettle();
-
-  //Login
-  final loginbtn = find.text("LOGIN");
+  // final btn = find.text("Forgot Password?");
+  // expect(btn,findsWidgets);
+  // await tester.tap(btn);
+  // await tester.pumpAndSettle();
+  //
+  // await Future.delayed(const Duration(seconds: 2));
+  //
+  // await tester.enterText(findNameTextField(), "a2355285@wits.ac.za");
+  // FocusManager.instance.primaryFocus?.unfocus();
+  // final recoverBtn = find.text("RECOVER");
+  // expect(recoverBtn,findsWidgets);
+  // await tester.tap(recoverBtn);
+  // await tester.pumpAndSettle(const Duration(seconds: 1));
+  // await tester.pump();
+  //
+  // //SignUp
+  //
+  // await Future.delayed(const Duration(seconds: 2));
+  //
+  // final emailTextField = findNameTextField();
+  // final passwordTextField = findPasswordTextField();
+  // final confirmPasswordTextField = findConfirmPasswordTextField();
+  // final signupBtnTextField = find.text("SIGNUP");
 
 
 
-  // //student email
-  await tester.enterText(emailTextField, "");
-  await tester.enterText(emailTextField, "23552855@students.wits.ac.za");
-  await tester.enterText(passwordTextField, "23552855");
-  await tester.tap(loginbtn);
-  await tester.pumpAndSettle();
-
-  //Incorrect password
-  await tester.enterText(emailTextField, "");
-  await tester.enterText(emailTextField, "a2355285@wits.ac.za");
-  await tester.enterText(passwordTextField, "23555");
-  await tester.tap(loginbtn);
-  await tester.pumpAndSettle();
-
-  //Wrong email extension
-  await tester.enterText(emailTextField, "");
-  await tester.enterText(emailTextField, "23552855@gmail.com");
-  await tester.enterText(passwordTextField, "235552855");
-  await tester.tap(loginbtn);
-  await tester.pumpAndSettle();
-
-  //Should work
-  await tester.enterText(emailTextField, "");
-  await tester.enterText(emailTextField, "a2355285@wits.ac.za");
-  await tester.enterText(passwordTextField, "2355285");
-  await tester.tap(loginbtn);
-  await tester.pumpAndSettle();
-
-
-
-
-
+  // expect(emailTextField,findsWidgets);
+  // expect(passwordTextField,findsWidgets);
+  // expect(confirmPasswordTextField,findsWidgets);
+  // // expect(signupBtn,findsWidgets);
+  //
+  // await tester.tap(signupBtnTextField);
+  // await tester.pumpAndSettle();
+  //
+  // await tester.enterText(emailTextField, "");
+  // await tester.enterText(emailTextField, "23552855@students.wits.ac.za");
+  // await tester.enterText(passwordTextField, "23552855");
+  // await tester.enterText(confirmPasswordTextField, "23552855");
+  // await tester.tap(signupBtnTextField);
+  // await tester.pumpAndSettle(const Duration(seconds: 4));
+  //
+  // await tester.enterText(findNameTextField(), "Tester");
+  // await tester.tap(find.text("SUBMIT"));
+  // await tester.pumpAndSettle();
+  // await tester.tap(find.text("BACK"));
+  // await tester.pumpAndSettle();
+  //
+  // //Wrong email
+  // await tester.tap(signupBtnTextField);
+  // await tester.pumpAndSettle();
+  //
+  // await tester.enterText(emailTextField, "");
+  // await tester.enterText(emailTextField, "2355285@gmail.com");
+  // await tester.enterText(passwordTextField, "");
+  // await tester.enterText(passwordTextField, "23552855");
+  // await tester.enterText(confirmPasswordTextField, "");
+  // await tester.enterText(confirmPasswordTextField, "23552855");
+  // await tester.tap(signupBtnTextField);
+  // await tester.pumpAndSettle(const Duration(seconds: 2));
+  //
+  // await tester.enterText(findNameTextField(), "Tester");
+  // await tester.tap(find.text("SUBMIT"));
+  // await tester.pumpAndSettle();
+  // await tester.tap(find.text("BACK"));
+  // await tester.pumpAndSettle();
+  //
+  // //Good
+  //
+  // await tester.tap(signupBtnTextField);
+  // await tester.pumpAndSettle();
+  //
+  // await tester.enterText(emailTextField, "");
+  // await tester.enterText(emailTextField, "2355285@wits.ac.za");
+  // await tester.enterText(passwordTextField, "");
+  // await tester.enterText(passwordTextField, "2355285");
+  // await tester.enterText(confirmPasswordTextField, "");
+  // await tester.enterText(confirmPasswordTextField, "2355285");
+  // await tester.tap(signupBtnTextField);
+  //
+  // await tester.pumpAndSettle();
+  //
+  // await tester.enterText(findNameTextField(), "Sabelo Mabena");
+  // await tester.tap(find.text("SUBMIT"));
+  // await tester.pumpAndSettle();
+  //
+  // //Login
+  // final loginbtn = find.text("LOGIN");
+  //
+  //
+  //
+  // // //student email
+  // await tester.enterText(emailTextField, "");
+  // await tester.enterText(emailTextField, "23552855@students.wits.ac.za");
+  // await tester.enterText(passwordTextField, "23552855");
+  // await tester.tap(loginbtn);
+  // await tester.pumpAndSettle();
+  //
+  // //Incorrect password
+  // await tester.enterText(emailTextField, "");
+  // await tester.enterText(emailTextField, "a2355285@wits.ac.za");
+  // await tester.enterText(passwordTextField, "23555");
+  // await tester.tap(loginbtn);
+  // await tester.pumpAndSettle();
+  //
+  // //Wrong email extension
+  // await tester.enterText(emailTextField, "");
+  // await tester.enterText(emailTextField, "23552855@gmail.com");
+  // await tester.enterText(passwordTextField, "235552855");
+  // await tester.tap(loginbtn);
+  // await tester.pumpAndSettle();
+  //
+  // //Should work
+  // await tester.enterText(emailTextField, "");
+  // await tester.enterText(emailTextField, "a2355285@wits.ac.za");
+  // await tester.enterText(passwordTextField, "2355285");
+  // await tester.tap(loginbtn);
+  // await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 1));
+}
+
+Future<void> _logInAsStaffTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStudent = find.text('Continue as Student');
+  expect(continueAsStudent, findsWidgets);
+  final continueAsStaff = find.text('Continue as Staff');
+  expect(continueAsStaff, findsWidgets);
+
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(continueAsStaff);
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  final witsServices = find.text('Wits Services');
+  expect(witsServices, findsWidgets);
+
+  await tester.pumpAndSettle();
+  await tester.enterText(findNameTextField(), 'a2375736@wits.ac.za');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('LOGIN'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+}
+
+Future<void> _signInAsStaffTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStudent = find.text('Continue as Student');
+  expect(continueAsStudent, findsWidgets);
+  final continueAsStaff = find.text('Continue as Staff');
+  expect(continueAsStaff, findsWidgets);
+
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(continueAsStaff);
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  final witsServices = find.text('Wits Services');
+  expect(witsServices, findsWidgets);
+
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('SIGNUP'));
+  await tester.pumpAndSettle();
+  await tester.enterText(findNameTextField(), 'a2375736@wits.ac.za');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findConfirmPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('SIGNUP'));
+  await tester.pumpAndSettle();
+
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findNthField(0), 'Nathi');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('SUBMIT'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+}
+
+Future<void> _recoverStaffTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStudent = find.text('Continue as Student');
+  expect(continueAsStudent, findsWidgets);
+  final continueAsStaff = find.text('Continue as Staff');
+  expect(continueAsStaff, findsWidgets);
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(continueAsStaff);
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  final witsServices = find.text('Wits Services');
+  expect(witsServices, findsWidgets);
+
+  await tester.enterText(findNameTextField(), 'a23123456@wits.ac.za');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Forgot Password?'));
+  await tester.pumpAndSettle();
+
+
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('RECOVER'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
 }
 
 // Buses
@@ -1169,6 +1294,9 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
 
   await tester.pump(const Duration(seconds: 1));
 
+  await tester.tap(find.byKey(const Key('lightDarkModeIcon Student')));
+  await tester.pumpAndSettle();
+
   await tester.tap(find.byKey(const Key('Logout')));
   await tester.pumpAndSettle();
 
@@ -1215,7 +1343,25 @@ Future<void> _staffProfileTests(WidgetTester tester)async{
   expect(find.text('Sign Out'), findsWidgets);
   expect(find.text('Cancel'), findsWidgets);
 
-  await tester.pump(const Duration(seconds: 0));
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.text('Cancel'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.byKey(const Key('lightDarkModeIcon Staff')));
+  await tester.pumpAndSettle();
+
+  await tester.tap(find.byKey(const Key('Logout')));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(find.text('Sign Out'));
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 1));
   preferences.clear();
 }
 
