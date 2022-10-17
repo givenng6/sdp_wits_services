@@ -14,7 +14,7 @@ class BusesMain extends StatefulWidget {
 }
 
 class _BusesMainState extends State<BusesMain> {
-  String uri = 'https://sdp-staff-backend.herokuapp.com/';
+  String uri = 'https://sdpwitsservices-production.up.railway.app/';
   String? username;
   String? email;
   bool isFabVisible = true;

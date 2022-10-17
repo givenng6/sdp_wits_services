@@ -6,7 +6,7 @@ import 'package:sdp_wits_services/StaffApp/Campus%20Control/Student.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/Vehicle.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-String url = "https://sdp-staff-backend.herokuapp.com";
+String url = "https://sdpwitsservices-production.up.railway.app";
 // String url = "http://localhost:5000";
 late Vehicle vehicle;
 String campusName = "";

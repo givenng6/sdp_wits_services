@@ -6,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'Dining/Package.dart';
 import 'package:http/http.dart' as http;
 
-String url = "https://sdp-staff-backend.herokuapp.com";
+String url = "https://sdpwitsservices-production.up.railway.app";
 String dhName = "";
 
 List<Package> breakfast = [];
