@@ -17,7 +17,10 @@ class _Events extends State<Events>{
           children: [
             eventCard("Wits FC vs Bidvest Wits - Home game ", "12/11/2022", "13:00", "211", "Wits Stadium", 'Sport'),
             eventCard("Wits Intercampus Hackathon 2022 - DLU", "06/10/2022", "09:00", "3", "WSS", 'Hackathon'),
-            eventCard("Joyers Celebration", "12/11/2022", "13:00", "54", "Wits Stadium", 'Religion')
+            eventCard("Joyers Celebration", "12/11/2022", "13:00", "54", "Wits Stadium", 'Religion'),
+            eventCard("Mental Health Awareness - CCDU", "12/11/2022", "14:00", "12", "Library Lawns", 'Awareness'),
+            eventCard("Freshers Party 2023", "01/02/2023", "14:00", "769", "Starrock Park", 'Concert'),
+            eventCard("Fees Must Fall", "15/03/2023", "07:00", "443", "Amic Deck", 'Politics'),
           ],
         ),
       )
@@ -43,6 +46,21 @@ class _Events extends State<Events>{
       case "Religion":
         img = "assets/events_religion.jpeg";
         buttonColor = const Color(0xffff7700);
+        isDark = true;
+        break;
+      case "Awareness":
+        img = "assets/events_awareness.jpeg";
+        buttonColor = const Color(0xffe5e4e2);
+        isDark = false;
+        break;
+      case "Concert":
+        img = "assets/events_concert.jpeg";
+        buttonColor = const Color(0x80b0c4de);
+        isDark = false;
+        break;
+      case "Politics":
+        img = "assets/events_politics.jpeg";
+        buttonColor = const Color(0x801e69cf);
         isDark = true;
         break;
       default:
