@@ -1,36 +1,47 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:sdp_wits_services/StudentsApp/Utilities/AddSub.dart';
 
-class Events extends HookWidget{
-  // global variables to be used on the widgets...
-  String title = "Events";
-  String email = "";
-  String service = "events";
-  List<String> data = [];
+class Events extends StatefulWidget{
+  @override
+  State<Events> createState() => _Events();
+}
 
-  Events(this.email, {Key? key}) : super(key: key);
-
+class _Events extends State<Events>{
+  
   @override
   Widget build(BuildContext context){
-    var subs = useState([]);
-    var isSubscribed = useState(false);
-    data = [email, title, service];
-
     return Scaffold(
       appBar: AppBar(title: const Text('Events'), backgroundColor: Color(0xff003b5c),),
-      body: isSubscribed.value
-          ? SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Text('Sub'),
+            eventCard("Joyers Celebration", "12/11/2022", "13:00")
           ],
         ),
       )
-          : Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+    );
+  }
+
+  Widget eventCard(String eventTitle, String date, String time){
+    return Card(
+      child: Column(
         children: [
-         // AddSub(isSubscribed, data, subs),
+          Row(
+            children: [
+              Text(date),
+              Text(time)
+            ],
+          ),
+          Text(eventTitle),
+          OutlinedButton(
+              style: OutlinedButton.styleFrom(
+                minimumSize: Size.fromHeight(40),
+                backgroundColor: const Color(0xff86B049),
+                  shape: const StadiumBorder()
+              ),
+              onPressed: (){},
+              child: const Text('Interested on the event', style: TextStyle(color: Colors.black),)
+          )
         ],
       ),
     );

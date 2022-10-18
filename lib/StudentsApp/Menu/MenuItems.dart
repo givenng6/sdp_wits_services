@@ -86,7 +86,7 @@ class _MenuItems extends State<MenuItems> {
             case 5 :
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Events(email)),
+                  MaterialPageRoute(builder: (context) => Events()),
                 );
 
               break;
