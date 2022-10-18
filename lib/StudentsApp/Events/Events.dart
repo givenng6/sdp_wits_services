@@ -15,35 +15,87 @@ class _Events extends State<Events>{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            eventCard("Joyers Celebration", "12/11/2022", "13:00")
+            eventCard("Wits FC vs Bidvest Wits - Home game ", "12/11/2022", "13:00", "211", "Wits Stadium", 'Sport'),
+            eventCard("Wits Intercampus Hackathon - DLU", "06/10/2022", "09:00", "3", "WSS", 'Hackathon'),
+            eventCard("Joyers Celebration", "12/11/2022", "13:00", "54", "Wits Stadium", 'Religion')
           ],
         ),
       )
     );
   }
 
-  Widget eventCard(String eventTitle, String date, String time){
+  Widget eventCard(String eventTitle, String date, String time, String likes, String venue, String type){
     return Card(
-      child: Column(
-        children: [
-          Row(
-            children: [
-              Text(date),
-              Text(time)
-            ],
-          ),
-          Text(eventTitle),
-          OutlinedButton(
-              style: OutlinedButton.styleFrom(
-                minimumSize: Size.fromHeight(40),
-                backgroundColor: const Color(0xff86B049),
-                  shape: const StadiumBorder()
-              ),
-              onPressed: (){},
-              child: const Text('Interested on the event', style: TextStyle(color: Colors.black),)
-          )
-        ],
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(color: Colors.white70, width: 1),
+        borderRadius: BorderRadius.circular(20),
       ),
+      child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topRight: Radius.circular(20),
+                topLeft: Radius.circular(20)
+              ),
+              child: Image.asset('assets/events_sport.png'),
+            ),
+            Container(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(date),
+                      Text(time)
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(eventTitle, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700),),
+                  ),
+                  OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(40),
+                          backgroundColor: const Color(0xff86B049),
+                          shape: const StadiumBorder()
+                      ),
+                      onPressed: (){},
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Text('Interested on the event', style: TextStyle(color: Colors.black),),
+                          Icon(Icons.open_in_new, color: Colors.black,)
+                        ],
+                      )
+                  ),
+                  Container(
+                    padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        addOns("LIKES", likes),
+                        addOns("VENUE", venue),
+                        addOns("TYPE", type)
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+
+          ],
+        ),
     );
   }
+
+  Widget addOns(String title, String size){
+    return Column(
+      children: [
+        Text(title, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),),
+        Text(size, style: const TextStyle(fontWeight: FontWeight.bold))
+      ],
+    );
+  }
+
 }
