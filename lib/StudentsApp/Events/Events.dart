@@ -16,7 +16,7 @@ class _Events extends State<Events>{
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             eventCard("Wits FC vs Bidvest Wits - Home game ", "12/11/2022", "13:00", "211", "Wits Stadium", 'Sport'),
-            eventCard("Wits Intercampus Hackathon - DLU", "06/10/2022", "09:00", "3", "WSS", 'Hackathon'),
+            eventCard("Wits Intercampus Hackathon 2022 - DLU", "06/10/2022", "09:00", "3", "WSS", 'Hackathon'),
             eventCard("Joyers Celebration", "12/11/2022", "13:00", "54", "Wits Stadium", 'Religion')
           ],
         ),
@@ -25,6 +25,34 @@ class _Events extends State<Events>{
   }
 
   Widget eventCard(String eventTitle, String date, String time, String likes, String venue, String type){
+    String img = "";
+    Color buttonColor;
+    bool isDark;
+
+    switch(type){
+      case "Sport":
+        img = "assets/events_sport.png";
+        buttonColor = const Color(0xff86B049);
+        isDark = true;
+        break;
+      case "Hackathon":
+        img = 'assets/events_hack.jpeg';
+        buttonColor = const Color(0xff000000);
+        isDark = true;
+        break;
+      case "Religion":
+        img = "assets/events_religion.jpeg";
+        buttonColor = const Color(0xffff7700);
+        isDark = true;
+        break;
+      default:
+        img = "assets/events_sport.png";
+        buttonColor = const Color(0xff86B049);
+        isDark = false;
+        break;
+    }
+
+
     return Card(
       shape: RoundedRectangleBorder(
         side: const BorderSide(color: Colors.white70, width: 1),
@@ -37,7 +65,7 @@ class _Events extends State<Events>{
                 topRight: Radius.circular(20),
                 topLeft: Radius.circular(20)
               ),
-              child: Image.asset('assets/events_sport.png'),
+              child: Image.asset(img),
             ),
             Container(
               padding: const EdgeInsets.all(12),
@@ -57,15 +85,27 @@ class _Events extends State<Events>{
                   OutlinedButton(
                       style: OutlinedButton.styleFrom(
                           minimumSize: const Size.fromHeight(40),
-                          backgroundColor: const Color(0xff86B049),
+                          backgroundColor: buttonColor,
                           shape: const StadiumBorder()
                       ),
                       onPressed: (){},
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text('Interested on the event', style: TextStyle(color: Colors.black),),
-                          Icon(Icons.open_in_new, color: Colors.black,)
+                        children: [
+                          isDark ?
+                          Row(
+                            children: const [
+                              Text('Interested on the event', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
+                              Icon(Icons.open_in_new, color: Colors.white,)
+                            ],
+                          )
+                          :
+                          Row(
+                            children: const [
+                              Text('Interested on the event', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),),
+                              Icon(Icons.open_in_new, color: Colors.black,)
+                            ],
+                          )
                         ],
                       )
                   ),
