@@ -100,8 +100,8 @@ class _Events extends State<Events>{
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(date),
-                        Text(time)
+                        Text(date, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey)),
+                        Text(time, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.grey))
                       ],
                     ),
                     Padding(
@@ -114,7 +114,9 @@ class _Events extends State<Events>{
                             backgroundColor: buttonColor,
                             shape: const StadiumBorder()
                         ),
-                        onPressed: (){},
+                        onPressed: (){
+                          print(eventID);
+                        },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

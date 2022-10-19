@@ -44,7 +44,7 @@ class _Profile extends State<Profile> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
           ),
-          buildListView(),
+          showSubs(context)
         ],
       ),
     );
@@ -69,4 +69,107 @@ class _Profile extends State<Profile> {
           );
         });
   }
+
+  Widget subscriptionCard(BuildContext context, String subscription){
+    String title = "";
+    String img = "";
+
+    switch(subscription){
+      case "bus_service":
+        title = "Bus Services";
+        img = 'assets/hall.jpg';
+        break;
+      case "dining_service":
+        title = "Dining Services";
+        img = 'assets/food.jpg';
+        break;
+      case "campus_control":
+        title = "Protection Services";
+        img = 'assets/uni.jpeg';
+        break;
+      case "health":
+        title = "Health Services";
+        img = 'assets/health.jpg';
+        break;
+      default:
+        title = "Services";
+        img = 'assets/uni.jpeg';
+        break;
+    }
+
+    return Container(
+      margin: const EdgeInsets.fromLTRB(12, 8, 5, 5),
+      child: Card(
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(color: Colors.white70, width: 1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          child: Row(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20), // Image border
+                child: SizedBox.fromSize(
+                  size: const Size.fromRadius(55), // Image radius
+                  child: Image.asset(img, fit: BoxFit.cover,),
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(12, 0, 0, 0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        child: Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),)
+                    ),
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                          backgroundColor: Colors.redAccent
+                        ),
+                        onPressed: (){
+                          subDialog(context);
+                        },
+                        child: const Text("Unsubscribe", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),)
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+        )
+      ),
+    );
+  }
+
+  Widget showSubs(BuildContext context){
+    List<Widget> items = [];
+
+    for(String name in subs){
+      items.add(subscriptionCard(context, name));
+    }
+
+    return Column(children: items);
+  }
+
+  void subDialog(BuildContext context){
+    showDialog(context: context,
+        builder: (BuildContext context){
+          return Center(
+            child:  Container(
+              width: MediaQuery.of(context).size.width / 1.1,
+              height: MediaQuery.of(context).size.height / 3.4,
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20)
+              ),
+              child: const Text("Action not available")
+            ),
+          );
+        }
+    );
+  }
+
 }
