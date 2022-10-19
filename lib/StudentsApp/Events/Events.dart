@@ -21,6 +21,8 @@ class _Events extends State<Events>{
             eventCard("Mental Health Awareness - CCDU", "12/11/2022", "14:00", "12", "Library Lawns", 'Awareness'),
             eventCard("Freshers Party 2023", "01/02/2023", "14:00", "769", "Starrock Park", 'Concert'),
             eventCard("Fees Must Fall", "15/03/2023", "07:00", "443", "Amic Deck", 'Politics'),
+            eventCard("Home coming", "15/03/2023", "07:00", "443", "Amic Deck", 'Entertainment'),
+            eventCard("OTHER", "15/03/2023", "07:00", "443", "Amic Deck", 'OTHER'),
           ],
         ),
       )
@@ -58,92 +60,100 @@ class _Events extends State<Events>{
         buttonColor = const Color(0x80b0c4de);
         isDark = false;
         break;
+      case "Entertainment":
+        img = "assets/events_entertainment.jpeg";
+        buttonColor = const Color(0xff1974d2);
+        isDark = true;
+        break;
       case "Politics":
         img = "assets/events_politics.jpeg";
         buttonColor = const Color(0x801e69cf);
         isDark = true;
         break;
       default:
-        img = "assets/events_sport.png";
-        buttonColor = const Color(0xff86B049);
+        img = "assets/events_other.jpeg";
+        buttonColor = const Color(0xfff8ed62);
         isDark = false;
         break;
     }
 
 
-    return Card(
-      shape: RoundedRectangleBorder(
-        side: const BorderSide(color: Colors.white70, width: 1),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(20),
-                topLeft: Radius.circular(20)
+    return Container(
+      margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
+      child: Card(
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(color: Colors.white70, width: 1),
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(20),
+                  topLeft: Radius.circular(20)
+                ),
+                child: Image.asset(img),
               ),
-              child: Image.asset(img),
-            ),
-            Container(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(date),
-                      Text(time)
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(eventTitle, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700),),
-                  ),
-                  OutlinedButton(
-                      style: OutlinedButton.styleFrom(
-                          minimumSize: const Size.fromHeight(40),
-                          backgroundColor: buttonColor,
-                          shape: const StadiumBorder()
-                      ),
-                      onPressed: (){},
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          isDark ?
-                          Row(
-                            children: const [
-                              Text('Interested on the event', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
-                              Icon(Icons.open_in_new, color: Colors.white,)
-                            ],
-                          )
-                          :
-                          Row(
-                            children: const [
-                              Text('Interested on the event', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),),
-                              Icon(Icons.open_in_new, color: Colors.black,)
-                            ],
-                          )
-                        ],
-                      )
-                  ),
-                  Container(
-                    padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              Container(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        addOns("LIKES", likes),
-                        addOns("VENUE", venue),
-                        addOns("TYPE", type)
+                        Text(date),
+                        Text(time)
                       ],
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(eventTitle, style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w700),),
+                    ),
+                    OutlinedButton(
+                        style: OutlinedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(40),
+                            backgroundColor: buttonColor,
+                            shape: const StadiumBorder()
+                        ),
+                        onPressed: (){},
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            isDark ?
+                            Row(
+                              children: const [
+                                Text('Interested on the event', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),),
+                                Icon(Icons.open_in_new, color: Colors.white,)
+                              ],
+                            )
+                            :
+                            Row(
+                              children: const [
+                                Text('Interested on the event', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),),
+                                Icon(Icons.open_in_new, color: Colors.black,)
+                              ],
+                            )
+                          ],
+                        )
+                    ),
+                    Container(
+                      padding: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          addOns("LIKES", likes),
+                          addOns("VENUE", venue),
+                          addOns("TYPE", type)
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
-            ),
 
-          ],
-        ),
+            ],
+          ),
+      ),
     );
   }
 
