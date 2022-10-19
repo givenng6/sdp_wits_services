@@ -4,6 +4,7 @@ import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
 import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
+import 'package:sdp_wits_services/StaffApp/CCDU/CCDU.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'DiningGlobals.dart' as globals;
@@ -54,7 +55,7 @@ class _StaffPageState extends State<StaffPage> {
               MaterialPageRoute(
                   builder: (BuildContext context) => const BusesMain()));
           SharedPreferences sharedPreferences =
-              await SharedPreferences.getInstance();
+          await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Bus Services');
         }
         break;
@@ -67,7 +68,7 @@ class _StaffPageState extends State<StaffPage> {
                   builder: (BuildContext context) => const SelectDH()));
 
           SharedPreferences sharedPreferences =
-              await SharedPreferences.getInstance();
+          await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Dining Services');
         }
         break;
@@ -79,123 +80,138 @@ class _StaffPageState extends State<StaffPage> {
               MaterialPageRoute(
                   builder: (BuildContext context) => const CampusControl()));
           SharedPreferences sharedPreferences =
-              await SharedPreferences.getInstance();
+          await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Campus Control');
-
         }
         break;
-      default:
+      case "CCDU":
         {
-          return;
+          debugPrint('here here');
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const CCDU()));
+          SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+          sharedPreferences.setString('department', 'CCDU');
         }
+        break;
+      default:{
+        return;
+      }
     }
   }
 
-  void getName() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    username = sharedPreferences.getString("username")!;
-    setState(() {});
-  }
-
   String username = " ";
+    void getName() async {
+      SharedPreferences sharedPreferences = await SharedPreferences
+          .getInstance();
+      username = sharedPreferences.getString("username")!;
+      setState(() {});
+    }
 
-  @override
-  void initState() {
-    getName();
-    super.initState();
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color(0xff003b5c),
-        appBar: AppBar(
-          title: Image.asset("assets/NewLogo.jpg", fit: BoxFit.cover,key: const Key("logoImg"),),
-          actions: <Widget>[
-            Container(
-              margin:
-                  const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-              child: CircleAvatar(
-                backgroundColor: Color(0xff31AFB4),
-                child: Text(
-                  username[0],
-                  style: const TextStyle(fontSize: 20.0, color: Colors.white),
-                ),
-              ),
-            )
-          ],
-          backgroundColor: Colors.white,
-        ),
-        body: Column(
-          children: <Widget>[
-            const Expanded(
-              flex: 1,
-              child: SizedBox(
-                height: 150.0,
-                child: Center(
+
+    @override
+    void initState() {
+      getName();
+      super.initState();
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      return Scaffold(
+          backgroundColor: const Color(0xff003b5c),
+          appBar: AppBar(
+            title: Image.asset("assets/NewLogo.jpg", fit: BoxFit.cover,
+              key: const Key("logoImg"),),
+            actions: <Widget>[
+              Container(
+                margin:
+                const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+                child: CircleAvatar(
+                  backgroundColor: Color(0xff31AFB4),
                   child: Text(
-                    "Departments",
-                    style: TextStyle(fontSize: 35.0, color: Colors.white),
+                    username[0],
+                    style: const TextStyle(fontSize: 20.0, color: Colors.white),
+                  ),
+                ),
+              )
+            ],
+            backgroundColor: Colors.white,
+          ),
+          body: Column(
+            children: <Widget>[
+              const Expanded(
+                flex: 1,
+                child: SizedBox(
+                  height: 150.0,
+                  child: Center(
+                    child: Text(
+                      "Departments",
+                      style: TextStyle(fontSize: 35.0, color: Colors.white),
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              flex: 4,
-              child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
-                child: GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 15.0,
-                  mainAxisSpacing: 15.0,
-                  children: List.generate(
-                    departments.length,
-                    (index) => SizedBox(
-                      height: 100.0,
-                      child: InkWell(
-                        onTap: () {
-                          handleCard(index);
-                        },
-                        child: Card(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                flex: 4,
-                                child: Center(
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 60.0,
-                                    child: Icon(
-                                      departments[index].icon,
-                                      size: 60.0,
-                                      color: const Color(0xff31AFB4),
+              Expanded(
+                flex: 4,
+                child: Container(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
+                  child: GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 15.0,
+                    mainAxisSpacing: 15.0,
+                    children: List.generate(
+                      departments.length,
+                          (index) =>
+                          SizedBox(
+                            height: 100.0,
+                            child: InkWell(
+                              onTap: () {
+                                handleCard(index);
+                              },
+                              child: Card(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: <Widget>[
+                                    Expanded(
+                                      flex: 4,
+                                      child: Center(
+                                        child: CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 60.0,
+                                          child: Icon(
+                                            departments[index].icon,
+                                            size: 60.0,
+                                            color: const Color(0xff31AFB4),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    Expanded(
+                                        flex: 1,
+                                        child: Text(
+                                          departments[index].name,
+                                          style: const TextStyle(
+                                            fontSize: 20.0,
+                                          ),
+                                        ))
+                                  ],
                                 ),
                               ),
-                              Expanded(
-                                  flex: 1,
-                                  child: Text(
-                                    departments[index].name,
-                                    style: const TextStyle(
-                                      fontSize: 20.0,
-                                    ),
-                                  ))
-                            ],
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ).toList(),
+                    ).toList(),
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(
-              height: 5.0,
-            )
-          ],
-        ));
+              const SizedBox(
+                height: 5.0,
+              )
+            ],
+          ));
+    }
   }
-}
+
