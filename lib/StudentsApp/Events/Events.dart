@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+
 
 class Events extends StatefulWidget{
   @override
@@ -6,30 +10,25 @@ class Events extends StatefulWidget{
 }
 
 class _Events extends State<Events>{
-  
+  List<EventObject> events = [];
+
   @override
   Widget build(BuildContext context){
+    events = context.watch<Subscriptions>().events;
     return Scaffold(
       appBar: AppBar(title: const Text('Events'), backgroundColor: Color(0xff003b5c),),
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            eventCard("Wits FC vs Bidvest Wits - Home game ", "12/11/2022", "13:00", "211", "Wits Stadium", 'Sport'),
-            eventCard("Wits Intercampus Hackathon 2022 - DLU", "06/10/2022", "09:00", "3", "WSS", 'Hackathon'),
-            eventCard("Joyers Celebration", "12/11/2022", "13:00", "54", "Wits Stadium", 'Religion'),
-            eventCard("Mental Health Awareness - CCDU", "12/11/2022", "14:00", "12", "Library Lawns", 'Awareness'),
-            eventCard("Freshers Party 2023", "01/02/2023", "14:00", "769", "Starrock Park", 'Concert'),
-            eventCard("Fees Must Fall", "15/03/2023", "07:00", "443", "Amic Deck", 'Politics'),
-            eventCard("Home coming", "15/03/2023", "07:00", "443", "Amic Deck", 'Entertainment'),
-            eventCard("OTHER", "15/03/2023", "07:00", "443", "Amic Deck", 'OTHER'),
+           showEvents()
           ],
         ),
       )
     );
   }
 
-  Widget eventCard(String eventTitle, String date, String time, String likes, String venue, String type){
+  Widget eventCard(String eventTitle, String date, String time, List<String> likes, String venue, String type, String eventID){
     String img = "";
     Color buttonColor;
     bool isDark;
@@ -141,7 +140,7 @@ class _Events extends State<Events>{
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          addOns("LIKES", likes),
+                          addOns("LIKES", likes.length.toString()),
                           addOns("VENUE", venue),
                           addOns("TYPE", type)
                         ],
@@ -164,6 +163,16 @@ class _Events extends State<Events>{
         Text(size, style: const TextStyle(fontWeight: FontWeight.bold))
       ],
     );
+  }
+
+  Widget showEvents(){
+    List<Widget> items = [];
+
+    for(EventObject event in events){
+      items.add(eventCard(event.eventTitle, event.date, event.time, event.likes, event.venue, event.type, event.eventID));
+    }
+
+    return Column(children: items);
   }
 
 }

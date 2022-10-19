@@ -27,9 +27,9 @@ class _DiningWidget extends State<DiningWidget>{
     dhFollowing =  context.watch<Subscriptions>().dhFollowing;
     mealTime =  context.watch<Subscriptions>().mealTime;
 
-    debugPrint(mealTime);
-    debugPrint(diningHalls.toString());
-    debugPrint(dhFollowing.toString());
+    // debugPrint(mealTime);
+    // debugPrint(diningHalls.toString());
+    // debugPrint(dhFollowing.toString());
     // flag used to know if the user is following any dining hall...
     bool none = true;
     String dhName = "";

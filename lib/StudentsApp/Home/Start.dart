@@ -8,6 +8,7 @@ import 'package:sdp_wits_services/StudentsApp/Home/Home.dart';
 import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
 
 // Uri to the API
 String uri = "https://web-production-8fed.up.railway.app/";
@@ -35,6 +36,7 @@ class _Start extends State<Start> {
     getCCDUBookings(context);
     getCounsellors(context);
     getMealTime(context);
+    getEvents(context);
   }
 
   Future<void> getSubs(BuildContext context) async {
@@ -198,6 +200,25 @@ class _Start extends State<Start> {
         context.read<Subscriptions>().addCounsellor(email, username);
       }
       context.read<Subscriptions>().addCounsellor("", "");
+    });
+  }
+
+  Future<void> getEvents(BuildContext context) async {
+    await http.get(Uri.parse("${uri}db/getEvents/"), headers: <String, String>{
+      "Accept": "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
+    }).then((response) {
+      var data = jsonDecode(response.body);
+      List<EventObject> events = [];
+      for(dynamic event in data){
+        List<String> likes = [];
+        for(String like in event["likes"]){
+          likes.add(like);
+        }
+        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id']);
+        events.add(curr);
+      }
+      context.read<Subscriptions>().setEvents(events);
     });
   }
 

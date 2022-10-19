@@ -16,7 +16,7 @@ class EventObject{
   String get time => _time;
   List<String> get likes => _likes;
 
-  void setEvent(String eventTitle, String date, String time, List<String> likes, String venue, String type, String eventID){
+  EventObject(String eventTitle, String date, String time, List<String> likes, String venue, String type, String eventID){
     _venue = venue;
     _eventID = eventID;
     _eventTitle = eventTitle;

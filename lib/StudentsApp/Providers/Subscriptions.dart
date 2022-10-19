@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
 import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
+import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
 
 class Subscriptions with ChangeNotifier{
   List<String> _subs = [];
@@ -16,6 +17,7 @@ class Subscriptions with ChangeNotifier{
   List _residences = [];
   List _campuses = [];
   bool _booked = false;
+  List<EventObject> _events = [];
 
 
   List<String> get subs => _subs;
@@ -30,7 +32,7 @@ class Subscriptions with ChangeNotifier{
   List get residences => _residences;
   List get campuses => _campuses;
   bool get booked => _booked;
-
+  List<EventObject> get events => _events;
 
   void addSub(String service){
     _subs.add(service);
@@ -87,4 +89,10 @@ class Subscriptions with ChangeNotifier{
     _booked = booked;
     notifyListeners();
   }
+
+  void setEvents(List<EventObject> event){
+    _events = event;
+    notifyListeners();
+  }
+
 }
