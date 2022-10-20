@@ -14,11 +14,24 @@ class Accepted extends StatefulWidget {
 
 
 class AccptedState extends State<Accepted>{
+  Future<void> init() async {
+    await localGlobals.GetAllBookings();
+    setState(() {
 
+    });
 
-
-
+  }
   @override
+  void initState() {
+    // TODO: implement initState
+    init();
+    super.initState();
+  }
+
+
+
+
+      @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -29,7 +42,7 @@ class AccptedState extends State<Accepted>{
 
   Widget makeList(){
     return Column(
-      children: localGlobals.AllBookings.map((booking) => _card(booking)).toList(),
+      children: localGlobals.AcceptedBookings.map((booking) => _card(booking)).toList(),
     );
   }
 
@@ -42,7 +55,6 @@ class AccptedState extends State<Accepted>{
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text("Name: ${booking.name}"),
-            Text("Email: ${booking.email}"),
             Text("Date: ${booking.date}"),
             Text("Time: ${booking.time}"),
             Text("Description"),
