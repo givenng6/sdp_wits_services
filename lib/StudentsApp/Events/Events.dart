@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 
+// Uri to the API
+String link = "https://web-production-8fed.up.railway.app/";
 
 class Events extends StatefulWidget{
   @override
@@ -11,10 +16,12 @@ class Events extends StatefulWidget{
 
 class _Events extends State<Events>{
   List<EventObject> events = [];
+  String email = "";
 
   @override
   Widget build(BuildContext context){
     events = context.watch<Subscriptions>().events;
+    email = context.watch<UserData>().email;
     return Scaffold(
       appBar: AppBar(title: const Text('Events'), backgroundColor: Color(0xff003b5c),),
       body: SingleChildScrollView(
@@ -33,6 +40,7 @@ class _Events extends State<Events>{
     Color buttonColor;
     bool isDark;
 
+    // change the visuals depending on the type of the event...
     switch(type){
       case "Sport":
         img = "assets/events_sport.png";
@@ -115,7 +123,18 @@ class _Events extends State<Events>{
                             shape: const StadiumBorder()
                         ),
                         onPressed: (){
-                          print(eventID);
+                          if(!likes.contains(email)){
+                            // TODO add like
+                            for(int i = 0; i < events.length; i++){
+                              String id = events[i].eventID;
+                              if(id == eventID){
+                                context.read<Subscriptions>().likeEvent(email, i);
+                                addLike(context, email, eventID);
+                                break;
+                              }
+                            }
+
+                          }
                         },
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -175,6 +194,18 @@ class _Events extends State<Events>{
     }
 
     return Column(children: items);
+  }
+
+  Future<void> addLike(BuildContext context, String email, String eventID) async {
+    await http.post(Uri.parse("${link}db/addLike/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+          "id": eventID,
+        }));
   }
 
 }

@@ -95,4 +95,9 @@ class Subscriptions with ChangeNotifier{
     notifyListeners();
   }
 
+  void likeEvent(String email, int index){
+    _events[index].likes.add(email);
+    notifyListeners();
+  }
+
 }
