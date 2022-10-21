@@ -15,6 +15,7 @@ import Students from "./routes/CampusControl/Students.js";
 import addEvent from "./routes/Events/addEvent.js";
 import getEvents from "./routes/Events/getEvents.js";
 import like from "./routes/Events/like.js";
+import deleteExpiredEvents from "./routes/Events/deleteExpiredEvents.js";
 
 const app = express();
 
@@ -97,6 +98,7 @@ app.use("/ccdu",Appointments);
 app.use("/addEvent",addEvent);
 app.use("/getEvents",getEvents);
 app.use("/like",like);
+app.use("/deleteExpiredEvents",deleteExpiredEvents);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
