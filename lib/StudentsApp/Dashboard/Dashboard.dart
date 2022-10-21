@@ -81,6 +81,10 @@ class _Dashboard extends State<Dashboard> {
       }
     }
 
+    Future onRefresh() async{
+      print("Refresh");
+    }
+
     // conditional rendering
     // show loading view if the data is not ready yet...
     return Scaffold(
@@ -97,12 +101,15 @@ class _Dashboard extends State<Dashboard> {
                           fontWeight: FontWeight.bold, color: Colors.grey),
                     ),
                   )
-                : ListView.builder(
-                    itemCount: _cards.length,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return _cards[index];
-                    }),
+                : RefreshIndicator(
+              onRefresh: onRefresh,
+              child: ListView.builder(
+                  itemCount: _cards.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return _cards[index];
+                  }),
+            )
           )
         ],
       ),
