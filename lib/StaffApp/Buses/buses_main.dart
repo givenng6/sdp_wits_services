@@ -118,7 +118,8 @@ class _BusesMainState extends State<BusesMain> {
         takenRoutes.add(routes![index]);
       }
     }
-    debugPrint(takenRoutes.toString());
+    setState(() {});
+    // debugPrint(takenRoutes.toString());
   }
 
   Future getRoutes() async {
@@ -131,7 +132,6 @@ class _BusesMainState extends State<BusesMain> {
     ).then((value) {
       List json = jsonDecode(value.body);
       routes = json;
-      // setState(() {});
       keepDriverOnShift();
     });
   }
