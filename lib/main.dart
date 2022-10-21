@@ -16,7 +16,9 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  Get.put(FeedController());
+  final eventsController = Get.put(EventsController());
+  eventsController.getEvents();
+
   await globals.getSharedPreferences();
   nextScreen = await globals.getData();
   runApp(

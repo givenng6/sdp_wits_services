@@ -22,7 +22,6 @@ class AddPost extends StatefulWidget {
 
 class _AddPostState extends State<AddPost> {
   String uri = 'https://sdpwitsservices-production.up.railway.app/';
-
   // String uri = 'http://192.168.20.17:5000/';
   double initialChildSize = 0.6;
   double minChildSize = 0.4;
@@ -53,7 +52,7 @@ class _AddPostState extends State<AddPost> {
     _keyboardSubscription.cancel();
   }
 
-  final feedController = Get.find<FeedController>();
+  final feedController = Get.find<EventsController>();
 
   Widget postButtonChild = const Text(
     'Post',
