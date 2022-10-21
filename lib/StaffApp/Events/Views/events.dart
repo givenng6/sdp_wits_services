@@ -154,10 +154,11 @@ class _EventsState extends State<Events> {
                                 child: Row(
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    addOns("INTERESTED", likes.length.toString()),
-                                    addOns("VENUE", venue),
-                                    addOns("TYPE", type)
+                                    Expanded(child: addOns("INTERESTED", likes.length.toString())),
+                                    Expanded(child: addOns("VENUE", venue)),
+                                    Expanded(child: addOns("TYPE", type))
                                   ],
                                 ),
                               ),
