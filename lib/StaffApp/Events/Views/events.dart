@@ -37,6 +37,7 @@ class _EventsState extends State<Events> {
       body: Obx(() => RefreshIndicator(
         onRefresh: () => eventsController.getEvents(),
         child: ListView.builder(
+            key: const PageStorageKey<String>('page'),
             itemCount: eventsController.events.length,
             itemBuilder: (context, index) {
               String img = getImageForType(eventsController.events[index]['type']);
