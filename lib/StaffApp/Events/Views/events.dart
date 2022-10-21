@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -68,7 +69,7 @@ class _EventsState extends State<Events> {
                           ):
                           GestureDetector(
                             onTap: () {
-                              showImageViewer(context, Image.network(imgUrl).image,
+                              showImageViewer(context, CachedNetworkImageProvider(imgUrl),
                                   swipeDismissible: true,
                                 useSafeArea: true
                               );
@@ -81,7 +82,7 @@ class _EventsState extends State<Events> {
                                   borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
                                   image: DecorationImage(
                                       fit: BoxFit.cover,
-                                      image: NetworkImage(imgUrl))
+                                      image: CachedNetworkImageProvider(imgUrl))
                               ),
                             ),
                           ),
