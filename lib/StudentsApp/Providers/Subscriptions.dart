@@ -19,6 +19,23 @@ class Subscriptions with ChangeNotifier{
   bool _booked = false;
   List<EventObject> _events = [];
 
+  void refreshAll(){
+    _subs = [];
+    _busFollowing = [];
+    _busSchedule = [];
+    _dhFollowing = "";
+    _diningHalls = [];
+    _mealTime = "";
+    _ccduBookings = [];
+    _counsellorsEmail = [];
+    _counsellorsName = [];
+    _residences = [];
+    _campuses = [];
+    _booked = false;
+    _events = [];
+    notifyListeners();
+  }
+
 
   List<String> get subs => _subs;
   List<String> get busFollowing => _busFollowing;
