@@ -34,7 +34,8 @@ class _Events extends State<Events> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [showEvents()],
           ),
-        ));
+        ),
+    );
   }
 
   Widget eventCard(String eventTitle, String date, String time,
