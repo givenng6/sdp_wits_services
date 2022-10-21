@@ -17,7 +17,6 @@ class EventsController extends GetxController{
       },
     ).then((value){
       events(jsonDecode(value.body).toList());
-      debugPrint(events.toString());
     });
   }
 }

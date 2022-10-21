@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
 
 import '../Controllers/feed_controller.dart';
 import 'addEvent.dart';
+import 'package:sdp_wits_services/globals.dart' as globals;
 
 class Events extends StatefulWidget {
   const Events({Key? key}) : super(key: key);
@@ -19,6 +23,8 @@ class _EventsState extends State<Events> {
   bool viewing = false;
 
   double opacity = 1;
+
+  String email = globals.email!;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +43,9 @@ class _EventsState extends State<Events> {
             String title = feedController.events[index]['title'];
             String venue = feedController.events[index]['venue'];
             String type = feedController.events[index]['type'];
+            String id = feedController.events[index]['id'];
             List likes = feedController.events[index]['likes'].toList();
+            bool isLiked = feedController.events[index]['likes'].toList().contains(email);
             return Column(
               children: <Widget>[
                 Container(
@@ -110,32 +118,33 @@ class _EventsState extends State<Events> {
                                       backgroundColor: const Color(0xff003b5c),
                                       shape: const StadiumBorder()),
                                   onPressed: () {
-                                    // if (!likes.contains(email)) {
-                                    //   // TODO add like
-                                    //   for (int i = 0; i < events.length; i++) {
-                                    //     String id = events[i].eventID;
-                                    //     if (id == eventID) {
-                                    //       context.read<Subscriptions>().likeEvent(email, i);
-                                    //       addLike(context, email, eventID);
-                                    //       break;
-                                    //     }
-                                    //   }
-                                    // }
+                                    if (!likes.contains(email)) {
+                                      setState(() {
+                                        feedController.events[index]['likes'].add(email);
+                                        like(id, true);
+                                      });
+                                    }else{
+                                      setState(() {
+                                        feedController.events[index]['likes'].remove(email);
+                                        like(id, false);
+                                      });
+                                    }
                                   },
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Text(
+                                    children: [
+                                      const Text(
                                         'Interested on the event',
                                         style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.w600),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 10.0,
                                       ),
-                                      Icon(
-                                        Icons.thumb_up_alt_outlined,
+                                      Icon(!isLiked?
+                                        Icons.thumb_up_alt_outlined:
+                                          Icons.thumb_up_alt_rounded,
                                         color: Colors.white,
                                       )
                                     ],
@@ -146,7 +155,7 @@ class _EventsState extends State<Events> {
                                   mainAxisAlignment:
                                   MainAxisAlignment.spaceEvenly,
                                   children: [
-                                    addOns("LIKES", likes.length.toString()),
+                                    addOns("INTERESTED", likes.length.toString()),
                                     addOns("VENUE", venue),
                                     addOns("TYPE", type)
                                   ],
@@ -158,7 +167,7 @@ class _EventsState extends State<Events> {
                       ],
                     ),
                   ),
-                )
+                ),
               ],
             );
           }),
@@ -221,6 +230,22 @@ class _EventsState extends State<Events> {
         ),
         Text(size, style: const TextStyle(fontWeight: FontWeight.bold))
       ],
+    );
+  }
+
+  like(String id, bool isLiking) async{
+    // String uri = 'https://sdpwitsservices-production.up.railway.app/';
+    String uri = 'http://192.168.20.17:5000/';
+    await http.post(Uri.parse('${uri}like'),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: jsonEncode(<String, dynamic>{
+        'id': id,
+        'isLiking': isLiking,
+        'email': email,
+      })
     );
   }
 }
