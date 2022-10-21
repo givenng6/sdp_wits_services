@@ -8,8 +8,8 @@ class EventsController extends GetxController{
   var events = [].obs;
 
   getEvents()async{
-    // String uri = 'https://sdpwitsservices-production.up.railway.app/';
-    String uri = 'http://192.168.20.17:5000/';
+    String uri = 'https://sdpwitsservices-production.up.railway.app/';
+    // String uri = 'http://192.168.20.17:5000/';
     await http.get(Uri.parse('${uri}getEvents'),
       headers: <String, String>{
         "Accept": "application/json",

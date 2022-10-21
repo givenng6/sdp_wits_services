@@ -23,6 +23,7 @@ class AddPost extends StatefulWidget {
 
 class _AddPostState extends State<AddPost> {
   String uri = 'https://sdpwitsservices-production.up.railway.app/';
+
   // String uri = 'http://192.168.20.17:5000/';
   double initialChildSize = 0.6;
   double minChildSize = 0.4;
@@ -53,7 +54,7 @@ class _AddPostState extends State<AddPost> {
     _keyboardSubscription.cancel();
   }
 
-  final feedController = Get.find<EventsController>();
+  final eventsController = Get.find<EventsController>();
 
   Widget postButtonChild = const Text(
     'Post',
@@ -104,7 +105,10 @@ class _AddPostState extends State<AddPost> {
                   "Content-Type": "application/json; charset=UTF-8",
                 },
                 body: jsonEncode(<String, Map>{'event': event}))
-            .then((_) => Get.back());
+            .then((_) {
+          eventsController.getEvents();
+          Get.back();
+        });
       });
     } else {
       Map<String, dynamic> event = {
@@ -127,7 +131,10 @@ class _AddPostState extends State<AddPost> {
                 "Content-Type": "application/json; charset=UTF-8",
               },
               body: jsonEncode(<String, Map>{'event': event}))
-          .then((_) => Get.back());
+          .then((_) {
+        eventsController.getEvents();
+        Get.back();
+      });
     }
   }
 

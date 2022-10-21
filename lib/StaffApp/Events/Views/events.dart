@@ -1,3 +1,4 @@
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,6 +14,11 @@ class Events extends StatefulWidget {
 
 class _EventsState extends State<Events> {
   final feedController = Get.find<EventsController>();
+
+  String imageUrl = '';
+  bool viewing = false;
+
+  double opacity = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -49,15 +55,24 @@ class _EventsState extends State<Events> {
                               topRight: Radius.circular(20),
                               topLeft: Radius.circular(20)),
                           child: Image.asset(img),
-                        ):Container(
-                          constraints: BoxConstraints(
-                            maxHeight: MediaQuery.of(context).size.width/1.7,
-                          ),
-                          decoration: BoxDecoration(
-                              borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(imgUrl))
+                        ):
+                        GestureDetector(
+                          onTap: () {
+                            showImageViewer(context, Image.network(imgUrl).image,
+                                swipeDismissible: true,
+                              useSafeArea: true
+                            );
+                          },
+                          child: Container(
+                            constraints: BoxConstraints(
+                              maxHeight: MediaQuery.of(context).size.width/1.7,
+                            ),
+                            decoration: BoxDecoration(
+                                borderRadius: const BorderRadius.vertical(top: Radius.circular(20.0)),
+                                image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image: NetworkImage(imgUrl))
+                            ),
                           ),
                         ),
                         Container(
