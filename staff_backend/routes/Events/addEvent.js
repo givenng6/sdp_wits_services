@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.post("/", async (req, res) => {
   const {event} = req.body;
-  await update(ref(db, `posts/${postId}`), event);
+  await update(ref(db, `posts/${event.id}`), event);
   res.send('done');
   console.log("updated");
 });
