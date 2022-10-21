@@ -37,4 +37,4 @@ Future<void> GetAllBookings() async {}
 
 Future<void> GetAcceptedBookings() async {}
 
-Future<void> HnadleBooking(Booking booking) async {}
+Future<void> HandleBooking(Booking booking) async {}
