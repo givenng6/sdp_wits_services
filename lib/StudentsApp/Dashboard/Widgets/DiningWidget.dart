@@ -47,14 +47,17 @@ class _DiningWidget extends State<DiningWidget>{
            List<dynamic> bfA = data.bfA;
            List<dynamic> bfB = data.bfB;
            List<dynamic> bfC= data.bfC;
+           option1Meals = [];
            for(int i = 0; i < bfA.length; i++){
              option1Meals.add(bfA[i]);
            }
 
+           option2Meals = [];
            for(int i = 0; i < bfB.length; i++){
              option2Meals.add(bfB[i]);
            }
 
+           option3Meals = [];
            for(int i = 0; i < bfC.length; i++){
              option3Meals.add(bfC[i]);
            }
@@ -63,14 +66,17 @@ class _DiningWidget extends State<DiningWidget>{
            List<dynamic> A = data.lA;
            List<dynamic> B = data.lB;
            List<dynamic> C = data.lC;
+           option1Meals = [];
            for(int i = 0; i < A.length; i++){
              option1Meals.add(A[i]);
            }
 
+           option2Meals = [];
            for(int i = 0; i < B.length; i++){
              option2Meals.add(B[i]);
            }
 
+           option3Meals = [];
            for(int i = 0; i < C.length; i++){
              option3Meals.add(C[i]);
            }
@@ -79,14 +85,17 @@ class _DiningWidget extends State<DiningWidget>{
            List<dynamic> A = data.dA;
            List<dynamic> B = data.dB;
            List<dynamic> C = data.dC;
+           option1Meals = [];
            for(int i = 0; i < A.length; i++){
              option1Meals.add(A[i]);
            }
 
+           option2Meals = [];
            for(int i = 0; i < B.length; i++){
              option2Meals.add(B[i]);
            }
 
+           option3Meals = [];
            for(int i = 0; i < C.length; i++){
              option3Meals.add(C[i]);
            }
