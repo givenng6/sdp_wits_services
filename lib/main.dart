@@ -1,6 +1,8 @@
 import 'dart:ui';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sdp_wits_services/StaffApp/Events/Controllers/feed_controller.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'globals.dart' as globals;
@@ -14,7 +16,7 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-
+  Get.put(FeedController());
   await globals.getSharedPreferences();
   nextScreen = await globals.getData();
   runApp(
@@ -42,7 +44,7 @@ class _MainState extends State<Main> {
   @override
   Widget build(BuildContext context) {
     // globals.getSharedPreferences();
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Wits Services',
       theme: ThemeData(
         primarySwatch: Colors.blue,

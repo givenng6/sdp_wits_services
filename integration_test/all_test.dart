@@ -1659,7 +1659,7 @@ Future<void> _campusControlTest(WidgetTester tester) async{
 
   await tester.pump(const Duration(seconds: 1));
 
-  await tester.pumpWidget( MaterialApp(home: CampusControl()));
+  await tester.pumpWidget( const MaterialApp(home: CampusControl()));
 
   await localGlobals.GetVehicles();
   // debugPrint("hh ${localGlobals.vehicles}");
@@ -1796,7 +1796,7 @@ Future<void> _selectDepTest(WidgetTester tester) async {
 
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
-  expect(find.byKey(Key("logoImg")),findsOneWidget);
+  expect(find.byKey(const Key("logoImg")),findsOneWidget);
   expect(find.text("Departments"),findsOneWidget);
 
   final findDining = find.text("Dining Services");
@@ -1839,7 +1839,7 @@ Future<void> _selectDepTest(WidgetTester tester) async {
   await tester.tap(lunchTab);
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
-  final editIcon2 = find.byKey(Key("Option A lunch Edit"));
+  final editIcon2 = find.byKey(const Key("Option A lunch Edit"));
   expect(editIcon2,findsWidgets);
 
   await tester.tap(editIcon2);
@@ -1866,7 +1866,7 @@ Future<void> _selectDepTest(WidgetTester tester) async {
   await tester.tap(dinnerTab);
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
-  final editIcon3 = find.byKey(Key("Option A dinner Edit"));
+  final editIcon3 = find.byKey(const Key("Option A dinner Edit"));
   expect(editIcon3,findsWidgets);
 
   await tester.tap(editIcon3);

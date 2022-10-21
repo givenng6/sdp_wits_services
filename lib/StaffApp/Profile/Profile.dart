@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
+import 'package:sdp_wits_services/StaffApp/Events/Views/events.dart';
 import './appbar_widget.dart';
 import './profile_widget.dart';
 
-class Profile extends HookWidget {
-
+class Profile extends StatelessWidget {
   String? username = "", email = "";
+
   Profile(this.email, this.username, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: BuildAppBar(context),
       body: ListView(
@@ -30,13 +29,33 @@ class Profile extends HookWidget {
           const SizedBox(height: 50),
         ],
       ),
+      floatingActionButton: SizedBox(
+        height: 40.0,
+        width: 110.0,
+        child: FloatingActionButton(
+          backgroundColor: const Color(0xff003b5c),
+          onPressed: () => Get.to(()=>const Events()),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(35.0),
+          ),
+          child: Row(
+            children: const <Widget>[
+              Spacer(),
+              Icon(Icons.event),
+              Spacer(),
+              Text('Events'),
+              Spacer()
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   Widget buildName() => Column(children: [
-    Text(username!,
-        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
-    const SizedBox(height: 4),
-    Text(email!, style: const TextStyle(color: Colors.grey))
-  ]);
+        Text(username!,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+        const SizedBox(height: 4),
+        Text(email!, style: const TextStyle(color: Colors.grey))
+      ]);
 }
