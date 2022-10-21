@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
-import '../Controllers/feed_controller.dart';
+import '../Controllers/events_controller.dart';
 import 'addEvent.dart';
 import 'package:sdp_wits_services/globals.dart' as globals;
 
