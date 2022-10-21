@@ -234,8 +234,8 @@ class _EventsState extends State<Events> {
   }
 
   like(String id, bool isLiking) async{
-    // String uri = 'https://sdpwitsservices-production.up.railway.app/';
-    String uri = 'http://192.168.20.17:5000/';
+    String uri = 'https://sdpwitsservices-production.up.railway.app/';
+    // String uri = 'http://192.168.20.17:5000/';
     await http.post(Uri.parse('${uri}like'),
       headers: <String, String>{
         "Accept": "application/json",
