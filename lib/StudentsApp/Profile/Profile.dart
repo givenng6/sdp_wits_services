@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
+import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
 import './appbar_widget.dart';
 import './profile_widget.dart';
 
@@ -16,8 +17,18 @@ class _Profile extends State<Profile> {
   String username = "", email = "";
   List<String> subs = [];
 
+  late final PushNotification pushNotification;
+
+  @override
+  void initState(){
+    pushNotification = PushNotification();
+    pushNotification.initNotifications();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+
     email = context.watch<UserData>().email;
     username =  context.watch<UserData>().username;
     subs =  context.watch<Subscriptions>().subs;
@@ -27,6 +38,12 @@ class _Profile extends State<Profile> {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
+          ElevatedButton(onPressed:() async{
+            print("notfy1");
+            pushNotification.showNotification(id: 0, title: "title", body: "body");
+            print("notfy2");
+          },
+              child: Text("Not")),
           ProfileWidget(
             imagePath: 'https://images.unsplash.com/'
                 'photo-1457449940276-e8deed18bfff?ixlib'
