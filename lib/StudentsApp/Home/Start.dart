@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Providers/Subscriptions.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
@@ -24,10 +27,12 @@ class Start extends StatefulWidget {
 
 class _Start extends State<Start> {
   bool isLoading = true;
+  late final PushNotification pushNotification;
 
   @override
   void initState() {
-    super.initState();
+    pushNotification = PushNotification();
+    pushNotification.initNotifications();
     getSubs(context);
     getBusFollowing(context);
     getBusSchedule(context);
@@ -37,6 +42,8 @@ class _Start extends State<Start> {
     getCounsellors(context);
     getMealTime(context);
     getEvents(context);
+    setDailyNotifications();
+    super.initState();
   }
 
   Future<void> getSubs(BuildContext context) async {
@@ -224,6 +231,8 @@ class _Start extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
+
+
     return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(
@@ -231,5 +240,28 @@ class _Start extends State<Start> {
         ),
       ),
     );
+  }
+
+  void setDailyNotifications() async{
+    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+    bool? isDailyNotified = sharedPreferences.getBool('isDailyNotified');
+
+    print(isDailyNotified);
+    if(isDailyNotified == null){
+      Time breakfastTime = const Time(14, 30, 0);
+      Time lunchTime = const Time(15, 35, 0);
+      Time dinnerTime = const Time(16, 45, 0);
+
+      pushNotification.dailyNotification(id: 0, title: "Wits Dining", body: "Time to collect breakfast", time: breakfastTime);
+      pushNotification.dailyNotification(id: 1, title: "Wits Dining", body: "Time to collect lunch", time: lunchTime);
+      pushNotification.dailyNotification(id: 2, title: "Wits Dining", body: "Time to collect dinner", time: dinnerTime);
+
+      sharedPreferences.setBool('isDailyNotified', true);
+      debugPrint("User will be notified daily now...");
+    }
+
+    //sharedPreferences.remove('isDailyNotified');
+
+
   }
 }

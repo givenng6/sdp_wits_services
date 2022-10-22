@@ -10,7 +10,7 @@ import '../Utilities/AddSub.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const String APP_VERSION = "version 1.0.4 (sprint4)";
+const String APP_VERSION = "version 1.0.4.1 (sprint4)";
 
 class MenuItems extends StatefulWidget{
   final Function(int index) onNavigate;
