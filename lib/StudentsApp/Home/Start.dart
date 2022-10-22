@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
 import '../Providers/Subscriptions.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
@@ -24,10 +26,12 @@ class Start extends StatefulWidget {
 
 class _Start extends State<Start> {
   bool isLoading = true;
+  late final PushNotification pushNotification;
 
   @override
   void initState() {
-    super.initState();
+    pushNotification = PushNotification();
+    pushNotification.initNotifications();
     getSubs(context);
     getBusFollowing(context);
     getBusSchedule(context);
@@ -37,6 +41,7 @@ class _Start extends State<Start> {
     getCounsellors(context);
     getMealTime(context);
     getEvents(context);
+    super.initState();
   }
 
   Future<void> getSubs(BuildContext context) async {
@@ -224,6 +229,14 @@ class _Start extends State<Start> {
 
   @override
   Widget build(BuildContext context) {
+    Time breakfastTime = const Time(11, 40, 0);
+    Time lunchTime = const Time(11, 30, 0);
+    Time dinnerTime = const Time(11, 35, 0);
+
+    pushNotification.dailyNotification(id: 0, title: "Dining", body: "Time to collect breakfast", time: breakfastTime);
+    pushNotification.dailyNotification(id: 1, title: "Dining", body: "Time to collect lunch", time: lunchTime);
+    pushNotification.dailyNotification(id: 2, title: "Dining", body: "Time to collect dinner", time: dinnerTime);
+
     return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(

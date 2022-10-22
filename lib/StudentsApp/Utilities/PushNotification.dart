@@ -63,6 +63,17 @@ class PushNotification{
     );
   }
 
+  Future<void> dailyNotification({required int id, required String title, required String body, required Time time}) async{
+    final details = await _notificationDetails();
+    await _notification.showDailyAtTime(
+        id,
+        title,
+        body,
+        time,
+        details
+    );
+  }
+
   void _onDidReceiveLocalNotification(int id, String? title, String? body, String? payload) {
   print('id $id');
   }

@@ -202,14 +202,22 @@ class _Events extends State<Events> {
   }
 
   Widget addOns(String title, String size) {
+    String display = "";
+    if(size.length > 20){
+      for(int i = 0; i < 20; i++){
+        display += size[i];
+      }
+      display += "...";
+    }else{
+      display = size;
+    }
     return Column(
       children: [
         Text(
           title,
-          style:
-              const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
+          style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.grey),
         ),
-        Text(size, style: const TextStyle(fontWeight: FontWeight.bold))
+        Text(display, style: const TextStyle(fontWeight: FontWeight.bold))
       ],
     );
   }
