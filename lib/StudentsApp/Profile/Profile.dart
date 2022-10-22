@@ -40,7 +40,7 @@ class _Profile extends State<Profile> {
         children: [
           ElevatedButton(onPressed:() async{
             print("notfy1");
-            pushNotification.showNotification(id: 0, title: "title", body: "body");
+            pushNotification.scheduleNotification(id: 0, title: "Dining Services", body: "Time to collect lunch", seconds: 5);
             print("notfy2");
           },
               child: Text("Not")),
