@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdp_wits_services/StaffApp/Buses/View/buses_main.dart';
 
 import '../Controllers/events_controller.dart';
 import 'addEvent.dart';
@@ -77,169 +78,172 @@ class _EventsState extends State<Events> {
         child: Obx(
           () => RefreshIndicator(
             onRefresh: () => eventsController.getEvents(),
-            child: ListView.builder(
-                key: const PageStorageKey<String>('page'),
-                itemCount: eventsController.events.length,
-                itemBuilder: (context, index) {
-                  String img =
-                      getImageForType(eventsController.events[index]['type']);
-                  String date = eventsController.events[index]['date'];
-                  String? imgUrl = eventsController.events[index]['imageUrl'];
-                  String time = eventsController.events[index]['time'];
-                  String title = eventsController.events[index]['title'];
-                  String venue = eventsController.events[index]['venue'];
-                  String type = eventsController.events[index]['type'];
-                  String id = eventsController.events[index]['id'];
-                  List likes = eventsController.events[index]['likes'].toList();
-                  bool isLiked = eventsController.events[index]['likes']
-                      .toList()
-                      .contains(email);
-                  return Column(
-                    children: <Widget>[
-                      Container(
-                        margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            side: const BorderSide(
-                                color: Colors.white70, width: 1),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Column(
-                            children: [
-                              imgUrl == null
-                                  ? ClipRRect(
-                                      borderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(20),
-                                          topLeft: Radius.circular(20)),
-                                      child: Image.asset(img),
-                                    )
-                                  : GestureDetector(
-                                      onTap: () {
-                                        showImageViewer(context,
-                                            CachedNetworkImageProvider(imgUrl),
-                                            swipeDismissible: true,
-                                            useSafeArea: true);
-                                      },
-                                      child: Container(
-                                        constraints: BoxConstraints(
-                                          maxHeight: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.7,
-                                        ),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                const BorderRadius.vertical(
-                                                    top: Radius.circular(20.0)),
-                                            image: DecorationImage(
-                                                fit: BoxFit.cover,
-                                                image:
-                                                    CachedNetworkImageProvider(
-                                                        imgUrl))),
-                                      ),
-                                    ),
-                              Container(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(date,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.grey)),
-                                        Text(time,
-                                            style: const TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.grey))
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                        title,
-                                        style: const TextStyle(
-                                            fontSize: 25,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                    OutlinedButton(
-                                        style: OutlinedButton.styleFrom(
-                                            minimumSize:
-                                                const Size.fromHeight(40),
-                                            backgroundColor:
-                                                const Color(0xff003b5c),
-                                            shape: const StadiumBorder()),
-                                        onPressed: () {
-                                          if (!likes.contains(email)) {
-                                            setState(() {
-                                              eventsController.events[index]
-                                                      ['likes']
-                                                  .add(email);
-                                              like(id, true);
-                                            });
-                                          } else {
-                                            setState(() {
-                                              eventsController.events[index]
-                                                      ['likes']
-                                                  .remove(email);
-                                              like(id, false);
-                                            });
-                                          }
+            child: ScrollConfiguration(
+              behavior: MyBehavior(),
+              child: ListView.builder(
+                  key: const PageStorageKey<String>('page'),
+                  itemCount: eventsController.events.length,
+                  itemBuilder: (context, index) {
+                    String img =
+                        getImageForType(eventsController.events[index]['type']);
+                    String date = eventsController.events[index]['date'];
+                    String? imgUrl = eventsController.events[index]['imageUrl'];
+                    String time = eventsController.events[index]['time'];
+                    String title = eventsController.events[index]['title'];
+                    String venue = eventsController.events[index]['venue'];
+                    String type = eventsController.events[index]['type'];
+                    String id = eventsController.events[index]['id'];
+                    List likes = eventsController.events[index]['likes'].toList();
+                    bool isLiked = eventsController.events[index]['likes']
+                        .toList()
+                        .contains(email);
+                    return Column(
+                      children: <Widget>[
+                        Container(
+                          margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              side: const BorderSide(
+                                  color: Colors.white70, width: 1),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Column(
+                              children: [
+                                imgUrl == null
+                                    ? ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            topRight: Radius.circular(20),
+                                            topLeft: Radius.circular(20)),
+                                        child: Image.asset(img),
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          showImageViewer(context,
+                                              CachedNetworkImageProvider(imgUrl),
+                                              swipeDismissible: true,
+                                              useSafeArea: true);
                                         },
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            const Text(
-                                              'Interested on the event',
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            const SizedBox(
-                                              width: 10.0,
-                                            ),
-                                            Icon(
-                                              !isLiked
-                                                  ? Icons.thumb_up_alt_outlined
-                                                  : Icons.thumb_up_alt_rounded,
-                                              color: Colors.white,
-                                            )
-                                          ],
-                                        )),
-                                    Container(
-                                      padding: const EdgeInsets.fromLTRB(
-                                          0, 12, 0, 0),
-                                      child: Row(
+                                        child: Container(
+                                          constraints: BoxConstraints(
+                                            maxHeight: MediaQuery.of(context)
+                                                    .size
+                                                    .width /
+                                                1.7,
+                                          ),
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  const BorderRadius.vertical(
+                                                      top: Radius.circular(20.0)),
+                                              image: DecorationImage(
+                                                  fit: BoxFit.cover,
+                                                  image:
+                                                      CachedNetworkImageProvider(
+                                                          imgUrl))),
+                                        ),
+                                      ),
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  child: Column(
+                                    children: [
+                                      Row(
                                         mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                            MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Expanded(
-                                              child: addOns("INTERESTED",
-                                                  likes.length.toString())),
-                                          Expanded(
-                                              child: addOns("VENUE", venue)),
-                                          Expanded(child: addOns("TYPE", type))
+                                          Text(date,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.grey)),
+                                          Text(time,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Colors.grey))
                                         ],
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          title,
+                                          style: const TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                              minimumSize:
+                                                  const Size.fromHeight(40),
+                                              backgroundColor:
+                                                  const Color(0xff003b5c),
+                                              shape: const StadiumBorder()),
+                                          onPressed: () {
+                                            if (!likes.contains(email)) {
+                                              setState(() {
+                                                eventsController.events[index]
+                                                        ['likes']
+                                                    .add(email);
+                                                like(id, true);
+                                              });
+                                            } else {
+                                              setState(() {
+                                                eventsController.events[index]
+                                                        ['likes']
+                                                    .remove(email);
+                                                like(id, false);
+                                              });
+                                            }
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              const Text(
+                                                'Interested on the event',
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.w600),
+                                              ),
+                                              const SizedBox(
+                                                width: 10.0,
+                                              ),
+                                              Icon(
+                                                !isLiked
+                                                    ? Icons.thumb_up_alt_outlined
+                                                    : Icons.thumb_up_alt_rounded,
+                                                color: Colors.white,
+                                              )
+                                            ],
+                                          )),
+                                      Container(
+                                        padding: const EdgeInsets.fromLTRB(
+                                            0, 12, 0, 0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Expanded(
+                                                child: addOns("INTERESTED",
+                                                    likes.length.toString())),
+                                            Expanded(
+                                                child: addOns("VENUE", venue)),
+                                            Expanded(child: addOns("TYPE", type))
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  );
-                }),
+                      ],
+                    );
+                  }),
+            ),
           ),
         ),
       ),

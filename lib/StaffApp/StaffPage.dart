@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
+import 'package:sdp_wits_services/StaffApp/Buses/View/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
 import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
