@@ -11,6 +11,7 @@ import {
   setDoc,
   deleteDoc,
 } from "firebase/firestore";
+import {data} from './tempData.js';
 
 const router = express.Router();
 
@@ -38,16 +39,25 @@ router.post("/addCampus", async (req, res) => {
   res.send("Done");
 });
 
-router.post("/AddStudents",async (req, res)=>{
-    const { campusName,students } = req.body;
-    const ref = doc(db, "CampusControl", campusName);
+router.post("/AddStudents", async (req, res) => {
+  const { campusName, students } = req.body;
+  const ref = doc(db, "CampusControl", campusName);
 
-    for (const student of students){
-        var email = student.email.split("@")[0];
-        await updateDoc(ref,{[`students.${email}`]:student});
+  if (students.length > 0) {
+    for (const student of students) {
+      var email = student.email.split("@")[0];
+      await updateDoc(ref, { [`students.${email}`]: student });
     }
-
     res.send("");
+  } else {
+    const {students} = data;
 
+    for (const student of students) {
+      var email = student.email.split("@")[0];
+      await updateDoc(ref, { [`students.${email}`]: student });
+      // console.log(student);
+    }
+    res.send("");
+  }
 });
 export default router;
