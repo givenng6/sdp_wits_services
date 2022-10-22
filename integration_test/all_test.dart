@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:provider/provider.dart';
-import 'package:sdp_wits_services/StaffApp/Buses/buses_main.dart';
+import 'package:sdp_wits_services/StaffApp/Buses/View/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/Package.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/SelectOptionItems.dart';

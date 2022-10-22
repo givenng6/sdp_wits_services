@@ -3,7 +3,7 @@ import 'package:flutter_login/flutter_login.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/mealSelectionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../StaffApp/Buses/buses_main.dart';
+import '../StaffApp/Buses/View/buses_main.dart';
 import '../StaffApp/StaffPage.dart';
 import 'package:http/http.dart' as http;
 import 'package:sdp_wits_services/globals.dart' as globals;

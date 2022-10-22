@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sdp_wits_services/StaffApp/Buses/Controller/buses_controller.dart';
 import 'package:sdp_wits_services/StaffApp/Events/Controllers/events_controller.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,6 +19,10 @@ void main() async{
   );
   final eventsController = Get.put(EventsController());
   eventsController.getEvents();
+
+  final busesController = Get.put(BusesController());
+  busesController.getSharedPreferences();
+  busesController.getRoutes();
 
   await globals.getSharedPreferences();
   nextScreen = await globals.getData();
