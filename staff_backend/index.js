@@ -73,7 +73,6 @@ setInterval(async () => {
 //Students routes
 
 app.use("/getRoutes", getRoutes);
-
 app.use("/assignDriverToRoute", assignDriverToRoute);
 app.use("/removeDriverFromRoute", removeDriverFromRoute);
 
