@@ -175,8 +175,7 @@ class _EventsState extends State<Events> {
                   ),
                 ],
               );
-            }),),
-      ),
+            }),),),
       floatingActionButton: SizedBox(
         height: 40.0,
         width: 130.0,
