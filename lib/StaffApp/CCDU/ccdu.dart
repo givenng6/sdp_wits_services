@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart';
+import 'package:sdp_wits_services/globals.dart' as globals;
 
 import 'Accpted.dart';
 import 'All.dart';
@@ -16,28 +17,8 @@ class CCDU extends StatefulWidget {
 }
 
 class _CCDUState extends State<CCDU> {
-  String username = " ";
-  String email = "";
-  String Date = " ";
-  String Time = " ";
-  String Description = " ";
 
 
-  void _getSharedPreferences() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    username = sharedPreferences.getString('username')!;
-    email = sharedPreferences.getString('email')!;
-    Date = sharedPreferences.getString('Date')!;
-    Time = sharedPreferences.getString('Time')!;
-    Description =  sharedPreferences.getString('Description')!;
-    setState(() {});
-  }
-
-  @override
-  void initState() {
-    _getSharedPreferences();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +47,7 @@ class _CCDUState extends State<CCDU> {
                     child: CircleAvatar(
                       backgroundColor: const Color(0xFF013152),
                       child: Text(
-                        username[0],
+                        globals.username![0],
                         style: const TextStyle(
                             fontSize: 20.0, color: Colors.white),
                       ),
@@ -76,7 +57,7 @@ class _CCDUState extends State<CCDU> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Profile(email, username)));
+                            builder: (context) => Profile(globals.email, globals.username)));
                   })
             ],
             bottom: const TabBar(

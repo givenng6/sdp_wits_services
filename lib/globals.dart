@@ -8,6 +8,7 @@ import 'package:sdp_wits_services/StaffApp/Dining/mealSelectionPage.dart';
 import 'package:sdp_wits_services/StaffApp/StaffPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'StaffApp/CCDU/CCDU.dart';
 import 'StaffApp/Campus Control/OnRoute.dart';
 import 'StaffApp/Campus Control/onDuty.dart';
 import 'StudentsApp/Home/Start.dart';
@@ -45,14 +46,15 @@ Future getData() async {
       kind == 'Staff' &&
       department == 'Campus Control') {
     return const CampusControl();
-    if (driverState == "onDuty") {
-      return const OnDuty();
-    } else if (driverState == "onRoute") {
-      return const OnRoute();
-    } else {
-      return const CampusControl();
-    }
-  } else if (username != "" && username != null && kind == 'Staff') {
+
+  }
+  else if (username != "" &&
+      username != null &&
+      kind == 'Staff' &&
+      department == 'CCDU') {
+    return const CCDU();
+
+  }else if (username != "" && username != null && kind == 'Staff') {
     return const StaffPage();
   } else {
     return const App();

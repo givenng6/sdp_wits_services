@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:sdp_wits_services/StaffApp/CCDU/ccdu.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/mealSelectionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -195,6 +196,14 @@ class StaffLoginScreen extends StatelessWidget {
             MaterialPageRoute(
                 builder: (BuildContext context) =>   const CampusControl()),
                 (Route<dynamic> route) => false);
+      }
+      else if(dep=="CCDU"){
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>   const CCDU()),
+                (Route<dynamic> route) => false);
+
       }
 
     }

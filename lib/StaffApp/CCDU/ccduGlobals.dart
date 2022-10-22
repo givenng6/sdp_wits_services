@@ -1,6 +1,9 @@
 library globals;
 
+import 'package:flutter/cupertino.dart';
+
 import 'Booking.dart';
+import 'package:sdp_wits_services/globals.dart' as globals;
 
 List<Booking> AllBookings = [
   Booking(type: "all", obj: {
@@ -33,7 +36,10 @@ List<Booking> AllBookings = [
 ];
 List<Booking> AcceptedBookings = [];
 
-Future<void> GetAllBookings() async {}
+Future<void> GetAllBookings() async {
+
+  debugPrint(globals.username);
+}
 
 Future<void> GetAcceptedBookings() async {}
 
