@@ -20,7 +20,7 @@ class BusesController extends GetxController{
   var fabDecoration =
   FabDecoration(text: 'Start Shift', color: const Color(0xFF03560F)).obs;
 
-  List? routes;
+  List routes = [];
 
   List takenRoutes = [];
 
@@ -54,15 +54,15 @@ class BusesController extends GetxController{
   assignDriverToRoute() async {
     Random random = Random();
     int randomNumber =
-    random.nextInt(routes![selectedCardIndex]['stops'].length);
-    String stop = routes![selectedCardIndex]['stops'][randomNumber];
+    random.nextInt(routes[selectedCardIndex]['stops'].length);
+    String stop = routes[selectedCardIndex]['stops'][randomNumber];
     await http.post(Uri.parse("${uri}assignDriverToRoute"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(<String, String>{
-          'routeId': routes![selectedCardIndex]['id'],
+          'routeId': routes[selectedCardIndex]['id'],
           'driver': email!,
           'position': stop
         }));
@@ -75,7 +75,7 @@ class BusesController extends GetxController{
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(<String, String>{
-          'routeId': routes![selectedCardIndex]['id'],
+          'routeId': routes[selectedCardIndex]['id'],
           'driver': email!,
         }));
   }
@@ -87,8 +87,8 @@ class BusesController extends GetxController{
   }
 
   keepDriverOnShift() {
-    for (int index = 0; index < routes!.length; index++) {
-      List driversOnRoute = routes![index]['driversOnRoute'].toList();
+    for (int index = 0; index < routes.length; index++) {
+      List driversOnRoute = routes[index]['driversOnRoute'].toList();
       if (driversOnRoute.isNotEmpty && driversOnRoute[0] == email) {
         tapped = index;
         selectedCardIndex = index;
@@ -98,7 +98,7 @@ class BusesController extends GetxController{
         fabDecoration(FabDecoration(text: 'End Shift', color: const Color(0xFF851318)));
         clickingEnabled(false);
       } else if (driversOnRoute.isNotEmpty && driversOnRoute[0] != email) {
-        takenRoutes.add(routes![index]);
+        takenRoutes.add(routes[index]);
       }
     }
   }
