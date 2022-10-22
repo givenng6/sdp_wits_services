@@ -12,15 +12,13 @@ class ProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = Theme.of(context).colorScheme.primary;
-
     return Center(
         child: Stack(children: [
       buildImage(),
       Positioned(
         bottom: 0,
         right: 4,
-        child: buildEditIcon(color),
+        child: buildEditIcon(),
       )
     ]));
   }
@@ -43,11 +41,11 @@ class ProfileWidget extends StatelessWidget {
     );
   }
 
-  Widget buildEditIcon(Color color) => buildCircle(
+  Widget buildEditIcon() => buildCircle(
         color: Colors.white,
         all: 3,
         child: buildCircle(
-          color: color,
+          color: const Color(0xff003b5c),
           all: 8,
           child: const Icon(Icons.edit, color: Colors.white, size: 20),
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:sdp_wits_services/StudentsApp/CCDU/CCDU.dart';
 import 'package:sdp_wits_services/StudentsApp/Events/Events.dart';
 import 'package:sdp_wits_services/StudentsApp/Health/Health.dart';
@@ -8,11 +7,10 @@ import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import '../Utilities/AddSub.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-const String APP_VERSION = "version 1.0.3 (sprint3)";
+const String APP_VERSION = "version 1.0.4.1 (sprint4)";
 
 class MenuItems extends StatefulWidget{
   final Function(int index) onNavigate;
@@ -86,18 +84,11 @@ class _MenuItems extends State<MenuItems> {
               }
               break;
             case 5 :
-              String title = "Events";
-              String service = "events";
-              List<String> data = [email, title, service];
-
-              if(subs.contains(service)){
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Events(email)),
+                  MaterialPageRoute(builder: (context) => Events()),
                 );
-              }else{
-                subDialog(context, data, subs);
-              }
+
               break;
           }
         }

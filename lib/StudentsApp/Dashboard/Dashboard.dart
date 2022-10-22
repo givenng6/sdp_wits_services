@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
+import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
+import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
+import 'package:sdp_wits_services/globals.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
 import './DashAppBar.dart';
@@ -9,6 +13,11 @@ import './Widgets/DiningWidget.dart';
 import './Widgets/ProtectionWidget.dart';
 import './Widgets/EventsWidget.dart';
 import './Widgets/HealthWidget.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+// Uri to the API
+String uri = "https://web-production-8fed.up.railway.app/";
 
 class Dashboard extends StatefulWidget {
   final bool? isTesting;
@@ -34,11 +43,13 @@ class Dashboard extends StatefulWidget {
 class _Dashboard extends State<Dashboard> {
   // list of dashboard widgets to show to user...
   final List<Widget> _cards = [];
-
+  String email = "";
   List<String> subs = [];
+  bool initRun = true;
 
   @override
   Widget build(BuildContext context) {
+    email = context.watch<UserData>().email;
     set(){
       context.read<Subscriptions>().addSub('bus_service');
       context.read<Subscriptions>().addSub('dining_service');
@@ -61,6 +72,7 @@ class _Dashboard extends State<Dashboard> {
     subs = context.watch<Subscriptions>().subs;
 
     // display all the widgets for the services sub to..
+    if(initRun){
     for (String service in subs) {
       switch (service) {
         case 'bus_service':
@@ -80,6 +92,24 @@ class _Dashboard extends State<Dashboard> {
           break;
       }
     }
+    }
+
+    Future onRefresh() async{
+      print("Refresh");
+      setState(() {
+        initRun = false;
+      });
+      context.read<Subscriptions>().refreshAll();
+      getSubs(context);
+      getBusFollowing(context);
+      getBusSchedule(context);
+      getDiningHallFollowing(context);
+      getDiningHalls(context);
+      getCCDUBookings(context);
+      getCounsellors(context);
+      getMealTime(context);
+      getEvents(context);
+    }
 
     // conditional rendering
     // show loading view if the data is not ready yet...
@@ -97,12 +127,15 @@ class _Dashboard extends State<Dashboard> {
                           fontWeight: FontWeight.bold, color: Colors.grey),
                     ),
                   )
-                : ListView.builder(
-                    itemCount: _cards.length,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return _cards[index];
-                    }),
+                : RefreshIndicator(
+              onRefresh: onRefresh,
+              child: ListView.builder(
+                  itemCount: _cards.length,
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return _cards[index];
+                  }),
+            )
           )
         ],
       ),
@@ -180,4 +213,180 @@ class _Dashboard extends State<Dashboard> {
         );
     }
   }
+
+  Future<void> getSubs(BuildContext context) async {
+    await http
+        .post(Uri.parse("${uri}db/getSub/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+        }))
+        .then((value) {
+      var json = jsonDecode(value.body);
+      // update the sub provider
+      for (String service in json["subs"]) {
+        context.read<Subscriptions>().addSub(service);
+      }
+    });
+  }
+
+  Future<void> getBusFollowing(BuildContext context) async {
+    await http
+        .post(Uri.parse("${uri}db/getBusFollowing/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+        }))
+        .then((value) {
+      var busData = jsonDecode(value.body);
+      List<String> busFollowing = [];
+      for (String bus in busData) {
+        busFollowing.add(bus);
+      }
+      context.read<Subscriptions>().updateBusFollowing(busFollowing);
+    });
+  }
+
+  Future<void> getBusSchedule(BuildContext context) async {
+    await http
+        .get(Uri.parse("${uri}db/getBusSchedule/"), headers: <String, String>{
+      "Accept": "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
+    }).then((response) {
+      var toJSON = jsonDecode(response.body);
+      List<BusObject> tempSchedule = [];
+      for (var data in toJSON) {
+        String pos = "";
+        if (data['position'] != null) {
+          pos = data['position'];
+        }
+        tempSchedule.add(BusObject(
+            data['name'], data['id'], data['stops'], data['status'], pos));
+      }
+      context.read<Subscriptions>().setBusSchedule(tempSchedule);
+    });
+  }
+
+  Future<void> getDiningHallFollowing(BuildContext context) async {
+    await http
+        .post(Uri.parse("${uri}db/getDiningHallFollowing/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+        }))
+        .then((value) {
+      var data = jsonDecode(value.body);
+      context.read<Subscriptions>().updateDHFollowing(data);
+    });
+  }
+
+  Future<void> getDiningHalls(BuildContext context) async {
+    await http
+        .get(Uri.parse("${uri}db/getDiningHalls/"), headers: <String, String>{
+      "Accept": "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
+    }).then((response) {
+      var toJSON = jsonDecode(response.body);
+      List<DiningObject> tempList = [];
+      for (var data in toJSON) {
+        tempList.add(DiningObject(
+            data['name'],
+            data['id'],
+            data['breakfast']['optionA'],
+            data['breakfast']['optionB'],
+            data['breakfast']['optionC'],
+            data['lunch']['optionA'],
+            data['lunch']['optionB'],
+            data['lunch']['optionC'],
+            data['dinner']['optionA'],
+            data['dinner']['optionB'],
+            data['dinner']['optionC']));
+      }
+      context.read<Subscriptions>().setDiningHalls(tempList);
+    });
+  }
+
+  Future<void> getMealTime(BuildContext context) async {
+    await http.get(Uri.parse("${uri}db/getTime/"), headers: <String, String>{
+      "Accept": "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
+    }).then((response) {
+      var data = jsonDecode(response.body);
+      context.read<Subscriptions>().setMealTime(data);
+    });
+  }
+
+  Future<void> getCCDUBookings(BuildContext context) async {
+    await http
+        .post(Uri.parse("${uri}db/getBookingCCDU/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+        }))
+        .then((value) {
+      var data = jsonDecode(value.body);
+
+      for (dynamic object in data) {
+        CCDUObject session = CCDUObject();
+        session.setAppointment(
+            object['status'],
+            object['time'],
+            object['date'],
+            object['description'],
+            object['counsellor'],
+            object['counsellorName'],
+            object['location']);
+        context.read<Subscriptions>().addCCDUBooking(session);
+      }
+    });
+  }
+
+  Future<void> getCounsellors(BuildContext context) async {
+    await http
+        .get(Uri.parse("${uri}db/getCounsellors/"), headers: <String, String>{
+      "Accept": "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
+    }).then((response) {
+      var data = jsonDecode(response.body);
+
+      for (var counsellor in data) {
+        String email = counsellor['email'];
+        String username = counsellor['username'];
+        context.read<Subscriptions>().addCounsellor(email, username);
+      }
+      context.read<Subscriptions>().addCounsellor("", "");
+    });
+  }
+
+  Future<void> getEvents(BuildContext context) async {
+    await http.get(Uri.parse("${uri}db/getEvents/"), headers: <String, String>{
+      "Accept": "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
+    }).then((response) {
+      var data = jsonDecode(response.body);
+      List<EventObject> events = [];
+      for(dynamic event in data){
+        List<String> likes = [];
+        for(String like in event["likes"]){
+          likes.add(like);
+        }
+        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id']);
+        events.add(curr);
+      }
+      context.read<Subscriptions>().setEvents(events);
+    });
+  }
+
 }
