@@ -7,4 +7,3 @@ jobs:
     steps:
       - checkout
       - run: flutter doctor
-      - run: flutter test --coverage

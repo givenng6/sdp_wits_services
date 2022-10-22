@@ -38,7 +38,7 @@ class AllState extends State<All> {
 
   submit(Booking booking) async {
     booking.setLink(linkController.text);
-    localGlobals.HnadleBooking(booking);
+    localGlobals.HandleBooking(booking);
   }
 
   void handleOnPressed(Booking booking) async {
@@ -67,7 +67,7 @@ class AllState extends State<All> {
                 ),
               ));
     } else {
-      localGlobals.HnadleBooking(booking);
+      localGlobals.HandleBooking(booking);
     }
   }
 
