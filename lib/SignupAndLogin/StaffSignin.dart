@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:sdp_wits_services/StaffApp/Buses/Controller/buses_controller.dart';
+import 'package:sdp_wits_services/StaffApp/CCDU/ccdu.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/mealSelectionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -199,10 +197,16 @@ class StaffLoginScreen extends StatelessWidget {
                 builder: (BuildContext context) =>   const CampusControl()),
                 (Route<dynamic> route) => false);
       }
+      else if(dep=="CCDU"){
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+                builder: (BuildContext context) =>   const CCDU()),
+                (Route<dynamic> route) => false);
+
+      }
 
     }
-
-    final busesController = Get.find<BusesController>();
     return FlutterLogin(
       title: 'Wits Services',
       theme: LoginTheme(
@@ -221,8 +225,6 @@ class StaffLoginScreen extends StatelessWidget {
             debugPrint("here:: ${sharedPreferences.getString("username")}");
 
             String? dep = sharedPreferences.getString("department");
-            busesController.getSharedPreferences();
-            busesController.getRoutes();
             if(dep == null){
               navigateToStaffPage();
             }else{

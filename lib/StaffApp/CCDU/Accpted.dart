@@ -9,45 +9,36 @@ class Accepted extends StatefulWidget {
   const Accepted({Key? key}) : super(key: key);
 
   @override
-  State<Accepted> createState() => AccptedState();
+  State<Accepted> createState() => AcceptedState();
 }
 
-
-class AccptedState extends State<Accepted>{
+class AcceptedState extends State<Accepted> {
   Future<void> init() async {
-    await localGlobals.GetAllBookings();
-    setState(() {
-
-    });
-
+    await localGlobals.GetAcceptedBookings();
+    setState(() {});
   }
+
   @override
   void initState() {
-    // TODO: implement initState
     init();
     super.initState();
   }
 
-
-
-
-      @override
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: makeList()
-      )
-    );
+    return Scaffold(body: Container(child: makeList()));
   }
 
-  Widget makeList(){
+  Widget makeList() {
     return Column(
-      children: localGlobals.AcceptedBookings.map((booking) => _card(booking)).toList(),
+      children: localGlobals.AcceptedBookings.map((booking) => _card(booking))
+          .toList(),
     );
   }
 
   Widget _card(Booking booking) {
-    return Card(child: Container(
+    return Card(
+        child: Container(
       width: double.infinity,
       padding: EdgeInsets.all(12),
       child: Column(
@@ -59,14 +50,7 @@ class AccptedState extends State<Accepted>{
             Text("Time: ${booking.time}"),
             Text("Description"),
             Text(booking.description),
-          ]
-      ),
+          ]),
     ));
-
   }
 }
-
-
-
-
-

@@ -1,11 +1,8 @@
 // import 'dart:html';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'Booking.dart';
 import 'ccduGlobals.dart' as localGlobals;
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 
 class All extends StatefulWidget {
   const All({Key? key}) : super(key: key);
@@ -15,7 +12,6 @@ class All extends StatefulWidget {
 }
 
 class AllState extends State<All> {
-  // TODO fil the bookings array with data from the database
   TextEditingController linkController = TextEditingController();
 
   Future<void> init() async {
@@ -25,7 +21,6 @@ class AllState extends State<All> {
 
   @override
   void initState() {
-    // TODO: implement initState
     linkController.text = "";
     init();
     super.initState();
@@ -53,7 +48,7 @@ class AllState extends State<All> {
                     Text("Link"),
                     TextField(
                       controller: linkController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         labelText: 'Link',
                       ),

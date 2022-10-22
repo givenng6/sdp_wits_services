@@ -60,7 +60,6 @@ setInterval(async () => {
             });
             break;
           }
-
         }
       }
     }
