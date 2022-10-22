@@ -92,11 +92,11 @@ class _BusesMainState extends State<BusesMain> {
                     height: MediaQuery.of(context).size.height,
                     child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: busesController.routes!.length,
+                        itemCount: busesController.routes.length,
                         itemBuilder: (context, index) {
                           return InkWell(
                             onTap: busesController.takenRoutes
-                                    .contains(busesController.routes![index])
+                                    .contains(busesController.routes[index])
                                 ? null
                                 : () => setState(
                                     () => busesController.handleCardOnTap(index)),
@@ -117,7 +117,7 @@ class _BusesMainState extends State<BusesMain> {
                                           busesController.clickingEnabled.value,
                                       title: Center(
                                         child: Text(
-                                          busesController.routes![index]['name'],
+                                          busesController.routes[index]['name'],
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 20.0,
@@ -126,7 +126,7 @@ class _BusesMainState extends State<BusesMain> {
                                       ),
                                       trailing: !busesController.takenRoutes
                                               .contains(
-                                                  busesController.routes![index])
+                                                  busesController.routes[index])
                                           ? null
                                           : const Text(
                                               'TAKEN',
