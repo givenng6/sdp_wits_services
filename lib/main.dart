@@ -25,7 +25,7 @@ void main() async{
   busesController.getSharedPreferences();
   busesController.getRoutes();
 
-  Get.put(Booked());
+  // Get.put(Booked());
   await globals.getSharedPreferences();
   nextScreen = await globals.getData();
   runApp(
