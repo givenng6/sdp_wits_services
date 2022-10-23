@@ -43,16 +43,18 @@ List<Booking> AcceptedBookings = [];
 Future<void> GetAllBookings() async {
   debugPrint("kkkkkkkkkkk");
   http.Response result =
-      await http.post(Uri.parse("$url/ccdu/addPendingAppointments"),
+      await http.post(Uri.parse("$url/ccdu/allPendingAppointments"),
           headers: <String, String>{
             "Accept": "application/json",
             "Content-Type": "application/json; charset=UTF-8",
           },
           body: jsonEncode(<String, dynamic>{"email": globals.email}));
-  List myList = jsonDecode(result.body);
-  AllBookings.clear();
+  List myList = await jsonDecode(result.body).toList();
+  var q = myList.length;
+  debugPrint('$q');
+  AcceptedBookings.clear();
   for (int i = 0; i < myList.length; i++) {
-    AllBookings.add(Booking(obj: myList[i], type: 'all'));
+    AcceptedBookings.add(Booking(obj: myList[i], type: 'all'));
   }
   //debugPrint(globals.email);
 }
@@ -66,8 +68,9 @@ Future<void> GetAcceptedBookings() async {
             "Content-Type": "application/json; charset=UTF-8",
           },
           body: jsonEncode(<String, dynamic>{"email": globals.email}));
-  List myList = jsonDecode(result.body);
-  debugPrint('$myList.length');
+  List myList = await jsonDecode(result.body).toList();
+  var r = myList.length;
+  debugPrint('$r');
   AcceptedBookings.clear();
   for (int i = 0; i < myList.length; i++) {
     AcceptedBookings.add(Booking(obj: myList[i], type: 'all'));
