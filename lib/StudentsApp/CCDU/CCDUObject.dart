@@ -8,7 +8,9 @@ class CCDUObject {
   String _counsellor = "";
   String _counsellorName =  "";
   String _location =  "";
+  String _id = "";
 
+  String get id => _id;
   String get status => _status;
   String get time => _time;
   String get date => _date;
@@ -17,7 +19,8 @@ class CCDUObject {
   String get counsellorName => _counsellorName;
   String get location => _location;
 
-  void setAppointment(String status, String time, String date, String description, String counsellor, String counsellorName, String location){
+  void setAppointment(String id, String status, String time, String date, String description, String counsellor, String counsellorName, String location){
+    _id = id;
     _status = status;
     _time = time;
     _date = date;

@@ -185,6 +185,7 @@ class _Start extends State<Start> {
       for (dynamic object in data) {
         CCDUObject session = CCDUObject();
         session.setAppointment(
+            object['id'],
             object['status'],
             object['time'],
             object['date'],
@@ -193,6 +194,7 @@ class _Start extends State<Start> {
             object['counsellorName'],
             object['location']);
         context.read<Subscriptions>().addCCDUBooking(session);
+        // set alerts...
       }
     });
   }

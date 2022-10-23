@@ -170,6 +170,7 @@ class StudentsLoginScreen extends StatelessWidget {
           sharedPreferences.setString('email', email!);
           sharedPreferences.setString('kind', "Student");
           sharedPreferences.setStringList("scheduledEvents", []);
+          sharedPreferences.setStringList("scheduledCCDU", []);
           debugPrint('here');
           navigateToHome();
         }

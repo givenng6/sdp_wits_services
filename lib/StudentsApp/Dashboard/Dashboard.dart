@@ -345,6 +345,7 @@ class _Dashboard extends State<Dashboard> {
       for (dynamic object in data) {
         CCDUObject session = CCDUObject();
         session.setAppointment(
+            object['id'],
             object['status'],
             object['time'],
             object['date'],

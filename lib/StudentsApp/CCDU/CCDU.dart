@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:sdp_wits_services/StudentsApp/Utilities/AddSub.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
 import 'dart:convert';
 
+import 'package:sdp_wits_services/userProfile/model/userInfo.dart';
+
 String uri = "https://web-production-a9a8.up.railway.app/";
+
+// scheduledCCDU
 
 class CCDU extends StatefulWidget {
   const CCDU({super.key});
@@ -19,6 +23,7 @@ class CCDU extends StatefulWidget {
 
 class _CCDU extends State<CCDU> {
   String email = "";
+  String studentName = "";
 
   String meetingLocation = 'Online';
   String theCounsellor = '';
@@ -31,8 +36,14 @@ class _CCDU extends State<CCDU> {
   List<CCDUObject> sessions = [];
   String description = "";
 
+  late final PushNotification pushNotification;
 
-  // TODO get current date and the counsellors
+  @override
+  void initState(){
+    pushNotification = PushNotification();
+    pushNotification.initNotifications();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +51,7 @@ class _CCDU extends State<CCDU> {
     counsellorsEmail = context.watch<Subscriptions>().counsellorsEmail;
     sessions = context.watch<Subscriptions>().ccduBookings;
     email = context.watch<UserData>().email;
+    studentName = context.watch<UserData>().username;
 
     DateTime now = DateTime.now();
     String timeNow = DateFormat('kk:mm').format(now);
@@ -366,6 +378,7 @@ class _CCDU extends State<CCDU> {
             },
             body: jsonEncode(<String, String>{
               "email": email,
+              "studentName": studentName,
               "time": time,
               "date": date,
               "description": description,
@@ -375,16 +388,17 @@ class _CCDU extends State<CCDU> {
             }))
         .then((value) {
       // TODO check the returned data if is valid
-      bool isAvailable = jsonDecode(value.body)[0];
-      print(isAvailable);
+      var data = jsonDecode(value.body);
+      bool isAvailable = data['status'];
+
       if (isAvailable) {
+        pushNotification.scheduleNotification(id: 5, title: "CCDU Bookings", body: "New appointment pending", seconds: 1);
         setState(() {
           // add the session to the list...
           CCDUObject session = CCDUObject();
-          session.setAppointment('Pending', time, date, description, id,
+          session.setAppointment(data['id'], 'Pending', time, date, description, id,
               theCounsellor, meetingLocation);
           context.read<Subscriptions>().addCCDUBooking(session);
-
           // clear all fields..
           theCounsellor = "";
           description = "";
