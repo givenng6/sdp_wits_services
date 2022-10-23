@@ -111,11 +111,11 @@ class _Protection extends State<Protection> {
         width: 130.0,
         child: FloatingActionButton(
           backgroundColor: const Color(0xff003b5c),
-          onPressed: () => showModalBottomSheet(
+          onPressed: (!context.watch<Subscriptions>().booked)? () => showModalBottomSheet(
               context: context,
               backgroundColor: Colors.transparent,
               isScrollControlled: true,
-              builder: (context) => const BookRide()),
+              builder: (context) => const BookRide()):(){},
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(35.0),
           ),
