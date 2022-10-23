@@ -308,10 +308,10 @@ class _Start extends State<Start> {
     bool? isDailyNotified = sharedPreferences.getBool('isDailyNotified');
 
     print(isDailyNotified);
-    if(isDailyNotified == null){
-      Time breakfastTime = const Time(17, 10, 0);
-      Time lunchTime = const Time(17, 25, 0);
-      Time dinnerTime = const Time(17, 40, 0);
+    if(!isDailyNotified!){
+      Time breakfastTime = const Time(07, 10, 0);
+      Time lunchTime = const Time(11, 10, 0);
+      Time dinnerTime = const Time(16, 10, 0);
 
       pushNotification.dailyNotification(id: 0, title: "Wits Dining", body: "Time to collect breakfast", time: breakfastTime);
       pushNotification.dailyNotification(id: 1, title: "Wits Dining", body: "Time to collect lunch", time: lunchTime);
@@ -321,8 +321,6 @@ class _Start extends State<Start> {
       debugPrint("User will be notified daily now...");
     }
 
-    sharedPreferences.remove('isDailyNotified');
-
-
+    //sharedPreferences.remove('isDailyNotified');
   }
 }
