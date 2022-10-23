@@ -7,7 +7,7 @@ import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 
 // Uri to the API
-String link = "https://web-production-8fed.up.railway.app/";
+String link = "https://web-production-a9a8.up.railway.app/";
 
 class Events extends StatefulWidget {
   const Events({super.key});

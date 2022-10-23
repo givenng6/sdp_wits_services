@@ -7,6 +7,8 @@ import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+String uri = "https://web-production-a9a8.up.railway.app/";
+
 class CCDU extends StatefulWidget {
   const CCDU({super.key});
 

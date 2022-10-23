@@ -12,6 +12,8 @@ import 'dart:convert';
 
 const String APP_VERSION = "version 1.0.4(sprint4)";
 
+String uri = "https://web-production-a9a8.up.railway.app/";
+
 class MenuItems extends StatefulWidget{
   final Function(int index) onNavigate;
   MenuItems({required this.onNavigate});

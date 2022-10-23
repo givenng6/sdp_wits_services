@@ -6,7 +6,7 @@ import '../Dashboard/Dashboard.dart';
 import '../Protection/protection.dart';
 
 // Uri to the API
-String uri = "https://web-production-8fed.up.railway.app/";
+String uri = "https://web-production-a9a8.up.railway.app/";
 
 class Home extends StatefulWidget{
 

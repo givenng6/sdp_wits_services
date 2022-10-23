@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'package:sdp_wits_services/StudentsApp/Dining/ViewDH.dart';
 
 // Uri to the API
-String uri = "https://web-production-8fed.up.railway.app/";
+String uri = "https://web-production-a9a8.up.railway.app/";
 
 class DiningCard extends StatefulWidget{
 

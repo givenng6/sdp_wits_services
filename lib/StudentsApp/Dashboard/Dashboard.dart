@@ -18,7 +18,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 // Uri to the API
-String uri = "https://web-production-8fed.up.railway.app/";
+String uri = "https://web-production-a9a8.up.railway.app/";
 
 class Dashboard extends StatefulWidget {
   final bool? isTesting;
