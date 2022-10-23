@@ -141,7 +141,7 @@ class _Protection extends State<Protection> {
     });
   }
 
-  String uri = "https://web-production-8fed.up.railway.app/";
+  String uri = "https://web-production-a9a8.up.railway.app/";
   Future<void> getResidences(BuildContext context) async{
     // residences = context.watch<Subscriptions>().residences;
     if(context.watch<Subscriptions>().residences.isEmpty){

@@ -144,7 +144,7 @@ class _BookRideState extends State<BookRide> {
     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
   );
 
-  String uri = "https://web-production-8fed.up.railway.app/";
+  String uri = "https://web-production-a9a8.up.railway.app/";
 
   Future<void> book() async{
     await http.post(Uri.parse("${uri}db/requestRide/"),
