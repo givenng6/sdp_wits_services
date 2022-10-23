@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
@@ -27,6 +29,8 @@ class _BookRideState extends State<BookRide> {
   String email = "";
   String username = "";
   late final PushNotification pushNotification;
+
+  final bookedController = Get.find<Booked>();
 
   @override
   void initState(){
@@ -161,6 +165,7 @@ class _BookRideState extends State<BookRide> {
     ).then((value){
       var data = jsonDecode(value.body);
       RideObject ride = RideObject();
+      bookedController.booked(true);
       ride.setRide(data["status"], data["reg"], data["carName"], data["driver"], data["from"], data["to"], data["completed"]);
       context.read<Subscriptions>().setRide(ride);
       context.read<Subscriptions>().setBooked(true);
