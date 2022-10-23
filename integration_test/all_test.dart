@@ -2050,6 +2050,7 @@ Future<void> _ccduSubscribedTest(WidgetTester tester) async {
         await Future.delayed(const Duration(seconds: 1));
         CCDUObject session = CCDUObject();
         session.setAppointment(
+            '',
             'Pending',
             '12:30-13:30',
             '06/10/2022',
