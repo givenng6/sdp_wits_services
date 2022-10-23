@@ -51,11 +51,14 @@ Future<void> GetAllBookings() async {
           body: jsonEncode(<String, dynamic>{"email": globals.email}));
   List myList = await jsonDecode(result.body).toList();
   var q = myList.length;
-  debugPrint('$q');
+  debugPrint('$q b');
+
   AcceptedBookings.clear();
   for (int i = 0; i < myList.length; i++) {
-    AcceptedBookings.add(Booking(obj: myList[i], type: 'all'));
+    AcceptedBookings.add(Booking(type: 'all',obj: myList[i],));
   }
+  var z = AcceptedBookings.length;
+  debugPrint('$z bookings');
   //debugPrint(globals.email);
 }
 
@@ -70,7 +73,7 @@ Future<void> GetAcceptedBookings() async {
           body: jsonEncode(<String, dynamic>{"email": globals.email}));
   List myList = await jsonDecode(result.body).toList();
   var r = myList.length;
-  debugPrint('$r');
+  debugPrint('$r bookings');
   AcceptedBookings.clear();
   for (int i = 0; i < myList.length; i++) {
     AcceptedBookings.add(Booking(obj: myList[i], type: 'all'));
