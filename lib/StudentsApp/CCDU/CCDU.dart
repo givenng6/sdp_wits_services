@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sdp_wits_services/StudentsApp/Utilities/AddSub.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
@@ -30,8 +31,6 @@ class _CCDU extends State<CCDU> {
   List<CCDUObject> sessions = [];
   String description = "";
 
-  TimeOfDay time = const TimeOfDay(hour: 09, minute: 00);
-  DateTime date = DateTime(2022, 10, 14);
 
   // TODO get current date and the counsellors
 
@@ -41,6 +40,13 @@ class _CCDU extends State<CCDU> {
     counsellorsEmail = context.watch<Subscriptions>().counsellorsEmail;
     sessions = context.watch<Subscriptions>().ccduBookings;
     email = context.watch<UserData>().email;
+
+    DateTime now = DateTime.now();
+    String timeNow = DateFormat('kk:mm').format(now);
+    String dateNow = DateFormat('dd/MM/yyyy').format(now);
+
+    TimeOfDay time = TimeOfDay(hour: int.parse(timeNow.split(":")[0]), minute: int.parse(timeNow.split(":")[1]));
+    DateTime date = DateTime(int.parse(dateNow.split("/")[2]), int.parse(dateNow.split("/")[1]), int.parse(dateNow.split("/")[0]));
 
     return Scaffold(
       appBar: AppBar(
@@ -110,10 +116,11 @@ class _CCDU extends State<CCDU> {
                                       fontWeight: FontWeight.w600)),
                               TextButton(
                                   onPressed: () async {
+                                    print(int.parse(dateNow.split("/")[2]));
                                     DateTime? setDate = await showDatePicker(
                                         context: context,
                                         initialDate: date,
-                                        firstDate: DateTime(2022, 10, 06),
+                                        firstDate: DateTime(int.parse(dateNow.split("/")[2]), int.parse(dateNow.split("/")[1]), int.parse(dateNow.split("/")[0])),
                                         lastDate: DateTime(2100));
 
                                     if (setDate != null) {
