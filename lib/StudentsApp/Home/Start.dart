@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../StaffApp/Events/Controllers/events_controller.dart';
 import '../Providers/Subscriptions.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
@@ -28,6 +29,7 @@ class Start extends StatefulWidget {
 }
 
 class _Start extends State<Start> {
+  final eventsController = Get.find<EventsController>();
   bool isLoading = true;
   late final PushNotification pushNotification;
 
@@ -213,6 +215,7 @@ class _Start extends State<Start> {
   }
 
   Future<void> getEvents(BuildContext context) async {
+    await eventsController.getEvents();
     await http.get(Uri.parse("${uri}db/getEvents/"), headers: <String, String>{
       "Accept": "application/json",
       "Content-Type": "application/json; charset=UTF-8",

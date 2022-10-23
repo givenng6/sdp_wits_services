@@ -5,7 +5,7 @@ import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
-import 'package:sdp_wits_services/globals.dart';
+import '../../StaffApp/Events/Controllers/events_controller.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
 import './DashAppBar.dart';
@@ -15,6 +15,7 @@ import './Widgets/ProtectionWidget.dart';
 import './Widgets/EventsWidget.dart';
 import './Widgets/HealthWidget.dart';
 import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 import 'dart:convert';
 
 // Uri to the API
@@ -42,6 +43,7 @@ class Dashboard extends StatefulWidget {
 }
 
 class _Dashboard extends State<Dashboard> {
+  final eventsController = Get.find<EventsController>();
   // list of dashboard widgets to show to user...
   final List<Widget> _cards = [];
   String email = "";
@@ -373,6 +375,7 @@ class _Dashboard extends State<Dashboard> {
   }
 
   Future<void> getEvents(BuildContext context) async {
+    await eventsController.getEvents();
     await http.get(Uri.parse("${uri}db/getEvents/"), headers: <String, String>{
       "Accept": "application/json",
       "Content-Type": "application/json; charset=UTF-8",
