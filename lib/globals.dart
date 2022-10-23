@@ -45,7 +45,6 @@ Future getData() async {
       kind == 'Staff' &&
       department == 'Campus Control') {
     return const CampusControl();
-
   }
   else if (username != "" &&
       username != null &&

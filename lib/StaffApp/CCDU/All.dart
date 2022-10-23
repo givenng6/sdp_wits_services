@@ -1,5 +1,3 @@
-// import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'Booking.dart';
 import 'ccduGlobals.dart' as localGlobals;
@@ -14,15 +12,15 @@ class All extends StatefulWidget {
 class AllState extends State<All> {
   TextEditingController linkController = TextEditingController();
 
-  Future<void> init() async {
+  void init() async {
     await localGlobals.GetAllBookings();
     setState(() {});
   }
 
   @override
   void initState() {
-    linkController.text = "";
     init();
+    linkController.text = "";
     super.initState();
   }
 
@@ -31,9 +29,12 @@ class AllState extends State<All> {
     return Scaffold(body: Container(child: makeList()));
   }
 
+  String bottomSheetLoading = "initial";
+
   submit(Booking booking) async {
     booking.setLink(linkController.text);
-    localGlobals.HandleBooking(booking);
+
+    await localGlobals.HandleBooking(booking);
   }
 
   void handleOnPressed(Booking booking) async {
@@ -45,7 +46,7 @@ class AllState extends State<All> {
                 height: 300,
                 child: Column(
                   children: [
-                    Text("Link"),
+                    const Text("Link"),
                     TextField(
                       controller: linkController,
                       decoration: const InputDecoration(
@@ -64,6 +65,7 @@ class AllState extends State<All> {
     } else {
       localGlobals.HandleBooking(booking);
     }
+
   }
 
   Widget makeList() {
@@ -72,31 +74,32 @@ class AllState extends State<All> {
         itemBuilder: (context, index) =>
             _card(localGlobals.AllBookings[index]));
 
-    return Column(
-      children:
-          localGlobals.AllBookings.map((booking) => _card(booking)).toList(),
-    );
   }
 
   Widget _card(Booking booking) {
     return Card(
+      elevation: 10,
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Name: ${booking.name}"),
+            Text(booking.name,style: const TextStyle(fontWeight: FontWeight.w500,fontSize: 20),),
             Text("Date: ${booking.date}"),
             Text("Time: ${booking.time}"),
-            Text("Description"),
-            Text(booking.description),
+            Text("Platform: ${booking.location}"),
+            if(booking.description!="")Text("Description"),
+            if(booking.description!="")Text(booking.description),
             if (booking.type == "all")
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(const Color(0xFF013152))
+                    ),
                       onPressed: () {
                         handleOnPressed(booking);
                       },
@@ -105,7 +108,6 @@ class AllState extends State<All> {
               )
           ],
         ),
-        // style: TextStyle(fontSize: 16),),
       ),
     );
   }

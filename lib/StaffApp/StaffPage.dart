@@ -8,6 +8,7 @@ import 'package:sdp_wits_services/StaffApp/CCDU/CCDU.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'DiningGlobals.dart' as globals;
+import 'package:sdp_wits_services/globals.dart' as mainGlobals;
 
 // const String url = "http://192.168.42.155:5000";
 
@@ -57,6 +58,7 @@ class _StaffPageState extends State<StaffPage> {
           SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Bus Services');
+          mainGlobals.getSharedPreferences();
         }
         break;
       case "Dining Services":
@@ -70,11 +72,13 @@ class _StaffPageState extends State<StaffPage> {
           SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Dining Services');
+          mainGlobals.getSharedPreferences();
         }
         break;
       case "Campus Control":
         {
           // debugPrint('here here');
+
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -82,6 +86,7 @@ class _StaffPageState extends State<StaffPage> {
           SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'Campus Control');
+          mainGlobals.getSharedPreferences();
         }
         break;
       case "CCDU":
@@ -94,6 +99,7 @@ class _StaffPageState extends State<StaffPage> {
           SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
           sharedPreferences.setString('department', 'CCDU');
+          mainGlobals.getSharedPreferences();
         }
         break;
       default:{

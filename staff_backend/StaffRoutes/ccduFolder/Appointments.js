@@ -70,7 +70,6 @@ router.post("/acceptAppointment", async (req, res)=>{
     const ref = doc(db, 'Appointments',id);
     const docSnap = await getDoc(ref);
     if (docSnap.exists()) {
-
         if(docSnap.data().location === "Online"){
             updateDoc(ref,{status:'Confirmed',counsellor, counsellorName,link});
             res.send('status changed to Confirmed');

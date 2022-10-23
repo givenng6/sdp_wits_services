@@ -13,7 +13,7 @@ class Accepted extends StatefulWidget {
 }
 
 class AcceptedState extends State<Accepted> {
-  Future<void> init() async {
+  void init() async {
     await localGlobals.GetAcceptedBookings();
     setState(() {});
   }
@@ -48,6 +48,7 @@ class AcceptedState extends State<Accepted> {
             Text("Name: ${booking.name}"),
             Text("Date: ${booking.date}"),
             Text("Time: ${booking.time}"),
+            Text("Platform: ${booking.location}"),
             Text("Description"),
             Text(booking.description),
           ]),

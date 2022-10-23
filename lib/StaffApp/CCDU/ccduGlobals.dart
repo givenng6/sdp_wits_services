@@ -9,39 +9,11 @@ import 'package:sdp_wits_services/globals.dart' as globals;
 
 String url = "https://sdpwitsservices-production.up.railway.app";
 
-List<Booking> AllBookings = [
-  // Booking(type: "all", obj: {
-  //   "creator": "",
-  //   "time": "",
-  //   "date": "",
-  //   "counsellor": "",
-  //   "counsellorName": "",
-  //   "description": "bhiy",
-  //   "location": "Online"
-  // }),
-  // Booking(type: "all", obj: {
-  //   "creator": "",
-  //   "time": "",
-  //   "date": "",
-  //   "counsellor": "",
-  //   "counsellorName": "",
-  //   "description": "vyih",
-  //   "location": "Online"
-  // }),
-  // Booking(type: "all", obj: {
-  //   "creator": "",
-  //   "time": "",
-  //   "date": "",
-  //   "counsellor": "",
-  //   "counsellorName": "",
-  //   "description": "o",
-  //   "location": "inPerson"
-  // }),
-];
+List<Booking> AllBookings = [];
 List<Booking> AcceptedBookings = [];
 
 Future<void> GetAllBookings() async {
-  debugPrint("kkkkkkkkkkk");
+  debugPrint("Called All bookings");
   http.Response result =
       await http.post(Uri.parse("$url/ccdu/allPendingAppointments"),
           headers: <String, String>{
@@ -50,20 +22,17 @@ Future<void> GetAllBookings() async {
           },
           body: jsonEncode(<String, dynamic>{"email": globals.email}));
   List myList = await jsonDecode(result.body).toList();
-  var q = myList.length;
-  debugPrint('$q b');
 
-  AcceptedBookings.clear();
+  debugPrint("list: $myList");
+
+  AllBookings.clear();
   for (int i = 0; i < myList.length; i++) {
-    AcceptedBookings.add(Booking(type: 'all',obj: myList[i],));
+    AllBookings.add(Booking(type: 'all',obj: myList[i],));
   }
-  var z = AcceptedBookings.length;
-  debugPrint('$z bookings');
-  //debugPrint(globals.email);
+
 }
 
 Future<void> GetAcceptedBookings() async {
-  debugPrint("kkkkkkkkkkk");
   http.Response result =
       await http.post(Uri.parse("$url/ccdu/allAcceptedAppointments"),
           headers: <String, String>{
@@ -72,15 +41,41 @@ Future<void> GetAcceptedBookings() async {
           },
           body: jsonEncode(<String, dynamic>{"email": globals.email}));
   List myList = await jsonDecode(result.body).toList();
-  var r = myList.length;
-  debugPrint('$r bookings');
   AcceptedBookings.clear();
   for (int i = 0; i < myList.length; i++) {
-    AcceptedBookings.add(Booking(obj: myList[i], type: 'all'));
+    AcceptedBookings.add(Booking(obj: myList[i], type: 'accepted'));
   }
-  //debugPrint(globals.email);
+
 }
 
-Future<void> HandleBooking(Booking booking) async {
-  //debugPrint(globals.email);
+Future<String> HandleBooking(Booking booking) async {
+  Map<String,dynamic> info ;
+  if(booking.location=="Online"){
+    info = {
+      "id":booking.id,
+      "counsellor":globals.email,
+      "counsellorName":globals.username,
+      "link":booking.link
+    };
+  }else{
+    info = {
+      "id":booking.id,
+      "counsellor":globals.email,
+      "counsellorName":globals.username,
+    };
+  }
+
+  http.Response result =
+  await http.post(Uri.parse("$url/ccdu/acceptAppointment"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8",
+      },
+      body: jsonEncode(info));
+
+  debugPrint("Res: ${result.body}");
+  return result.body;
+
+
+
 }
