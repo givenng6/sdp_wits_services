@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
+import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
 import '../Providers/UserData.dart';
 
 class BookRide extends StatefulWidget {
@@ -25,6 +26,14 @@ class _BookRideState extends State<BookRide> {
 
   String email = "";
   String username = "";
+  late final PushNotification pushNotification;
+
+  @override
+  void initState(){
+    pushNotification = PushNotification();
+    pushNotification.initNotifications();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,6 +164,7 @@ class _BookRideState extends State<BookRide> {
       ride.setRide(data["status"], data["reg"], data["carName"], data["driver"], data["from"], data["to"], data["completed"]);
       context.read<Subscriptions>().setRide(ride);
       context.read<Subscriptions>().setBooked(true);
+      pushNotification.scheduleNotification(id: 3, title: "Campus Control", body: "Ride has been successfully requested", seconds: 2);
       Navigator.pop(context);
     });
   }

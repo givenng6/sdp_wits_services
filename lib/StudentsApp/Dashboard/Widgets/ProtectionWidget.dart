@@ -17,7 +17,6 @@ class _ProtectionWidget extends State<ProtectionWidget>{
     isRideRequested = context.watch<Subscriptions>().booked;
     ride = context.watch<Subscriptions>().rideDetails;
     return Container(
-      height: 200,
       width: double.infinity,
       padding: const EdgeInsets.all(12),
       margin: const EdgeInsets.all(12),
@@ -39,25 +38,25 @@ class _ProtectionWidget extends State<ProtectionWidget>{
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white),)
             ],
           ),
-          isRideRequested ? 
+          isRideRequested ?
           ItemWidget(ride.from, ride.to, ride.driver, ride.carName, ride.reg, ride.status)
           :
-    Container(
-    width: double.infinity,
-    margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
-    padding: const EdgeInsets.all(12),
-    decoration: BoxDecoration(
-    borderRadius: BorderRadius.circular(12),
-    color: const Color(0x80ffffff),
-    ),
-    child: Column(
-    crossAxisAlignment: CrossAxisAlignment.center,
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: const [
-    Text("You haven't requested a ride", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-    ],
-    ),
-    )
+          Container(
+          width: double.infinity,
+          margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          color: const Color(0x80ffffff),
+          ),
+          child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+          Text("You haven't requested a ride", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18, color: Color(0xff003b5c))),
+          ],
+          ),
+          )
         ],
       ),
     );
@@ -76,12 +75,12 @@ class _ProtectionWidget extends State<ProtectionWidget>{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text("Ride Request", style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-          Text("From: " + from, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-          Text("Destination: " + to, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-          Text("Driver: " + driver, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-          Text("Car Make: " + carName, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-          Text("Reg: " + reg, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-          Text("Status: " + status, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
+          Text("From: " + from, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text("Destination: " + to, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text("Driver: " + driver, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text("Car Make: " + carName, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text("Reg: " + reg, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+          Text("Status: " + status, style: const TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
         ],
       ),
     );
