@@ -20,9 +20,9 @@ router.post("/AssignDep", async (req, res) => {
 
   try {
     if(department === "Dining Services"){
-      await updateDoc(ref,{department,dhName:req.body.dhName,devideIDs:arrayUnion(deviceID)});
+      await updateDoc(ref,{department,dhName:req.body.dhName,deviceIDs:arrayUnion(deviceID)});
     }else{
-      await updateDoc(ref,{department,email,devideIDs:arrayUnion(deviceID)});
+      await updateDoc(ref,{department,email,deviceIDs:arrayUnion(deviceID)});
     }
 
     res.send({status:"updated"});
