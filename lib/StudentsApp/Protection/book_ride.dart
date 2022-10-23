@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import '../Providers/UserData.dart';
 
@@ -149,6 +150,10 @@ class _BookRideState extends State<BookRide> {
           "to": to,
         })
     ).then((value){
+      var data = jsonDecode(value.body);
+      RideObject ride = RideObject();
+      ride.setRide(data["status"], data["reg"], data["carName"], data["driver"], data["from"], data["to"], data["completed"]);
+      context.read<Subscriptions>().setRide(ride);
       context.read<Subscriptions>().setBooked(true);
       Navigator.pop(context);
     });

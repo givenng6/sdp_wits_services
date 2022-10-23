@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/book_ride.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
 import '../UtilityWidgets.dart';
@@ -25,12 +26,14 @@ class _Protection extends State<Protection> {
 
   List<String> subs = [];
   bool isSubscribed = false;
+  RideObject ride = RideObject();
 
   @override
   Widget build(BuildContext context) {
     getResidences(context);
     getCampuses(context);
     subs = context.watch<Subscriptions>().subs;
+    ride = context.watch<Subscriptions>().rideDetails;
 
     if (subs.contains(service)) {
       setState(() {
@@ -71,20 +74,20 @@ class _Protection extends State<Protection> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const SizedBox(height: 10.0,),
-                            const Text('Driver: Jabu Maluleka', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                            Text('Driver: ${ride.driver}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                             const SizedBox(height: 10.0,),
-                            const Text('From: Wits Main Campus', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                            Text('From: ${ride.from}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                             const SizedBox(height: 10.0,),
-                            const Text('To: Student Digz', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                            Text('To: ${ride.to}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                             const SizedBox(height: 10.0,),
                             const Text('ETA: 7 mins', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                             const SizedBox(height: 10.0,),
                             const Spacer(),
                             Row(
-                              children: const <Widget>[
-                                Text('Car Name: Honda', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                              children:  <Widget>[
+                                Text('Car Name: ${ride.carName}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                                 Spacer(),
-                                Text('Car Reg: RGB 716 GP', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                                Text('Car Reg: ${ride.reg}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                                 Spacer()
                               ],
                             ),
@@ -165,7 +168,6 @@ class _Protection extends State<Protection> {
           }
       ).then((value){
         List campuses = jsonDecode(value.body).toList();
-        print(campuses);
         context.read<Subscriptions>().setCampuses(campuses);
       });
     }
