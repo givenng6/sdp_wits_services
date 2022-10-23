@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/book_ride.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import '../UtilityWidgets.dart';
 import '../Utilities/AddSub.dart';
+import 'package:sdp_wits_services/globals.dart' as globals;
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 
@@ -28,12 +30,37 @@ class _Protection extends State<Protection> {
   bool isSubscribed = false;
   RideObject ride = RideObject();
 
+  final bookedController = Get.find<Booked>();
+
+  Widget fabChild = Row(
+    children: const <Widget>[
+      Spacer(),
+      Icon(Icons.book),
+      Spacer(),
+      Text('Book Ride'),
+      Spacer()
+    ],
+  );
+
   @override
   Widget build(BuildContext context) {
     getResidences(context);
     getCampuses(context);
+    bookedController.booked(context.watch<Subscriptions>().booked);
     subs = context.watch<Subscriptions>().subs;
     ride = context.watch<Subscriptions>().rideDetails;
+
+    if(bookedController.booked.isTrue){
+      setState(()=>fabChild = Row(
+        children: const <Widget>[
+          Spacer(),
+          Icon(Icons.clear),
+          Spacer(),
+          Text('Cancel Ride'),
+          Spacer()
+        ],
+      ));
+    }
 
     if (subs.contains(service)) {
       setState(() {
@@ -113,23 +140,30 @@ class _Protection extends State<Protection> {
         width: 130.0,
         child: FloatingActionButton(
           backgroundColor: const Color(0xff003b5c),
-          onPressed: (!context.watch<Subscriptions>().booked)? () => showModalBottomSheet(
-              context: context,
-              backgroundColor: Colors.transparent,
-              isScrollControlled: true,
-              builder: (context) => const BookRide()):(){},
+          onPressed: (!context.watch<Subscriptions>().booked)
+              ? () async {
+            await showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                isScrollControlled: true,
+                builder: (context) => const BookRide());
+            if (bookedController.booked.isTrue) {
+              setState(()=>fabChild = Row(
+                children: const <Widget>[
+                  Spacer(),
+                  Icon(Icons.clear),
+                  Spacer(),
+                  Text('Cancel Ride'),
+                  Spacer()
+                ],
+              ));
+            }
+          }
+              : () => cancelRide(),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(35.0),
           ),
-          child: Row(
-            children: const <Widget>[
-              Spacer(),
-              Icon(Icons.book),
-              Spacer(),
-              Text('Book Ride'),
-              Spacer()
-            ],
-          ),
+          child: fabChild,
         ),
       ),
     );
@@ -172,4 +206,36 @@ class _Protection extends State<Protection> {
       });
     }
   }
+
+  Future<void> cancelRide() async{
+    setState(() {
+      fabChild = const CircularProgressIndicator(color: Colors.white,);
+      bookedController.booked(false);
+      context.read<Subscriptions>().setBooked(false);
+    });
+    debugPrint('cancel ride');
+    await http.post(Uri.parse("${uri}db/cancelRide/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String?>{
+          "email": globals.email,
+        })
+    ).then((value){
+      setState(() => fabChild = Row(
+        children: const <Widget>[
+          Spacer(),
+          Icon(Icons.book),
+          Spacer(),
+          Text('Book Ride'),
+          Spacer()
+        ],
+      ));
+    });
+  }
+}
+
+class Booked extends GetxController{
+  var booked = false.obs;
 }
