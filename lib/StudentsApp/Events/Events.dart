@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
+import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // Uri to the API
 String link = "https://web-production-a9a8.up.railway.app/";
@@ -19,6 +22,15 @@ class Events extends StatefulWidget {
 class _Events extends State<Events> {
   List<EventObject> events = [];
   String email = "";
+
+  late final PushNotification pushNotification;
+
+  @override
+  void initState(){
+    pushNotification = PushNotification();
+    pushNotification.initNotifications();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -134,9 +146,9 @@ class _Events extends State<Events> {
                           minimumSize: const Size.fromHeight(40),
                           backgroundColor: buttonColor,
                           shape: const StadiumBorder()),
-                      onPressed: () {
+                      onPressed: () async{
                         if (!likes.contains(email)) {
-                          // TODO add like
+                          // add like to the event
                           for (int i = 0; i < events.length; i++) {
                             String id = events[i].eventID;
                             if (id == eventID) {
@@ -146,6 +158,33 @@ class _Events extends State<Events> {
                             }
                           }
                         }
+                        // schedule a reminder
+                        // scheduledEvents
+                        SharedPreferences prefs = await SharedPreferences.getInstance();
+                        List<String>? scheduledEvents = prefs.getStringList("scheduledEvents");
+
+                        DateTime now = DateTime.now();
+                        String timeNow = DateFormat('kk:mm').format(now);
+                        String dateNow = DateFormat('dd/MM/yyyy').format(now);
+
+                        if(!scheduledEvents!.contains(eventID) && date == dateNow){
+                          int nowTimeInSec = (int.parse(timeNow.split(":")[0]) * 3600) + (int.parse(timeNow.split(":")[1]) * 60);
+                          int timeInSec = (int.parse(time.split(":")[0]) * 3600) + (int.parse(time.split(":")[1]) * 60);
+
+                          int timeToNotify = timeInSec - 3600 - nowTimeInSec;
+
+                          scheduledEvents.add(eventID);
+                          prefs.setStringList("scheduledEvents", scheduledEvents);
+
+                          if(timeToNotify > 0){
+                            pushNotification.scheduleNotification(id: 4, title: "Wits Events", body: "$eventTitle happening in an hour", seconds: timeToNotify);
+                          }
+                          // To Empty the list
+                          //prefs.setStringList("scheduledEvents", []);
+                          print(timeToNotify);
+                          print(prefs.getStringList("scheduledEvents"));
+                        }
+
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,

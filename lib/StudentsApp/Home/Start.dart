@@ -89,8 +89,7 @@ class _Start extends State<Start> {
   }
 
   Future<void> getBusSchedule(BuildContext context) async {
-    await http
-        .get(Uri.parse("${uri}db/getBusSchedule/"), headers: <String, String>{
+    await http.get(Uri.parse("${uri}db/getBusSchedule/"), headers: <String, String>{
       "Accept": "application/json",
       "Content-Type": "application/json; charset=UTF-8",
     }).then((response) {
