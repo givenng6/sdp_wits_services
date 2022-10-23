@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/book_ride.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -166,6 +165,7 @@ class _Protection extends State<Protection> {
           }
       ).then((value){
         List campuses = jsonDecode(value.body).toList();
+        print(campuses);
         context.read<Subscriptions>().setCampuses(campuses);
       });
     }
