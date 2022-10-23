@@ -10,6 +10,7 @@ import 'package:sdp_wits_services/globals.dart' as globals;
 String url = "https://sdpwitsservices-production.up.railway.app";
 
 List<Booking> AllBookings = [];
+List<Booking> MyBookings = [];
 List<Booking> AcceptedBookings = [];
 
 Future<void> GetAllBookings() async {
@@ -27,7 +28,13 @@ Future<void> GetAllBookings() async {
 
   AllBookings.clear();
   for (int i = 0; i < myList.length; i++) {
-    AllBookings.add(Booking(type: 'all',obj: myList[i],));
+    var curr = myList[i];
+    if(curr["counsellor"]==globals.email){
+      MyBookings.add(Booking(type: 'all',obj: myList[i]));
+    }else{
+      AllBookings.add(Booking(type: 'all',obj: myList[i]));
+    }
+
   }
 
 }

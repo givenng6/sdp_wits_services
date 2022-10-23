@@ -26,7 +26,7 @@ class AllState extends State<All> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Container(child: makeList()));
+    return Scaffold(body: Container(child:makeList()));
   }
 
   String bottomSheetLoading = "initial";
@@ -43,7 +43,7 @@ class AllState extends State<All> {
           context: context,
           builder: (builder) => Container(
                 padding: const EdgeInsets.all(15),
-                height: 300,
+                height: 200,
                 child: Column(
                   children: [
                     const Text("Link"),
@@ -68,12 +68,43 @@ class AllState extends State<All> {
 
   }
 
+  Widget makeMyList(){
+    return ListView.builder(
+        itemCount: localGlobals.MyBookings.length,
+        itemBuilder: (context, index) =>
+            _card(localGlobals.MyBookings[index]));
+  }
+
   Widget makeList() {
     return ListView.builder(
-        itemCount: localGlobals.AllBookings.length,
-        itemBuilder: (context, index) =>
-            _card(localGlobals.AllBookings[index]));
+        itemCount: localGlobals.AllBookings.length + localGlobals.MyBookings.length+1,
+        itemBuilder: (context, index) {
+          int myBookingsLen = localGlobals.MyBookings.length;
+          int allBookingsLen = localGlobals.AllBookings.length;
 
+          if(myBookingsLen>0 && allBookingsLen==0){
+            return  _card(localGlobals.MyBookings[index]);
+          }else if (myBookingsLen==0 && allBookingsLen>0){
+            if(index==0){
+              return const Text("Other Bookings");
+            }else{
+              return  _card(localGlobals.AllBookings[index-1]);
+            }
+          }else{
+            if(index==myBookingsLen){
+              return const Text("Other Bookings");
+            }else{
+              if(index<myBookingsLen){
+                return  _card(localGlobals.MyBookings[index]);
+              }else{
+                return  _card(localGlobals.AllBookings[index-myBookingsLen-1]);
+              }
+            }
+
+          }
+
+
+        });
   }
 
   Widget _card(Booking booking) {

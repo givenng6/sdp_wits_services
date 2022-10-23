@@ -40,7 +40,7 @@ class AcceptedState extends State<Accepted> {
     return Card(
         child: Container(
       width: double.infinity,
-      padding: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
       child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -49,8 +49,8 @@ class AcceptedState extends State<Accepted> {
             Text("Date: ${booking.date}"),
             Text("Time: ${booking.time}"),
             Text("Platform: ${booking.location}"),
-            Text("Description"),
-            Text(booking.description),
+            if(booking.description!="")const Text("Description"),
+            if(booking.description!="")Text(booking.description),
           ]),
     ));
   }
