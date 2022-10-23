@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
+import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../StaffApp/Events/Controllers/events_controller.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
@@ -49,6 +52,15 @@ class _Dashboard extends State<Dashboard> {
   String email = "";
   List<String> subs = [];
   bool initRun = true;
+
+  late final PushNotification pushNotification;
+
+  @override
+  void initState(){
+    pushNotification = PushNotification();
+    pushNotification.initNotifications();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +351,7 @@ class _Dashboard extends State<Dashboard> {
         body: jsonEncode(<String, String>{
           "email": email,
         }))
-        .then((value) {
+        .then((value) async {
       var data = jsonDecode(value.body);
 
       for (dynamic object in data) {
@@ -354,6 +366,36 @@ class _Dashboard extends State<Dashboard> {
             object['counsellorName'],
             object['location']);
         context.read<Subscriptions>().addCCDUBooking(session);
+        String id = object['id'];
+        String status = object['status'];
+        String date = object['date'];
+        String mixedTime = object['time'];
+        String time = mixedTime.split("-")[0];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        List<String>? scheduledEvents = prefs.getStringList("scheduledCCDU");
+
+        DateTime now = DateTime.now();
+        String timeNow = DateFormat('kk:mm').format(now);
+        String dateNow = DateFormat('dd/MM/yyyy').format(now);
+
+        if(!scheduledEvents!.contains(id) && date == dateNow && status == 'Confirmed'){
+          int nowTimeInSec = (int.parse(timeNow.split(":")[0]) * 3600) + (int.parse(timeNow.split(":")[1]) * 60);
+          int timeInSec = (int.parse(time.split(":")[0]) * 3600) + (int.parse(time.split(":")[1]) * 60);
+
+          int timeToNotify = timeInSec - 3600 - nowTimeInSec;
+
+          scheduledEvents.add(id);
+          prefs.setStringList("scheduledCCDU", scheduledEvents);
+          if(timeToNotify > 0){
+            pushNotification.scheduleNotification(id: 6, title: "CCDU Appointment", body: "You have an appointment in an hour", seconds: timeToNotify);
+          }
+
+          // To Empty the list
+          //prefs.setStringList("scheduledEvents", []);
+          print(timeToNotify);
+          print(prefs.getStringList("scheduledCCDU"));
+        }
       }
     });
   }

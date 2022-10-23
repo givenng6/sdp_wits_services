@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -170,8 +171,7 @@ class _Start extends State<Start> {
   }
 
   Future<void> getCCDUBookings(BuildContext context) async {
-    await http
-        .post(Uri.parse("${uri}db/getBookingCCDU/"),
+    await http.post(Uri.parse("${uri}db/getBookingCCDU/"),
             headers: <String, String>{
               "Accept": "application/json",
               "Content-Type": "application/json; charset=UTF-8",
@@ -179,7 +179,7 @@ class _Start extends State<Start> {
             body: jsonEncode(<String, String>{
               "email": widget.email,
             }))
-        .then((value) {
+        .then((value) async {
       var data = jsonDecode(value.body);
 
       for (dynamic object in data) {
@@ -194,7 +194,38 @@ class _Start extends State<Start> {
             object['counsellorName'],
             object['location']);
         context.read<Subscriptions>().addCCDUBooking(session);
-        // set alerts...
+
+        String id = object['id'];
+        String status = object['status'];
+        String date = object['date'];
+        String mixedTime = object['time'];
+        String time = mixedTime.split("-")[0];
+
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        List<String>? scheduledEvents = prefs.getStringList("scheduledCCDU");
+
+        DateTime now = DateTime.now();
+        String timeNow = DateFormat('kk:mm').format(now);
+        String dateNow = DateFormat('dd/MM/yyyy').format(now);
+
+        if(!scheduledEvents!.contains(id) && date == dateNow && status == 'Confirmed'){
+          int nowTimeInSec = (int.parse(timeNow.split(":")[0]) * 3600) + (int.parse(timeNow.split(":")[1]) * 60);
+          int timeInSec = (int.parse(time.split(":")[0]) * 3600) + (int.parse(time.split(":")[1]) * 60);
+
+          int timeToNotify = timeInSec - 3600 - nowTimeInSec;
+
+          scheduledEvents.add(id);
+          prefs.setStringList("scheduledCCDU", scheduledEvents);
+          if(timeToNotify > 0){
+            pushNotification.scheduleNotification(id: 6, title: "CCDU Appointment", body: "You have an appointment in an hour", seconds: timeToNotify);
+          }
+
+          // To Empty the list
+          //prefs.setStringList("scheduledEvents", []);
+          print(timeToNotify);
+          print(prefs.getStringList("scheduledCCDU"));
+        }
+
       }
     });
   }
