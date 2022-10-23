@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:get/get.dart';
 import 'dart:convert';
 import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
 import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../StaffApp/Events/Controllers/events_controller.dart';
 
 // Uri to the API
 String link = "https://web-production-a9a8.up.railway.app/";
@@ -20,6 +23,7 @@ class Events extends StatefulWidget {
 }
 
 class _Events extends State<Events> {
+  final eventsController = Get.find<EventsController>();
   List<EventObject> events = [];
   String email = "";
 
@@ -41,10 +45,13 @@ class _Events extends State<Events> {
           title: const Text('Events'),
           backgroundColor: const Color(0xff003b5c),
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [showEvents()],
+        body: RefreshIndicator(
+          onRefresh: () => getEvents(context),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [showEvents()],
+            ),
           ),
         ),
     );
@@ -283,5 +290,25 @@ class _Events extends State<Events> {
           "email": email,
           "id": eventID,
         }));
+  }
+
+  Future<void> getEvents(BuildContext context) async {
+    await eventsController.getEvents();
+    await http.get(Uri.parse("${link}db/getEvents/"), headers: <String, String>{
+      "Accept": "application/json",
+      "Content-Type": "application/json; charset=UTF-8",
+    }).then((response) {
+      var data = jsonDecode(response.body);
+      List<EventObject> events = [];
+      for(dynamic event in data){
+        List<String> likes = [];
+        for(String like in event["likes"]){
+          likes.add(like);
+        }
+        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id']);
+        events.add(curr);
+      }
+      context.read<Subscriptions>().setEvents(events);
+    });
   }
 }
