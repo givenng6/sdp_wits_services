@@ -14,7 +14,7 @@ String? valid;
 bool? verified;
 
 // Uri to the API
-String uri = "https://web-production-8fed.up.railway.app/";
+String uri = "https://web-production-a9a8.up.railway.app/";
 
 String? username, email, kind,uid;
 
