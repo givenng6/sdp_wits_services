@@ -15,6 +15,7 @@ import Students from "./routes/CampusControl/Students.js";
 import addEvent from "./routes/Events/addEvent.js";
 import getEvents from "./routes/Events/getEvents.js";
 import like from "./routes/Events/like.js";
+import {main} from "./StaffRoutes/ccduFolder/CCDU-Notifications.js"
 import deleteExpiredEvents from "./routes/Events/deleteExpiredEvents.js";
 
 const app = express();
@@ -90,7 +91,13 @@ app.use("/CampusControl",Working);
 app.use("/Students",Students);
 
 //CCDU
+main();
 app.use("/ccdu",Appointments);
+
+// app.get("/sendNotification", async (req, res)=>{
+//   main();
+//   res.send("done");
+// });
 
 //Events
 app.use("/addEvent",addEvent);

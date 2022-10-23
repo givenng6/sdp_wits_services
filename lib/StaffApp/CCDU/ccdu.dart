@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart';
 import 'package:sdp_wits_services/globals.dart' as globals;
 
 import 'Accpted.dart';
 import 'All.dart';
-
 
 class CCDU extends StatefulWidget {
   const CCDU({
@@ -17,9 +15,6 @@ class CCDU extends StatefulWidget {
 }
 
 class _CCDUState extends State<CCDU> {
-
-
-
   @override
   Widget build(BuildContext context) {
     // getName();
@@ -30,9 +25,9 @@ class _CCDUState extends State<CCDU> {
           appBar: AppBar(
             backgroundColor: const Color(0xFF013152),
             title: Row(
-              children: [
-                const Icon(Icons.psychology_outlined),
-                const SizedBox(
+              children: const [
+                Icon(Icons.psychology_outlined),
+                SizedBox(
                   width: 10.0,
                 ),
                 Text('CCDU')
@@ -57,21 +52,18 @@ class _CCDUState extends State<CCDU> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Profile(globals.email, globals.username)));
+                            builder: (context) =>
+                                Profile(globals.email, globals.username)));
                   })
             ],
             bottom: const TabBar(
               tabs: [
-
                 Tab(
-                    text: 'Accepted',
-                    icon: Icon(
-                        key: Key('dinnerTab'), Icons.dinner_dining_rounded)),
+                  text: 'Accepted',
+                ),
                 Tab(
-                    text: 'All',
-                    icon: Icon(
-                        key: Key('breakfastTab'),
-                        Icons.all_out_rounded)),
+                  text: 'All',
+                ),
               ],
             ),
           ),

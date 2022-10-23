@@ -2,8 +2,6 @@
 import 'Booking.dart';
 import 'ccduGlobals.dart' as localGlobals;
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
 
 class Accepted extends StatefulWidget {
   const Accepted({Key? key}) : super(key: key);
@@ -30,14 +28,23 @@ class AcceptedState extends State<Accepted> {
   }
 
   Widget makeList() {
-    return Column(
-      children: localGlobals.AcceptedBookings.map((booking) => _card(booking))
-          .toList(),
-    );
+    if(localGlobals.AcceptedBookings.isEmpty){
+      return const Center(
+        child: Opacity(opacity: 0.9,
+        child: Text("No Upcoming Appointments")),
+      );
+    }else{
+      return Column(
+        children: localGlobals.AcceptedBookings.map((booking) => _card(booking))
+            .toList(),
+      );
+    }
+
   }
 
   Widget _card(Booking booking) {
     return Card(
+      elevation: 10,
         child: Container(
       width: double.infinity,
       padding: const EdgeInsets.all(12),
@@ -45,7 +52,10 @@ class AcceptedState extends State<Accepted> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("Name: ${booking.name}"),
+            Text(
+              booking.name,
+              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+            ),
             Text("Date: ${booking.date}"),
             Text("Time: ${booking.time}"),
             Text("Platform: ${booking.location}"),
