@@ -41,7 +41,7 @@ router.post("/allPendingAppointments", async (req, res)=>{
   }
 }
 )
-//all accepted appointents for specified(or unspecified) counsellor
+//all accepted appointemts for specified(or unspecified) counsellor
 router.post("/allAcceptedAppointments", async (req, res)=>{
     const email = req.body.email;
 
