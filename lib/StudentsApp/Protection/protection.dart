@@ -1,14 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/book_ride.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart' as http;
-
 import '../UtilityWidgets.dart';
 import '../Utilities/AddSub.dart';
-import 'package:sdp_wits_services/globals.dart' as globals;
 import 'package:provider/provider.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 
@@ -23,29 +20,19 @@ class _Protection extends State<Protection> {
   UtilityWidget utilityWidget = UtilityWidget();
 
   String title = "Campus Control";
+  String email = "";
   String service = "campus_control";
   List<String> data = [];
 
   List<String> subs = [];
   bool isSubscribed = false;
 
-  Widget fabChild = Row(
-    children: const <Widget>[
-      Spacer(),
-      Icon(Icons.book),
-      Spacer(),
-      Text('Book Ride'),
-      Spacer()
-    ],
-  );
-
-  final bookedController = Get.find<Booked>();
-
   @override
   Widget build(BuildContext context) {
     getResidences(context);
     getCampuses(context);
     subs = context.watch<Subscriptions>().subs;
+
     if (subs.contains(service)) {
       setState(() {
         isSubscribed = true;
@@ -67,87 +54,45 @@ class _Protection extends State<Protection> {
                       }
                     },
                     child: const Text('About Protection Services')),
-                if (context.watch<Subscriptions>().booked)
+                if(context.watch<Subscriptions>().booked)
                   Card(
-                    elevation: 2,
-                    child: Container(
-                      width: double.infinity,
-                      height: 180.0,
-                      padding: const EdgeInsets.all(12),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        //borderRadius: BorderRadius.circular(12.0),
-                        image: DecorationImage(
-                            image: AssetImage('assets/white.jpg'),
-                            fit: BoxFit.cover),
+                      elevation: 2,
+                      child: Container(
+                        width: double.infinity,
+                        height: 180.0,
+                        padding: const EdgeInsets.all(12),
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          //borderRadius: BorderRadius.circular(12.0),
+                          image: DecorationImage(
+                              image: AssetImage('assets/white.jpg'),
+                              fit: BoxFit.cover),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 10.0,),
+                            const Text('Driver: Jabu Maluleka', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                            const SizedBox(height: 10.0,),
+                            const Text('From: Wits Main Campus', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                            const SizedBox(height: 10.0,),
+                            const Text('To: Student Digz', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                            const SizedBox(height: 10.0,),
+                            const Text('ETA: 7 mins', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                            const SizedBox(height: 10.0,),
+                            const Spacer(),
+                            Row(
+                              children: const <Widget>[
+                                Text('Car Name: Honda', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                                Spacer(),
+                                Text('Car Reg: RGB 716 GP', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                                Spacer()
+                              ],
+                            ),
+                            const SizedBox(height: 10.0,),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const Text(
-                            'Driver: Jabu Maluleka',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black54),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const Text(
-                            'From: Wits Main Campus',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black54),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const Text(
-                            'To: Student Digz',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black54),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const Text(
-                            'ETA: 7 mins',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w600,
-                                color: Colors.black54),
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                          const Spacer(),
-                          Row(
-                            children: const <Widget>[
-                              Text(
-                                'Car Name: Honda',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black54),
-                              ),
-                              Spacer(),
-                              Text(
-                                'Car Reg: RGB 716 GP',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.black54),
-                              ),
-                              Spacer()
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 10.0,
-                          ),
-                        ],
-                      ),
-                    ),
                   ),
               ],
             )
@@ -163,33 +108,26 @@ class _Protection extends State<Protection> {
             ),
       floatingActionButton: SizedBox(
         height: 40.0,
-        width: 150.0,
+        width: 130.0,
         child: FloatingActionButton(
           backgroundColor: const Color(0xff003b5c),
-          onPressed: (!context.watch<Subscriptions>().booked)
-              ? () async {
-                  await showModalBottomSheet(
-                      context: context,
-                      backgroundColor: Colors.transparent,
-                      isScrollControlled: true,
-                      builder: (context) => const BookRide());
-                  if (bookedController.booked.isTrue) {
-                    setState(()=>fabChild = Row(
-                      children: const <Widget>[
-                        Spacer(),
-                        Icon(Icons.clear),
-                        Spacer(),
-                        Text('Cancel Ride'),
-                        Spacer()
-                      ],
-                    ));
-                  }
-                }
-              : () => cancelRide(),
+          onPressed: (!context.watch<Subscriptions>().booked)? () => showModalBottomSheet(
+              context: context,
+              backgroundColor: Colors.transparent,
+              isScrollControlled: true,
+              builder: (context) => const BookRide()):(){},
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(35.0),
           ),
-          child: fabChild,
+          child: Row(
+            children: const <Widget>[
+              Spacer(),
+              Icon(Icons.book),
+              Spacer(),
+              Text('Book Ride'),
+              Spacer()
+            ],
+          ),
         ),
       ),
     );
@@ -202,60 +140,34 @@ class _Protection extends State<Protection> {
   }
 
   String uri = "https://web-production-8fed.up.railway.app/";
-
-  Future<void> getResidences(BuildContext context) async {
-    if (context.watch<Subscriptions>().residences.isEmpty) {
+  Future<void> getResidences(BuildContext context) async{
+    // residences = context.watch<Subscriptions>().residences;
+    if(context.watch<Subscriptions>().residences.isEmpty){
+      // print(context.watch<Subscriptions>().residences);
       await http.get(Uri.parse("${uri}db/getAllResidences"),
           headers: <String, String>{
             "Accept": "application/json",
             "Content-Type": "application/json; charset=UTF-8",
-          }).then((value) {
+          }
+      ).then((value){
         List residences = jsonDecode(value.body).toList();
         context.read<Subscriptions>().setResidences(residences);
       });
     }
+
   }
 
-  Future<void> getCampuses(BuildContext context) async {
-    if (context.watch<Subscriptions>().campuses.isEmpty) {
-      await http
-          .get(Uri.parse("${uri}db/getAllCampuses"), headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      }).then((value) {
+  Future<void> getCampuses(BuildContext context) async{
+    if(context.watch<Subscriptions>().campuses.isEmpty){
+      await http.get(Uri.parse("${uri}db/getAllCampuses"),
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+          }
+      ).then((value){
         List campuses = jsonDecode(value.body).toList();
         context.read<Subscriptions>().setCampuses(campuses);
       });
     }
   }
-
-  Future<void> cancelRide() async{
-    setState(() {
-      fabChild = const CircularProgressIndicator(color: Colors.white,);
-      bookedController.booked(false);
-    });
-    await http.post(Uri.parse("${uri}db/cancelRide/"),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-        body: jsonEncode(<String, String?>{
-          "email": globals.email,
-        })
-    ).then((value){
-      setState(() => fabChild = Row(
-          children: const <Widget>[
-            Spacer(),
-            Icon(Icons.book),
-            Spacer(),
-            Text('Book Ride'),
-            Spacer()
-          ],
-        ));
-    });
-  }
-}
-
-class Booked extends GetxController{
-  var booked = false.obs;
 }

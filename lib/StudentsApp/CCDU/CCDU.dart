@@ -343,16 +343,14 @@ class _CCDU extends State<CCDU> {
         ));
   }
 
-  Future<void> addBooking(
-      BuildContext context, String time, String date) async {
+  Future<void> addBooking(BuildContext context, String time, String date) async {
     String id = "";
     for (int i = 0; i < counsellors.length; i++) {
       if (counsellors[i] == theCounsellor) {
         id = counsellorsEmail[i];
       }
     }
-    await http
-        .post(Uri.parse("${uri}db/bookingCCDU/"),
+    await http.post(Uri.parse("${uri}db/bookingCCDU/"),
             headers: <String, String>{
               "Accept": "application/json",
               "Content-Type": "application/json; charset=UTF-8",

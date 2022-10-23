@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Utilities/PushNotification.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Providers/Subscriptions.dart';
@@ -42,6 +44,7 @@ class _Start extends State<Start> {
     getCounsellors(context);
     getMealTime(context);
     getEvents(context);
+    getRideDetails(context);
     setDailyNotifications();
     super.initState();
   }
@@ -229,6 +232,28 @@ class _Start extends State<Start> {
     });
   }
 
+  Future<void> getRideDetails(BuildContext context) async {
+    await http.post(Uri.parse("${uri}db/rideStatus/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": widget.email,
+        })).then((value) {
+      var data = jsonDecode(value.body);
+      String status = data['status'];
+      if(status != "N/A"){
+        if(!data['completed']){
+          RideObject ride = RideObject();
+          ride.setRide(data["status"], data["reg"], data["carName"], data["driver"], data["from"], data["to"], data["completed"]);
+          context.read<Subscriptions>().setRide(ride);
+          context.read<Subscriptions>().setBooked(true);
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -248,9 +273,9 @@ class _Start extends State<Start> {
 
     print(isDailyNotified);
     if(isDailyNotified == null){
-      Time breakfastTime = const Time(14, 30, 0);
-      Time lunchTime = const Time(15, 35, 0);
-      Time dinnerTime = const Time(16, 45, 0);
+      Time breakfastTime = const Time(17, 10, 0);
+      Time lunchTime = const Time(17, 25, 0);
+      Time dinnerTime = const Time(17, 40, 0);
 
       pushNotification.dailyNotification(id: 0, title: "Wits Dining", body: "Time to collect breakfast", time: breakfastTime);
       pushNotification.dailyNotification(id: 1, title: "Wits Dining", body: "Time to collect lunch", time: lunchTime);
@@ -260,7 +285,7 @@ class _Start extends State<Start> {
       debugPrint("User will be notified daily now...");
     }
 
-    //sharedPreferences.remove('isDailyNotified');
+    sharedPreferences.remove('isDailyNotified');
 
 
   }

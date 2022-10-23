@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import '../Buses/BusObject.dart';
 import '../Dining/DiningObject.dart';
 import 'package:sdp_wits_services/StudentsApp/CCDU/CCDUObject.dart';
@@ -17,6 +18,7 @@ class Subscriptions with ChangeNotifier{
   List _residences = [];
   List _campuses = [];
   bool _booked = false;
+  RideObject _rideDetails = RideObject();
   List<EventObject> _events = [];
 
   void refreshAll(){
@@ -50,6 +52,7 @@ class Subscriptions with ChangeNotifier{
   List get campuses => _campuses;
   bool get booked => _booked;
   List<EventObject> get events => _events;
+  RideObject get rideDetails => _rideDetails;
 
   void addSub(String service){
     _subs.add(service);
@@ -115,6 +118,10 @@ class Subscriptions with ChangeNotifier{
   void likeEvent(String email, int index){
     _events[index].likes.add(email);
     notifyListeners();
+  }
+
+  void setRide(RideObject data){
+    _rideDetails = data;
   }
 
 }

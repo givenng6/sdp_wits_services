@@ -1,10 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 
 import '../Providers/UserData.dart';
@@ -28,8 +26,6 @@ class _BookRideState extends State<BookRide> {
 
   String email = "";
   String username = "";
-
-  final bookedController = Get.find<Booked>();
 
   @override
   Widget build(BuildContext context) {
@@ -156,7 +152,6 @@ class _BookRideState extends State<BookRide> {
         })
     ).then((value){
       context.read<Subscriptions>().setBooked(true);
-      bookedController.booked(true);
       Navigator.pop(context);
     });
   }
