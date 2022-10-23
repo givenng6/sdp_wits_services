@@ -1,18 +1,16 @@
-class Booking{
-  late String name, date, time, description, type,location,link;
+class Booking {
+  late String name, date, time, description, type, location, link;
 
-  Booking({required this.type,required obj}){
+  Booking({required this.type, required obj}) {
+    type = obj['all'];
     name = obj['creator'];
     time = obj['time'];
     date = obj['date'];
     description = obj['description'];
     location = obj['location'];
-
   }
 
-  void setLink(String link){
+  void setLink(String link) {
     this.link = link;
   }
-
-
 }
