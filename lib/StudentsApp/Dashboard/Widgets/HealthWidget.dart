@@ -19,12 +19,12 @@ class _HealthWidget extends State<HealthWidget>{
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.all(12),
-      margin: EdgeInsets.all(12),
+      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0),
-        image: DecorationImage(
+        image: const DecorationImage(
             image: AssetImage('assets/health.jpg'),
             fit: BoxFit.cover
         ),
@@ -34,7 +34,7 @@ class _HealthWidget extends State<HealthWidget>{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            children: [
+            children: const [
               Icon(Icons.health_and_safety, color: Colors.green,),
               Text("Wellness Centre",
                 style: TextStyle(fontWeight: FontWeight.bold, color: Colors.green),)
@@ -64,20 +64,20 @@ class _HealthWidget extends State<HealthWidget>{
   Widget ItemWidget(String department, String date, String time, String person){
     return Container(
       width: double.infinity,
-      margin: EdgeInsets.fromLTRB(0, 12, 0, 0),
-      padding: EdgeInsets.all(12),
+      margin: const EdgeInsets.fromLTRB(0, 12, 0, 0),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        color: Color(0x80ffffff),
+        color: const Color(0x80ffffff),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(department, style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-          Text("Appointment", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-          Text("Date: " + date, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-          Text("Time: " + time, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
-          Text("Personnel: " + person, style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
+          Text(department, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
+          const Text("Appointment", style: TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
+          Text("Date: " + date, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
+          Text("Time: " + time, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
+          Text("Personnel: " + person, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.blueGrey)),
         ],
       ),
     );

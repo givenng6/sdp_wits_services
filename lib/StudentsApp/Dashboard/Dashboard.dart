@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/Subscriptions.dart';
 import 'package:sdp_wits_services/StudentsApp/Events/events_object.dart';
 import 'package:sdp_wits_services/StudentsApp/Providers/UserData.dart';
@@ -109,6 +110,7 @@ class _Dashboard extends State<Dashboard> {
       getCounsellors(context);
       getMealTime(context);
       getEvents(context);
+      getRideDetails(context);
     }
 
     // conditional rendering
@@ -386,6 +388,28 @@ class _Dashboard extends State<Dashboard> {
         events.add(curr);
       }
       context.read<Subscriptions>().setEvents(events);
+    });
+  }
+
+  Future<void> getRideDetails(BuildContext context) async {
+    await http.post(Uri.parse("${uri}db/rideStatus/"),
+        headers: <String, String>{
+          "Accept": "application/json",
+          "Content-Type": "application/json; charset=UTF-8",
+        },
+        body: jsonEncode(<String, String>{
+          "email": email,
+        })).then((value) {
+      var data = jsonDecode(value.body);
+      String status = data['status'];
+      if(status != "N/A"){
+        if(!data['completed']){
+          RideObject ride = RideObject();
+          ride.setRide(data["status"], data["reg"], data["carName"], data["driver"], data["from"], data["to"], data["completed"]);
+          context.read<Subscriptions>().setRide(ride);
+          context.read<Subscriptions>().setBooked(true);
+        }
+      }
     });
   }
 

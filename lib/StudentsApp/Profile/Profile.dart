@@ -38,12 +38,6 @@ class _Profile extends State<Profile> {
       body: ListView(
         physics: const BouncingScrollPhysics(),
         children: [
-          ElevatedButton(onPressed:() async{
-            print("notfy1");
-            pushNotification.scheduleNotification(id: 0, title: "Dining Services", body: "Time to collect lunch", seconds: 5);
-            print("notfy2");
-          },
-              child: Text("Not")),
           ProfileWidget(
             imagePath: 'https://images.unsplash.com/'
                 'photo-1457449940276-e8deed18bfff?ixlib'
