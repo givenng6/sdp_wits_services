@@ -208,24 +208,25 @@ class _Start extends State<Start> {
         String timeNow = DateFormat('kk:mm').format(now);
         String dateNow = DateFormat('dd/MM/yyyy').format(now);
 
-        if(!scheduledEvents!.contains(id) && date == dateNow && status == 'Confirmed'){
-          int nowTimeInSec = (int.parse(timeNow.split(":")[0]) * 3600) + (int.parse(timeNow.split(":")[1]) * 60);
-          int timeInSec = (int.parse(time.split(":")[0]) * 3600) + (int.parse(time.split(":")[1]) * 60);
+        if(scheduledEvents != null){
+          if(!scheduledEvents.contains(id) && date == dateNow && status == 'Confirmed'){
+            int nowTimeInSec = (int.parse(timeNow.split(":")[0]) * 3600) + (int.parse(timeNow.split(":")[1]) * 60);
+            int timeInSec = (int.parse(time.split(":")[0]) * 3600) + (int.parse(time.split(":")[1]) * 60);
 
-          int timeToNotify = timeInSec - 3600 - nowTimeInSec;
+            int timeToNotify = timeInSec - 3600 - nowTimeInSec;
 
-          scheduledEvents.add(id);
-          prefs.setStringList("scheduledCCDU", scheduledEvents);
-          if(timeToNotify > 0){
-            pushNotification.scheduleNotification(id: 6, title: "CCDU Appointment", body: "You have an appointment in an hour", seconds: timeToNotify);
+            scheduledEvents.add(id);
+            prefs.setStringList("scheduledCCDU", scheduledEvents);
+            if(timeToNotify > 0){
+              pushNotification.scheduleNotification(id: 6, title: "CCDU Appointment", body: "You have an appointment in an hour", seconds: timeToNotify);
+            }
+
+            // To Empty the list
+            //prefs.setStringList("scheduledEvents", []);
+            print(timeToNotify);
+            print(prefs.getStringList("scheduledCCDU"));
           }
-
-          // To Empty the list
-          //prefs.setStringList("scheduledEvents", []);
-          print(timeToNotify);
-          print(prefs.getStringList("scheduledCCDU"));
         }
-
       }
     });
   }
@@ -307,10 +308,10 @@ class _Start extends State<Start> {
     bool? isDailyNotified = sharedPreferences.getBool('isDailyNotified');
 
     print(isDailyNotified);
-    if(isDailyNotified == null){
-      Time breakfastTime = const Time(17, 10, 0);
-      Time lunchTime = const Time(17, 25, 0);
-      Time dinnerTime = const Time(17, 40, 0);
+    if(!isDailyNotified!){
+      Time breakfastTime = const Time(07, 10, 0);
+      Time lunchTime = const Time(11, 10, 0);
+      Time dinnerTime = const Time(16, 10, 0);
 
       pushNotification.dailyNotification(id: 0, title: "Wits Dining", body: "Time to collect breakfast", time: breakfastTime);
       pushNotification.dailyNotification(id: 1, title: "Wits Dining", body: "Time to collect lunch", time: lunchTime);
@@ -320,8 +321,6 @@ class _Start extends State<Start> {
       debugPrint("User will be notified daily now...");
     }
 
-    sharedPreferences.remove('isDailyNotified');
-
-
+    //sharedPreferences.remove('isDailyNotified');
   }
 }

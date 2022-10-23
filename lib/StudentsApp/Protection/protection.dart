@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:progress_indicators/progress_indicators.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/book_ride.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/ride_object.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -41,6 +42,8 @@ class _Protection extends State<Protection> {
       Spacer()
     ],
   );
+
+  bool isCancelingRide = false;
 
   @override
   Widget build(BuildContext context) {
@@ -101,20 +104,20 @@ class _Protection extends State<Protection> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 10.0,),
-                    Text('Driver: ${ride.driver}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                    Text('Driver: ${ride.driver}', style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                     const SizedBox(height: 10.0,),
-                    Text('From: ${ride.from}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                    Text('From: ${ride.from}', style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                     const SizedBox(height: 10.0,),
-                    Text('To: ${ride.to}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                    Text('To: ${ride.to}', style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                     const SizedBox(height: 10.0,),
                     const Text('ETA: 7 mins', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                     const SizedBox(height: 10.0,),
                     const Spacer(),
                     Row(
                       children:  <Widget>[
-                        Text('Car Name: ${ride.carName}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                        Text('Car Name: ${ride.carName}', style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                         Spacer(),
-                        Text('Car Reg: ${ride.reg}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                        Text('Car Reg: ${ride.reg}', style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
                         Spacer()
                       ],
                     ),
@@ -159,7 +162,52 @@ class _Protection extends State<Protection> {
               ));
             }
           }
-              : () => cancelRide(),
+              : () => showModalBottomSheet(context: context,
+              backgroundColor: Colors.transparent,
+              builder: (builder) =>
+                  StatefulBuilder(builder: (_, StateSetter setState)=>
+                      Container(
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20.0)
+                          )
+                        ),
+                    padding: const EdgeInsets.all(15),
+                    height: MediaQuery.of(context).size.height/4,
+                    child: Column(
+                      children: [
+                        const Text("Are you sure you want to cancel your ride?",
+                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)
+                        ),
+                        (isCancelingRide)?
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: JumpingText('Cancelling...',
+                            style: const TextStyle(
+                              color: Colors.red,
+                              fontSize: 18.0
+                            ),
+                          ),
+                        ):
+                        TextButton(onPressed: () async{
+                          setState(() => isCancelingRide = true);
+                          await cancelRide();
+                          Get.back();
+                          setState(() => isCancelingRide = false);
+                        },
+                            child: const Text("Cancel Ride", style: TextStyle(color: Colors.red))
+                        ),
+                        TextButton(onPressed: (){
+                          Get.back();
+                        },
+                            child: const Text("Go Back")
+                        ),
+                      ],
+                    ),)
+
+              ),
+          ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(35.0),
           ),
@@ -208,11 +256,6 @@ class _Protection extends State<Protection> {
   }
 
   Future<void> cancelRide() async{
-    setState(() {
-      fabChild = const CircularProgressIndicator(color: Colors.white,);
-      bookedController.booked(false);
-      context.read<Subscriptions>().setBooked(false);
-    });
     debugPrint('cancel ride');
     await http.post(Uri.parse("${uri}db/cancelRide/"),
         headers: <String, String>{
@@ -221,17 +264,22 @@ class _Protection extends State<Protection> {
         },
         body: jsonEncode(<String, String?>{
           "email": globals.email,
+          'from': ride.from
         })
     ).then((value){
-      setState(() => fabChild = Row(
-        children: const <Widget>[
-          Spacer(),
-          Icon(Icons.book),
-          Spacer(),
-          Text('Book Ride'),
-          Spacer()
-        ],
-      ));
+      setState(() {
+        fabChild = Row(
+          children: const <Widget>[
+            Spacer(),
+            Icon(Icons.book),
+            Spacer(),
+            Text('Book Ride'),
+            Spacer()
+          ],
+        );
+        bookedController.booked(false);
+        context.read<Subscriptions>().setBooked(false);
+      });
     });
   }
 }
