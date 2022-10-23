@@ -44,70 +44,70 @@ class _Protection extends State<Protection> {
     return Scaffold(
       body: isSubscribed
           ? Column(
-              children: [
-                utilityWidget.AppBar(title),
-                // const Spacer(),
-                TextButton(
-                    onPressed: () async {
-                      final Uri url = Uri.parse(
-                          'https://www.wits.ac.za/campus-life/safety-on-campus/');
-                      if (!await launchUrl(url)) {
-                        throw 'Could not launch $url';
-                      }
-                    },
-                    child: const Text('About Protection Services')),
-                if(context.watch<Subscriptions>().booked)
-                  Card(
-                      elevation: 2,
-                      child: Container(
-                        width: double.infinity,
-                        height: 180.0,
-                        padding: const EdgeInsets.all(12),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          //borderRadius: BorderRadius.circular(12.0),
-                          image: DecorationImage(
-                              image: AssetImage('assets/white.jpg'),
-                              fit: BoxFit.cover),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 10.0,),
-                            Text('Driver: ${ride.driver}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
-                            const SizedBox(height: 10.0,),
-                            Text('From: ${ride.from}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
-                            const SizedBox(height: 10.0,),
-                            Text('To: ${ride.to}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
-                            const SizedBox(height: 10.0,),
-                            const Text('ETA: 7 mins', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
-                            const SizedBox(height: 10.0,),
-                            const Spacer(),
-                            Row(
-                              children:  <Widget>[
-                                Text('Car Name: ${ride.carName}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
-                                Spacer(),
-                                Text('Car Reg: ${ride.reg}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
-                                Spacer()
-                              ],
-                            ),
-                            const SizedBox(height: 10.0,),
-                          ],
-                        ),
-                      ),
-                  ),
-              ],
-            )
-          : Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                AddSub(
-                    title: title,
-                    service: service,
-                    isSubscribed: isSubscribed,
-                    setSubscribed: setSubscribed),
-              ],
+        children: [
+          utilityWidget.AppBar(title),
+          // const Spacer(),
+          TextButton(
+              onPressed: () async {
+                final Uri url = Uri.parse(
+                    'https://www.wits.ac.za/campus-life/safety-on-campus/');
+                if (!await launchUrl(url)) {
+                  throw 'Could not launch $url';
+                }
+              },
+              child: const Text('About Protection Services')),
+          if(context.watch<Subscriptions>().booked)
+            Card(
+              elevation: 2,
+              child: Container(
+                width: double.infinity,
+                height: 180.0,
+                padding: const EdgeInsets.all(12),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  //borderRadius: BorderRadius.circular(12.0),
+                  image: DecorationImage(
+                      image: AssetImage('assets/white.jpg'),
+                      fit: BoxFit.cover),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 10.0,),
+                    Text('Driver: ${ride.driver}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                    const SizedBox(height: 10.0,),
+                    Text('From: ${ride.from}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                    const SizedBox(height: 10.0,),
+                    Text('To: ${ride.to}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                    const SizedBox(height: 10.0,),
+                    const Text('ETA: 7 mins', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                    const SizedBox(height: 10.0,),
+                    const Spacer(),
+                    Row(
+                      children:  <Widget>[
+                        Text('Car Name: ${ride.carName}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                        Spacer(),
+                        Text('Car Reg: ${ride.reg}', style: TextStyle(fontWeight: FontWeight.w600, color: Colors.black54),),
+                        Spacer()
+                      ],
+                    ),
+                    const SizedBox(height: 10.0,),
+                  ],
+                ),
+              ),
             ),
+        ],
+      )
+          : Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          AddSub(
+              title: title,
+              service: service,
+              isSubscribed: isSubscribed,
+              setSubscribed: setSubscribed),
+        ],
+      ),
       floatingActionButton: SizedBox(
         height: 40.0,
         width: 130.0,
@@ -141,7 +141,7 @@ class _Protection extends State<Protection> {
     });
   }
 
-  String uri = "https://web-production-8fed.up.railway.app/";
+  String uri = "https://web-production-a9a8.up.railway.app/";
   Future<void> getResidences(BuildContext context) async{
     // residences = context.watch<Subscriptions>().residences;
     if(context.watch<Subscriptions>().residences.isEmpty){

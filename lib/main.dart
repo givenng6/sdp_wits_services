@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/Controller/buses_controller.dart';
 import 'package:sdp_wits_services/StaffApp/Events/Controllers/events_controller.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
 import 'firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'globals.dart' as globals;
@@ -24,6 +25,7 @@ void main() async{
   busesController.getSharedPreferences();
   busesController.getRoutes();
 
+  // Get.put(Booked());
   await globals.getSharedPreferences();
   nextScreen = await globals.getData();
   runApp(
