@@ -58,7 +58,7 @@ class _Events extends State<Events> {
   }
 
   Widget eventCard(String eventTitle, String date, String time,
-      List<String> likes, String venue, String type, String eventID) {
+      List<String> likes, String venue, String type, String eventID, String? imageUrl) {
     String img = "";
     Color buttonColor;
     bool isDark;
@@ -106,7 +106,8 @@ class _Events extends State<Events> {
         isDark = false;
         break;
     }
-
+    
+    
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
       child: Card(
@@ -119,7 +120,8 @@ class _Events extends State<Events> {
             ClipRRect(
               borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-              child: Image.asset(img),
+              child:  imageUrl == null? Image.asset(img)
+                  : Image.network(imageUrl)
             ),
             Container(
               padding: const EdgeInsets.all(12),
@@ -273,7 +275,7 @@ class _Events extends State<Events> {
 
     for (EventObject event in events) {
       items.add(eventCard(event.eventTitle, event.date, event.time, event.likes,
-          event.venue, event.type, event.eventID));
+          event.venue, event.type, event.eventID, event.url));
     }
 
     return Column(children: items);
@@ -305,7 +307,7 @@ class _Events extends State<Events> {
         for(String like in event["likes"]){
           likes.add(like);
         }
-        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id']);
+        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id'], event['imageUrl']);
         events.add(curr);
       }
       context.read<Subscriptions>().setEvents(events);

@@ -430,7 +430,7 @@ class _Dashboard extends State<Dashboard> {
         for(String like in event["likes"]){
           likes.add(like);
         }
-        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id']);
+        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id'], event['imageUrl']);
         events.add(curr);
       }
       context.read<Subscriptions>().setEvents(events);
