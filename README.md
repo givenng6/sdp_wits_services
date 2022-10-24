@@ -31,8 +31,7 @@ Written in Python Django and handles the authentication of the app and all the h
 Software Design Project - COMS3011A
 
 ## Images
-<img src="images/not_ios.png" width="138" height="300" />
-<img src="images/dash.png" width="138" height="300" />
+<img src="images/not_ios.png" width="138" height="300" /> <img src="images/dash.png" width="138" height="300" />
 <img src="images/events.png" width="138" height="300" />
 <img src="images/staff_dh.png" width="138" height="300" />
 <img src="images/not_lunch.jpeg" width="138" height="300" />
