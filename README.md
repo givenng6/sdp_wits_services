@@ -31,4 +31,4 @@ Written in Python Django and handles the authentication of the app and all the h
 Software Design Project - COMS3011A
 
 ## Images
-![iOSPermission](images/not_ios.png =x250)
+![iOSPermission](images/not_ios.png =100x250)
