@@ -1,15 +1,17 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:get/get.dart';
+import 'package:image_editor_plus/image_editor_plus.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:uuid/uuid.dart';
 
 import '../Controllers/events_controller.dart';
@@ -30,6 +32,7 @@ class _AddPostState extends State<AddPost> {
   double maxChildSize = 0.95;
 
   File? image;
+  Uint8List? bytesImage;
 
   late StreamSubscription<bool> _keyboardSubscription;
 
@@ -69,17 +72,26 @@ class _AddPostState extends State<AddPost> {
     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
   );
 
+  double progress = 0;
+
   post() async {
     String uuid = const Uuid().v1();
     String? imageUrl;
 
     if (image != null) {
       String filename = image!.path;
-      Uint8List? file = await image!.readAsBytes();
       UploadTask task = FirebaseStorage.instance
           .ref()
           .child('files/$filename/')
-          .putData(file);
+          .putData(bytesImage!);
+
+      task.snapshotEvents.listen((event) {
+        setState(() {
+          progress = event.bytesTransferred.toDouble()/event.totalBytes.toDouble();
+        });
+      }).onError((error) {
+        debugPrint('Failed To Upload Image');
+      });
 
       task.whenComplete(() async {
         final storageRef = FirebaseStorage.instance.ref();
@@ -96,8 +108,6 @@ class _AddPostState extends State<AddPost> {
           'imageUrl': imageUrl,
         };
 
-        debugPrint(event.toString());
-
         await http
             .post(Uri.parse("${uri}addEvent"),
                 headers: <String, String>{
@@ -105,8 +115,8 @@ class _AddPostState extends State<AddPost> {
                   "Content-Type": "application/json; charset=UTF-8",
                 },
                 body: jsonEncode(<String, Map>{'event': event}))
-            .then((_) {
-          eventsController.getEvents();
+            .then((_) async{
+          await eventsController.getEvents();
           Get.back();
         });
       });
@@ -170,6 +180,7 @@ class _AddPostState extends State<AddPost> {
           child: ListView(
             controller: controller,
             children: [
+              (bytesImage == null)?
               InkWell(
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -189,39 +200,26 @@ class _AddPostState extends State<AddPost> {
                       ),
                     ],
                   ),
-                  onTap: () => pickImage(ImageSource.gallery)),
-              if (image != null)
-                Center(
-                  child: Stack(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.only(
-                            top: 20.0, left: 20.0, right: 20.0),
-                        child: Image.file(
-                          image!,
-                          // width: 200,
-                          height: 200,
-                        ),
-                      ),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              image = null;
-                            });
-                          },
-                          icon: Container(
-                              decoration: BoxDecoration(
-                                  color: Colors.grey.shade200,
-                                  borderRadius: BorderRadius.circular(20.0)),
-                              // color: Colors.black,
-                              child: const Icon(
-                                Icons.cancel_sharp,
-                                color: Colors.black,
-                                size: 20.0,
-                              )))
-                    ],
+                  onTap: () => pickImage(ImageSource.gallery)):
+              GestureDetector(
+                onTap: () {
+                  showImageViewer(context,
+                      MemoryImage(bytesImage!),
+                      swipeDismissible: true,
+                      useSafeArea: true);
+                },
+                child: Container(
+                  constraints: const BoxConstraints(
+                    maxHeight: 200,
                   ),
+                  decoration: BoxDecoration(
+                      borderRadius:
+                      const BorderRadius.vertical(
+                          top: Radius.circular(20.0)),
+                      image: DecorationImage(
+                          image: MemoryImage(bytesImage!))),
                 ),
+              ),
               const SizedBox(
                 height: 10.0,
               ),
@@ -350,13 +348,13 @@ class _AddPostState extends State<AddPost> {
                   ),
                 ],
               ),
-              Container(
+              isButtonEnabled
+                  ?Container(
                 height: 50.0,
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.only(top: 30.0),
-                child: ElevatedButton(
-                  onPressed: isButtonEnabled
-                      ? () {
+                child:  ElevatedButton(
+                  onPressed:  () {
                           title = title.trim();
                           venue = venue.trim();
                           if (title.isNotEmpty &&
@@ -365,8 +363,6 @@ class _AddPostState extends State<AddPost> {
                               date.isNotEmpty &&
                               time.isNotEmpty) {
                             setState(() {
-                              postButtonChild =
-                                  const CircularProgressIndicator();
                               isButtonEnabled = false;
                             });
                             post();
@@ -376,13 +372,30 @@ class _AddPostState extends State<AddPost> {
                                 snackPosition: SnackPosition.BOTTOM,
                                 colorText: Colors.black);
                           }
-                        }
-                      : null,
+                        },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.white),
                   ),
                   child: Center(
                     child: postButtonChild,
+                  ),
+                ),
+              ):
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 30.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.0)
+                ),
+                child: Center(
+                  child: LinearPercentIndicator(
+                    // width: MediaQuery.of(context).size.width,
+                    animation: true,
+                    lineHeight: 20.0,
+                    animationDuration: 2000,
+                    percent: progress,
+                    center: Text('${double.parse((progress*100).toStringAsFixed(1))}%'),
+                    barRadius: const Radius.circular(16),
+                    progressColor: const Color(0xff003b5c),
                   ),
                 ),
               ),
@@ -406,10 +419,16 @@ class _AddPostState extends State<AddPost> {
     try {
       final image = await ImagePicker().pickImage(source: source);
       if (image != null) {
-        final imageTemporary = File(image.path);
+        final bytesImage = await image.readAsBytes();
+        Uint8List? edited = await Get.to(() => ImageEditor(
+          image: bytesImage, // <-- Uint8List of image
+        ),);
+
+        debugPrint(edited.runtimeType.toString());
+
         setState(() {
-          this.image = imageTemporary;
-          debugPrint(this.image!.path);
+          this.image = File(image.path);
+          this.bytesImage = edited;
         });
       }
       return;
