@@ -59,11 +59,11 @@ class _Events extends State<Events> {
     );
   }
 
-  Widget eventCard(String eventTitle, String date, String time,
-      List<String> likes, String venue, String type, String eventID, String? imageUrl) {
+  Widget eventCard(String eventTitle, String date, String time, List<String> likes, String venue, String type, String eventID, String? imageUrl) {
     String img = "";
     Color buttonColor;
     bool isDark;
+    bool isLiked = likes.contains(email);
 
     // change the visuals depending on the type of the event...
     switch (type) {
@@ -226,30 +226,40 @@ class _Events extends State<Events> {
                         children: [
                           isDark
                               ? Row(
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Interested on the event',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    Icon(
-                                      Icons.open_in_new,
-                                      color: Colors.white,
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      child: Icon(
+                                        !isLiked? Icons.thumb_up_off_alt_outlined
+                                        :Icons.thumb_up,
+                                        color: Colors.white,
+                                      ),
                                     )
                                   ],
                                 )
                               : Row(
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Interested on the event',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    Icon(
-                                      Icons.open_in_new,
-                                      color: Colors.black,
+
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      child: Icon(
+                                        !isLiked? Icons.thumb_up_off_alt_outlined
+                                            :Icons.thumb_up,
+                                        color: Colors.black,
+                                      )
+
                                     )
                                   ],
                                 )
