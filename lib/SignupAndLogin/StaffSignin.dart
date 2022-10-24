@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_login/flutter_login.dart';
+import 'package:sdp_wits_services/StaffApp/Buses/Controller/buses_controller.dart';
 import 'package:sdp_wits_services/StaffApp/CCDU/ccdu.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Dining/mealSelectionPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart';
 import '../StaffApp/Buses/View/buses_main.dart';
 import '../StaffApp/StaffPage.dart';
 import 'package:http/http.dart' as http;
@@ -19,7 +21,7 @@ String uri = "https://web-production-a9a8.up.railway.app/";
 String? username, email, kind,uid;
 
 class StaffLoginScreen extends StatelessWidget {
-  const StaffLoginScreen({Key? key}) : super(key: key);
+  StaffLoginScreen({Key? key}) : super(key: key);
 
   Duration get loginTime => const Duration(milliseconds: 2250);
 
@@ -165,6 +167,7 @@ class StaffLoginScreen extends StatelessWidget {
     return error;
   }
 
+  final busesController = Get.find<BusesController>();
   @override
   Widget build(BuildContext context) {
     navigateToStaffPage(){
@@ -223,7 +226,7 @@ class StaffLoginScreen extends StatelessWidget {
             sharedPreferences.setString('email', email!);
             sharedPreferences.setString('kind', 'Staff');
             debugPrint("here:: ${sharedPreferences.getString("username")}");
-
+            await busesController.getSharedPreferences();
             String? dep = sharedPreferences.getString("department");
             if(dep == null){
               navigateToStaffPage();
@@ -231,7 +234,6 @@ class StaffLoginScreen extends StatelessWidget {
               handleDepartments(dep);
             }
           }
-
         }
       },
       onRecoverPassword: _recoverPassword,

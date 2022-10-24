@@ -65,7 +65,7 @@ class App extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const StaffLoginScreen()));
+                              builder: (context) => StaffLoginScreen()));
                     },
                     child: const Text(
                       "Continue as Staff",
