@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/View/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
@@ -33,14 +34,18 @@ class _StaffPageState extends State<StaffPage> {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? email = sharedPreferences.getString("email");
 
+    String? deviceID;
+    await OneSignal.shared.getDeviceState().then((value) {
+      deviceID = value!.userId;
+    });
+
     await http.post(Uri.parse("${globals.url}/Users/AssignDep"),
         headers: <String, String>{
           "Accept": "application/json",
           "Content-Type": "application/json; charset=UTF-8",
         },
         body: jsonEncode(
-            <String, String>{"email": email!, "department": depName}));
-    // var json = jsonDecode(result.body);
+            <String, String>{"email": email!, "department": depName,"deviceID":deviceID!}));
   }
 
   void handleCard(int index) async {

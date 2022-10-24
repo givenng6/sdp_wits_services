@@ -8,20 +8,21 @@ import {
   addDoc,
   getDoc,
   deleteDoc,
+  arrayUnion,
 } from "firebase/firestore";
 
 const router = express.Router();
 
 router.post("/AssignDep", async (req, res) => {
-  const { email, department } = req.body;
+  const { email, department,deviceID } = req.body;
 
   const ref = doc(db,"Users",email);
 
   try {
     if(department === "Dining Services"){
-      await updateDoc(ref,{department,dhName:req.body.dhName});
+      await updateDoc(ref,{department,dhName:req.body.dhName,deviceIDs:arrayUnion(deviceID)});
     }else{
-      await updateDoc(ref,{department,email});
+      await updateDoc(ref,{department,email,deviceIDs:arrayUnion(deviceID)});
     }
 
     res.send({status:"updated"});

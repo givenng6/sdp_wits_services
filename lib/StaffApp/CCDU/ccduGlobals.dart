@@ -24,9 +24,8 @@ Future<void> GetAllBookings() async {
           body: jsonEncode(<String, dynamic>{"email": globals.email}));
   List myList = await jsonDecode(result.body).toList();
 
-  debugPrint("list: $myList");
-
   AllBookings.clear();
+  MyBookings.clear();
   for (int i = 0; i < myList.length; i++) {
     var curr = myList[i];
     if(curr["counsellor"]==globals.email){

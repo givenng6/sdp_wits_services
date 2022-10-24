@@ -1,5 +1,7 @@
 library globals;
 
+import 'package:flutter/cupertino.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:sdp_wits_services/SignupAndLogin/app.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/View/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
@@ -8,8 +10,6 @@ import 'package:sdp_wits_services/StaffApp/StaffPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'StaffApp/CCDU/CCDU.dart';
-import 'StaffApp/Campus Control/OnRoute.dart';
-import 'StaffApp/Campus Control/onDuty.dart';
 import 'StudentsApp/Home/Start.dart';
 
 String? username;
@@ -17,6 +17,7 @@ String? email;
 String? kind;
 String? department;
 String? driverState;
+String? deviceID;
 
 Future getSharedPreferences() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -57,4 +58,19 @@ Future getData() async {
   } else {
     return const App();
   }
+}
+
+Future<void> initPlatform()async{
+  OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+  // OneSignal.shared.setRequiresUserPrivacyConsent(true);
+  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+    debugPrint("Accepted permission: $accepted");
+  });
+  await OneSignal.shared.setAppId("cf748ced-65c8-4d6b-bbb0-8757e694fe3f");
+  await OneSignal.shared.getDeviceState().then(
+          (value)  {
+        debugPrint("Id: ${value!.userId}");
+        deviceID = value.userId;
+      }
+  );
 }
