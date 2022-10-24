@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
@@ -18,6 +19,7 @@ class EventsController extends GetxController {
         "Content-Type": "application/json; charset=UTF-8",
       },
     ).then((value) {
+      debugPrint('Events Controller Here Here Here${value.body}');
       List events = jsonDecode(value.body).toList();
       for (var event in events) {
         List date = event['date'].split('/');

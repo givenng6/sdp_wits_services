@@ -80,7 +80,7 @@ class BusesController extends GetxController{
         }));
   }
 
-  getSharedPreferences() async {
+  Future<void> getSharedPreferences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     username = sharedPreferences.getString('username');
     email = sharedPreferences.getString('email');
