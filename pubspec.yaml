@@ -52,7 +52,6 @@ dependencies:
   url_launcher: ^6.1.6
   firebase_storage: ^10.3.11
   flutter_keyboard_visibility: ^5.4.0
-  image_picker: ^0.8.6
   uuid: ^3.0.6
   scroll_date_picker: ^3.6.0
   flutter_local_notifications: ^12.0.2
@@ -60,7 +59,9 @@ dependencies:
   cached_network_image: ^3.2.2
   timezone: ^0.9.0
   progress_indicators: ^1.0.0
-
+  image_picker: ^0.8.6
+  image_editor_plus: ^0.1.5
+  percent_indicator: ^4.2.2
 
 dev_dependencies:
   integration_test:

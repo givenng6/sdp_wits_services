@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 class EventsController extends GetxController {
   var events = [].obs;
 
-  getEvents() async {
+  Future<void> getEvents() async {
     String uri = 'https://sdpwitsservices-production.up.railway.app/';
     // String uri = 'http://192.168.20.17:5000/';
 

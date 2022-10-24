@@ -77,7 +77,7 @@ class _EventsState extends State<Events> {
         },
         child: Obx(
           () => RefreshIndicator(
-            onRefresh: () => eventsController.getEvents(),
+            onRefresh: () async => await eventsController.getEvents(),
             child: ScrollConfiguration(
               behavior: MyBehavior(),
               child: ListView.builder(
