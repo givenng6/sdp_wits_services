@@ -39,6 +39,7 @@ router.post("/GetStudents", async (req, res) => {
           await updateDoc(ref, {
             [`students.${student.email.split("@")[0]}.status`]: "ready",
           });
+          await updateDoc(doc(db,"Rides",student.email),{status:"ready"});
         }
         student.status = "ready";
         output.push(student);
@@ -51,6 +52,7 @@ router.post("/GetStudents", async (req, res) => {
           await updateDoc(ref, {
             [`students.${student.email.split("@")[0]}.status`]: "ready",
           });
+          await updateDoc(doc(db,"Rides",student.email),{status:"ready"});
         }
         student.status = "ready";
         output.push(student);
@@ -70,6 +72,7 @@ router.post("/onRoute", async (req, res)=>{
         await updateDoc(ref, {
             [`students.${studentNum}.status`]: "onRoute",
           });
+          await updateDoc(doc(db,"Rides",email),{status:"onRoute"});
     }
     res.send({ status: "success" });
 });
@@ -77,12 +80,17 @@ router.post("/onRoute", async (req, res)=>{
 router.post("/done", async (req, res)=>{
     const { campusName,emails } = req.body;
     const ref = doc(db,"CampusControl",campusName);
+    
     for(var i=0;i<emails.length;i++){
         const email = emails[i];
         const studentNum = email.split("@")[0];
         await updateDoc(ref, {
             [`students.${studentNum}`] :deleteField()
           });
+
+          // const ridesRef = doc(db,"Rides",email);
+          await updateDoc(doc(db,"Rides",email),{completed:true,status:"completed"});
+
     }
     res.send({ status: "success" });
 });
