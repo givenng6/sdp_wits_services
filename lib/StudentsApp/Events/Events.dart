@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -121,7 +123,31 @@ class _Events extends State<Events> {
               borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(20), topLeft: Radius.circular(20)),
               child:  imageUrl == null? Image.asset(img)
-                  : Image.network(imageUrl)
+                  : GestureDetector(
+                onTap: () {
+                  showImageViewer(context,
+                      CachedNetworkImageProvider(imageUrl),
+                      swipeDismissible: true,
+                      useSafeArea: true);
+                },
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context)
+                        .size
+                        .width /
+                        1.7,
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius:
+                      const BorderRadius.vertical(
+                          top: Radius.circular(20.0)),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image:
+                          CachedNetworkImageProvider(
+                              imageUrl))),
+                ),
+              ),
             ),
             Container(
               padding: const EdgeInsets.all(12),

@@ -19,7 +19,6 @@ class EventsController extends GetxController {
         "Content-Type": "application/json; charset=UTF-8",
       },
     ).then((value) {
-      debugPrint('Events Controller Here Here Here${value.body}');
       List events = jsonDecode(value.body).toList();
       for (var event in events) {
         List date = event['date'].split('/');
