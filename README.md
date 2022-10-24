@@ -34,6 +34,10 @@ Software Design Project - COMS3011A
 <img src="images/not_ios.png" width="138" height="300" /> <img src="images/dash.png" width="138" height="300" />
 <img src="images/events.png" width="138" height="300" />
 <img src="images/staff_dh.png" width="138" height="300" />
+<img src="images/menu.jpeg" width="138" height="300" />
+<img src="images/cal.jpeg" width="138" height="300" />
+<img src="images/dh.jpeg" width="138" height="300" />
+<img src="images/campus_web.jpeg" width="138" height="300" />
 <img src="images/not_lunch.jpeg" width="138" height="300" />
 <img src="images/not_bf.jpeg" width="138" height="300" />
 
