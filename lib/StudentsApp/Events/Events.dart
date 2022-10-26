@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -57,11 +59,11 @@ class _Events extends State<Events> {
     );
   }
 
-  Widget eventCard(String eventTitle, String date, String time,
-      List<String> likes, String venue, String type, String eventID) {
+  Widget eventCard(String eventTitle, String date, String time, List<String> likes, String venue, String type, String eventID, String? imageUrl) {
     String img = "";
     Color buttonColor;
     bool isDark;
+    bool isLiked = likes.contains(email);
 
     // change the visuals depending on the type of the event...
     switch (type) {
@@ -106,7 +108,8 @@ class _Events extends State<Events> {
         isDark = false;
         break;
     }
-
+    
+    
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
       child: Card(
@@ -119,7 +122,32 @@ class _Events extends State<Events> {
             ClipRRect(
               borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-              child: Image.asset(img),
+              child:  imageUrl == null? Image.asset(img)
+                  : GestureDetector(
+                onTap: () {
+                  showImageViewer(context,
+                      CachedNetworkImageProvider(imageUrl),
+                      swipeDismissible: true,
+                      useSafeArea: true);
+                },
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context)
+                        .size
+                        .width /
+                        1.7,
+                  ),
+                  decoration: BoxDecoration(
+                      borderRadius:
+                      const BorderRadius.vertical(
+                          top: Radius.circular(20.0)),
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image:
+                          CachedNetworkImageProvider(
+                              imageUrl))),
+                ),
+              ),
             ),
             Container(
               padding: const EdgeInsets.all(12),
@@ -198,30 +226,40 @@ class _Events extends State<Events> {
                         children: [
                           isDark
                               ? Row(
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Interested on the event',
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    Icon(
-                                      Icons.open_in_new,
-                                      color: Colors.white,
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      child: Icon(
+                                        !isLiked? Icons.thumb_up_off_alt_outlined
+                                        :Icons.thumb_up,
+                                        color: Colors.white,
+                                      ),
                                     )
                                   ],
                                 )
                               : Row(
-                                  children: const [
+                                  children: [
                                     Text(
                                       'Interested on the event',
                                       style: TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w600),
                                     ),
-                                    Icon(
-                                      Icons.open_in_new,
-                                      color: Colors.black,
+
+                                    Padding(
+                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      child: Icon(
+                                        !isLiked? Icons.thumb_up_off_alt_outlined
+                                            :Icons.thumb_up,
+                                        color: Colors.black,
+                                      )
+
                                     )
                                   ],
                                 )
@@ -273,7 +311,7 @@ class _Events extends State<Events> {
 
     for (EventObject event in events) {
       items.add(eventCard(event.eventTitle, event.date, event.time, event.likes,
-          event.venue, event.type, event.eventID));
+          event.venue, event.type, event.eventID, event.url));
     }
 
     return Column(children: items);
@@ -305,7 +343,7 @@ class _Events extends State<Events> {
         for(String like in event["likes"]){
           likes.add(like);
         }
-        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id']);
+        EventObject curr = EventObject(event['title'], event['date'], event['time'], likes, event['venue'], event['type'], event['id'], event['imageUrl']);
         events.add(curr);
       }
       context.read<Subscriptions>().setEvents(events);
