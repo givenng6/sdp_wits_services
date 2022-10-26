@@ -40,6 +40,12 @@ router.post("/addCampus", async (req, res) => {
 });
 
 router.get("/AddStudents", async (req, res) => {
+
+    const workingRef = doc(db, "CampusControl", "Working");
+    await updateDoc(workingRef, {
+      unavailableCars: arrayRemove("KSD 731 GP"),
+      takenCampus: arrayRemove("Business School"),
+    });
  
     const {students,campusName} = data;
     const ref = doc(db, "CampusControl", campusName);
