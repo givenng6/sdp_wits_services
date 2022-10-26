@@ -118,7 +118,7 @@ Future<void> _logInAsStudentTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle(const Duration(seconds: 10));
   await tester.tap(continueAsStudentButton, warnIfMissed: false);
   await tester.pumpAndSettle();
 
