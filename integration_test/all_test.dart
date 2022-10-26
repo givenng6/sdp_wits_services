@@ -29,7 +29,8 @@ import 'package:sdp_wits_services/StudentsApp/Profile/Profile.dart' as students;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import 'package:sdp_wits_services/globals.dart' as main_globals;
-import 'package:sdp_wits_services/StaffApp/Campus Control/CampusControlGlobals.dart' as localGlobals;
+import 'package:sdp_wits_services/StaffApp/Campus Control/CampusControlGlobals.dart'
+    as localGlobals;
 import 'package:sdp_wits_services/StaffApp/DiningGlobals.dart' as globals;
 import 'utils.dart';
 
@@ -91,6 +92,9 @@ void main() {
     testWidgets("Unsubscribed ccdu", _ccduUnsubscribedTest);
     testWidgets("Subscribed ccdu", _ccduSubscribedTest);
 
+    //CCDU staff
+    testWidgets("StaffCCDU", _ccduStaffTests);
+
     // Start
     testWidgets("start", _start);
   });
@@ -98,9 +102,8 @@ void main() {
 
 // App Student
 
-Future<void> _continueAsStudentTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
+Future<void> _continueAsStudentTests(WidgetTester tester) async {
+  final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -132,7 +135,7 @@ Future<void> _continueAsStudentTests(WidgetTester tester)async{
   final resetYourPasswordHere = find.text('Reset your password here');
   expect(resetYourPasswordHere, findsWidgets);
   final weWillSendALinkToTheEmailAccount =
-  find.text('We will send a link to the email account.');
+      find.text('We will send a link to the email account.');
   expect(weWillSendALinkToTheEmailAccount, findsWidgets);
 
   await Future.delayed(const Duration(seconds: 1));
@@ -177,7 +180,8 @@ Future<void> _continueAsStudentTests(WidgetTester tester)async{
   await Future.delayed(const Duration(seconds: 3));
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
-  final enterUsernameToCompleteSignup = find.text('Enter your username in this form to complete signup');
+  final enterUsernameToCompleteSignup =
+      find.text('Enter your username in this form to complete signup');
   await tester.tap(find.text('SUBMIT'));
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
@@ -198,9 +202,8 @@ Future<void> _continueAsStudentTests(WidgetTester tester)async{
   expect(find.text('Email'), findsWidgets);
 }
 
-Future<void> _logInAsStudentTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
+Future<void> _logInAsStudentTests(WidgetTester tester) async {
+  final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -236,9 +239,8 @@ Future<void> _logInAsStudentTests(WidgetTester tester)async{
   await tester.pump(const Duration(seconds: 5));
 }
 
-Future<void> _signInAsStudentTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
+Future<void> _signInAsStudentTests(WidgetTester tester) async {
+  final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -286,9 +288,8 @@ Future<void> _signInAsStudentTests(WidgetTester tester)async{
   await tester.pump(const Duration(seconds: 5));
 }
 
-Future<void> _recoverStudentTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
+Future<void> _recoverStudentTests(WidgetTester tester) async {
+  final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -316,7 +317,6 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
   await tester.tap(find.text('Forgot Password?'));
   await tester.pumpAndSettle();
 
-
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('RECOVER'));
   await tester.pumpAndSettle();
@@ -326,7 +326,7 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
 
 // App Staff
 
-Future<void> _continueAsStaffTests(WidgetTester tester) async{
+Future<void> _continueAsStaffTests(WidgetTester tester) async {
   final continueAsStaffButton = find.byKey(const Key('Continue as Staff'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -354,7 +354,7 @@ Future<void> _continueAsStaffTests(WidgetTester tester) async{
   final resetYourPasswordHere = find.text('Reset your password here');
   expect(resetYourPasswordHere, findsWidgets);
   final weWillSendALinkToTheEmailAccount =
-  find.text('We will send a link to the email account.');
+      find.text('We will send a link to the email account.');
   expect(weWillSendALinkToTheEmailAccount, findsWidgets);
 
   await Future.delayed(const Duration(seconds: 1));
@@ -391,13 +391,14 @@ Future<void> _continueAsStaffTests(WidgetTester tester) async{
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'))
-  ;await tester.pumpAndSettle();
+  await tester.tap(find.text('SIGNUP'));
+  await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 3));
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
-  final enterUsernameToCompleteSignup = find.text('Enter your username in this form to complete signup');
+  final enterUsernameToCompleteSignup =
+      find.text('Enter your username in this form to complete signup');
   await tester.tap(find.text('SUBMIT'));
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
@@ -442,8 +443,6 @@ Future<void> _continueAsStaffTests(WidgetTester tester) async{
   // final passwordTextField = findPasswordTextField();
   // final confirmPasswordTextField = findConfirmPasswordTextField();
   // final signupBtnTextField = find.text("SIGNUP");
-
-
 
   // expect(emailTextField,findsWidgets);
   // expect(passwordTextField,findsWidgets);
@@ -540,9 +539,8 @@ Future<void> _continueAsStaffTests(WidgetTester tester) async{
   await Future.delayed(const Duration(seconds: 1));
 }
 
-Future<void> _logInAsStaffTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
+Future<void> _logInAsStaffTests(WidgetTester tester) async {
+  final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -578,9 +576,8 @@ Future<void> _logInAsStaffTests(WidgetTester tester)async{
   await tester.pump(const Duration(seconds: 5));
 }
 
-Future<void> _signInAsStaffTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
+Future<void> _signInAsStaffTests(WidgetTester tester) async {
+  final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -628,9 +625,8 @@ Future<void> _signInAsStaffTests(WidgetTester tester)async{
   await tester.pump(const Duration(seconds: 5));
 }
 
-Future<void> _recoverStaffTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
+Future<void> _recoverStaffTests(WidgetTester tester) async {
+  final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -658,7 +654,6 @@ Future<void> _recoverStaffTests(WidgetTester tester)async{
   await tester.tap(find.text('Forgot Password?'));
   await tester.pumpAndSettle();
 
-
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('RECOVER'));
   await tester.pumpAndSettle();
@@ -670,16 +665,15 @@ Future<void> _recoverStaffTests(WidgetTester tester)async{
 
 String uri = "https://web-production-8fed.up.railway.app/";
 
-Future<void> _unSubbedBusesTests(WidgetTester tester)async{
+Future<void> _unSubbedBusesTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
 
-  await http.get(Uri.parse("${uri}db/getDiningHalls/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      }).then((response) {
-  });
+  await http
+      .get(Uri.parse("${uri}db/getDiningHalls/"), headers: <String, String>{
+    "Accept": "application/json",
+    "Content-Type": "application/json; charset=UTF-8",
+  }).then((response) {});
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString('username', username);
@@ -687,10 +681,11 @@ Future<void> _unSubbedBusesTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  Widget widget = MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => Subscriptions()),
-    ChangeNotifierProvider(create: (_) => UserData()),
-  ],
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
     child: const MaterialApp(home: Buses()),
   );
 
@@ -700,25 +695,26 @@ Future<void> _unSubbedBusesTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
   expect(find.text('Bus Services'), findsWidgets);
-  expect(find.text('To access this service you must be subscribed'), findsWidgets);
+  expect(
+      find.text('To access this service you must be subscribed'), findsWidgets);
   expect(find.text('Subscribe'), findsWidgets);
 
   await tester.pump(const Duration(seconds: 3));
   preferences.clear();
 }
 
-Future<void> _subbedBusesTests(WidgetTester tester)async{
+Future<void> _subbedBusesTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
   List<BusObject> busSchedule = [];
   var busFollowing = [];
   busFollowing;
 
-  await http.get(Uri.parse("${uri}db/getBusSchedule/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      }).then((response) {
+  await http
+      .get(Uri.parse("${uri}db/getBusSchedule/"), headers: <String, String>{
+    "Accept": "application/json",
+    "Content-Type": "application/json; charset=UTF-8",
+  }).then((response) {
     var toJSON = jsonDecode(response.body);
     List<BusObject> tempSchedule = [];
     for (var data in toJSON) {
@@ -734,13 +730,13 @@ Future<void> _subbedBusesTests(WidgetTester tester)async{
 
   await http
       .post(Uri.parse("${uri}db/getBusFollowing/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      body: jsonEncode(<String, String>{
-        "email": email,
-      }))
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+          },
+          body: jsonEncode(<String, String>{
+            "email": email,
+          }))
       .then((value) {
     var busData = jsonDecode(value.body);
     busFollowing = busData;
@@ -752,11 +748,16 @@ Future<void> _subbedBusesTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  Widget widget = MultiProvider(providers: [
-    ChangeNotifierProvider(create: (_) => Subscriptions()),
-    ChangeNotifierProvider(create: (_) => UserData()),
-  ],
-    child: MaterialApp(home: Buses(isTesting: true, busSchedule: busSchedule,)),
+  Widget widget = MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => Subscriptions()),
+      ChangeNotifierProvider(create: (_) => UserData()),
+    ],
+    child: MaterialApp(
+        home: Buses(
+      isTesting: true,
+      busSchedule: busSchedule,
+    )),
   );
 
   await tester.pumpWidget(widget);
@@ -776,7 +777,7 @@ Future<void> _subbedBusesTests(WidgetTester tester)async{
   preferences.clear();
 }
 
-Future<void> _busesTests(WidgetTester tester) async{
+Future<void> _busesTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = 'a2375736@wits.ac.za';
   const onShift = false;
@@ -901,13 +902,13 @@ Future<void> _dashboardTests(WidgetTester tester) async {
 
   await http
       .post(Uri.parse("${uri}db/getBusFollowing/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      },
-      body: jsonEncode(<String, String>{
-        "email": email,
-      }))
+          headers: <String, String>{
+            "Accept": "application/json",
+            "Content-Type": "application/json; charset=UTF-8",
+          },
+          body: jsonEncode(<String, String>{
+            "email": email,
+          }))
       .then((value) {
     var busData = jsonDecode(value.body);
     busFollowing = List<String>.from(busData);
@@ -920,13 +921,13 @@ Future<void> _dashboardTests(WidgetTester tester) async {
     ],
     child: MaterialApp(
         home: Dashboard(
-          isTesting: true,
-          busSchedule: busSchedule,
-          busFollowing: busFollowing,
-          dhFollowing: dhFollowing,
-          diningHalls: diningHalls,
-          mealTime: 'Dinner',
-        )),
+      isTesting: true,
+      busSchedule: busSchedule,
+      busFollowing: busFollowing,
+      dhFollowing: dhFollowing,
+      diningHalls: diningHalls,
+      mealTime: 'Dinner',
+    )),
   );
 
   await tester.pumpWidget(widget);
@@ -1018,13 +1019,13 @@ Future<void> _diningBreakfastTests(WidgetTester tester) async {
     ],
     child: MaterialApp(
         home: Dashboard(
-          isTesting: true,
-          busSchedule: const [],
-          busFollowing: const [],
-          dhFollowing: dhFollowing,
-          diningHalls: diningHalls,
-          mealTime: 'Breakfast',
-        )),
+      isTesting: true,
+      busSchedule: const [],
+      busFollowing: const [],
+      dhFollowing: dhFollowing,
+      diningHalls: diningHalls,
+      mealTime: 'Breakfast',
+    )),
   );
 
   await tester.pumpWidget(widget);
@@ -1066,17 +1067,17 @@ Future<void> _diningBreakfastTests(WidgetTester tester) async {
   preferences.clear();
 }
 
-Future<void> _diningLunchTests(WidgetTester tester)async{
+Future<void> _diningLunchTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
   List<DiningObject> diningHalls = [];
   var dhFollowing = 'DH4';
 
-  await http.get(Uri.parse("${uri}db/getDiningHalls/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      }).then((response) {
+  await http
+      .get(Uri.parse("${uri}db/getDiningHalls/"), headers: <String, String>{
+    "Accept": "application/json",
+    "Content-Type": "application/json; charset=UTF-8",
+  }).then((response) {
     var toJSON = jsonDecode(response.body);
     for (var data in toJSON) {
       diningHalls.add(DiningObject(
@@ -1107,13 +1108,13 @@ Future<void> _diningLunchTests(WidgetTester tester)async{
     ],
     child: MaterialApp(
         home: Dashboard(
-          isTesting: true,
-          busSchedule: const [],
-          busFollowing: const [],
-          dhFollowing: dhFollowing,
-          diningHalls: diningHalls,
-          mealTime: 'Lunch',
-        )),
+      isTesting: true,
+      busSchedule: const [],
+      busFollowing: const [],
+      dhFollowing: dhFollowing,
+      diningHalls: diningHalls,
+      mealTime: 'Lunch',
+    )),
   );
 
   await tester.pumpWidget(widget);
@@ -1157,7 +1158,7 @@ Future<void> _diningLunchTests(WidgetTester tester)async{
 
 // Dining
 
-Future<void> _studentDiningTests(WidgetTester tester) async{
+Future<void> _studentDiningTests(WidgetTester tester) async {
   const username = 'Lindokuhle Mabena';
   const email = 'a2355285@wits.ac.za';
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -1172,7 +1173,7 @@ Future<void> _studentDiningTests(WidgetTester tester) async{
   await tester.pumpAndSettle();
 }
 
-Future<void> _staffDiningTests(WidgetTester tester) async{
+Future<void> _staffDiningTests(WidgetTester tester) async {
   const username = 'Lindokuhle Mabena';
   const email = 'a2355285@wits.ac.za';
   const dhName = 'Ernest Openheimer';
@@ -1226,7 +1227,7 @@ Future<void> _staffDiningTests(WidgetTester tester) async{
 
 // Profile
 
-Future<void> _studentsProfileTests(WidgetTester tester)async{
+Future<void> _studentsProfileTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = 'a2375736@wits.ac.za';
   const subs = <String>['Dining Services', 'Bus Services', 'Campus Control'];
@@ -1241,18 +1242,19 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    builder: (context, _){
-      set()async{
+    builder: (context, _) {
+      set() async {
         await Future.delayed(const Duration(seconds: 1));
         context.read<UserData>().setEmail(email);
         context.read<UserData>().setUsername(username);
-        for(String sub in subs){
+        for (String sub in subs) {
           context.read<Subscriptions>().addSub(sub);
         }
-      }set();
+      }
 
-      return const MaterialApp(
-          home: students.Profile());
+      set();
+
+      return const MaterialApp(home: students.Profile());
     },
   );
 
@@ -1310,7 +1312,7 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
   preferences.clear();
 }
 
-Future<void> _staffProfileTests(WidgetTester tester)async{
+Future<void> _staffProfileTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = 'a2375736@wits.ac.za';
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -1367,7 +1369,7 @@ Future<void> _staffProfileTests(WidgetTester tester)async{
 
 // Staff Dining
 
-Future<void> _selectDHtest(WidgetTester tester)async{
+Future<void> _selectDHtest(WidgetTester tester) async {
   const username = 'Sabelo Mabena';
   const email = 'a2355285@wits.ac.za';
 
@@ -1379,7 +1381,6 @@ Future<void> _selectDHtest(WidgetTester tester)async{
   await tester.pump(const Duration(seconds: 1));
 
   await tester.pumpWidget(HookBuilder(builder: (context) {
-
     return const MaterialApp(home: SelectDH());
   }));
 
@@ -1425,7 +1426,6 @@ Future<void> _selectItems(WidgetTester tester) async {
 
   await globals.getMenus();
 
-
   await tester.pumpWidget(MaterialApp(
     home: SelectOptionItems(
       package: package,
@@ -1448,16 +1448,16 @@ Future<void> _selectItems(WidgetTester tester) async {
 
 // Students Dining
 
-Future<void> _unSubbedDiningTests(WidgetTester tester)async{
+Future<void> _unSubbedDiningTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
   var diningHalls = [];
 
-  await http.get(Uri.parse("${uri}db/getDiningHalls/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      }).then((response) {
+  await http
+      .get(Uri.parse("${uri}db/getDiningHalls/"), headers: <String, String>{
+    "Accept": "application/json",
+    "Content-Type": "application/json; charset=UTF-8",
+  }).then((response) {
     var toJSON = jsonDecode(response.body);
     for (var data in toJSON) {
       diningHalls.add(DiningObject(
@@ -1486,8 +1486,7 @@ Future<void> _unSubbedDiningTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: const MaterialApp(
-        home: Dining()),
+    child: const MaterialApp(home: Dining()),
   );
 
   await tester.pumpWidget(widget);
@@ -1496,23 +1495,24 @@ Future<void> _unSubbedDiningTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
   expect(find.text('Dining Services'), findsWidgets);
-  expect(find.text('To access this service you must be subscribed'), findsWidgets);
+  expect(
+      find.text('To access this service you must be subscribed'), findsWidgets);
   expect(find.text('Subscribe'), findsWidgets);
 
   await tester.pump(const Duration(seconds: 3));
   preferences.clear();
 }
 
-Future<void> _subbedDiningTests(WidgetTester tester)async{
+Future<void> _subbedDiningTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
   var diningHalls = <DiningObject>[];
 
-  await http.get(Uri.parse("${uri}db/getDiningHalls/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      }).then((response) {
+  await http
+      .get(Uri.parse("${uri}db/getDiningHalls/"), headers: <String, String>{
+    "Accept": "application/json",
+    "Content-Type": "application/json; charset=UTF-8",
+  }).then((response) {
     var toJSON = jsonDecode(response.body);
     for (var data in toJSON) {
       diningHalls.add(DiningObject(
@@ -1542,7 +1542,11 @@ Future<void> _subbedDiningTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
     child: MaterialApp(
-        home: Dining(isTesting: true, email: email, diningHalls: diningHalls,)),
+        home: Dining(
+      isTesting: true,
+      email: email,
+      diningHalls: diningHalls,
+    )),
   );
 
   await tester.pumpWidget(widget);
@@ -1564,16 +1568,16 @@ Future<void> _subbedDiningTests(WidgetTester tester)async{
   preferences.clear();
 }
 
-Future<void> _mainDiningTests(WidgetTester tester)async{
+Future<void> _mainDiningTests(WidgetTester tester) async {
   const username = 'Nkosinathi Chuma';
   const email = '2375736@students.wits.ac.za';
   var diningHalls = [];
 
-  await http.get(Uri.parse("${uri}db/getDiningHalls/"),
-      headers: <String, String>{
-        "Accept": "application/json",
-        "Content-Type": "application/json; charset=UTF-8",
-      }).then((response) {
+  await http
+      .get(Uri.parse("${uri}db/getDiningHalls/"), headers: <String, String>{
+    "Accept": "application/json",
+    "Content-Type": "application/json; charset=UTF-8",
+  }).then((response) {
     var toJSON = jsonDecode(response.body);
     for (var data in toJSON) {
       diningHalls.add(DiningObject(
@@ -1612,31 +1616,31 @@ Future<void> _mainDiningTests(WidgetTester tester)async{
   expect(find.text('Option 2'), findsWidgets);
   expect(find.text('Option 3'), findsWidgets);
 
-  for(int i = 0; i < diningHalls[0].bfA.length; i++) {
+  for (int i = 0; i < diningHalls[0].bfA.length; i++) {
     expect(find.text(diningHalls[0].bfA[i]), findsWidgets);
   }
-  for(int i = 0; i < diningHalls[0].bfB.length; i++) {
+  for (int i = 0; i < diningHalls[0].bfB.length; i++) {
     expect(find.text(diningHalls[0].bfB[i]), findsWidgets);
   }
-  for(int i = 0; i < diningHalls[0].bfC.length; i++) {
+  for (int i = 0; i < diningHalls[0].bfC.length; i++) {
     expect(find.text(diningHalls[0].bfC[i]), findsWidgets);
   }
-  for(int i = 0; i < diningHalls[0].lA.length; i++) {
+  for (int i = 0; i < diningHalls[0].lA.length; i++) {
     expect(find.text(diningHalls[0].lA[i]), findsWidgets);
   }
-  for(int i = 0; i < diningHalls[0].lB.length; i++) {
+  for (int i = 0; i < diningHalls[0].lB.length; i++) {
     expect(find.text(diningHalls[0].lB[i]), findsWidgets);
   }
-  for(int i = 0; i < diningHalls[0].lC.length; i++) {
+  for (int i = 0; i < diningHalls[0].lC.length; i++) {
     expect(find.text(diningHalls[0].lC[i]), findsWidgets);
   }
-  for(int i = 0; i < diningHalls[0].dA.length; i++) {
+  for (int i = 0; i < diningHalls[0].dA.length; i++) {
     expect(find.text(diningHalls[0].dA[i]), findsWidgets);
   }
-  for(int i = 0; i < diningHalls[0].dB.length; i++) {
+  for (int i = 0; i < diningHalls[0].dB.length; i++) {
     expect(find.text(diningHalls[0].dB[i]), findsWidgets);
   }
-  for(int i = 0; i < diningHalls[0].dC.length; i++) {
+  for (int i = 0; i < diningHalls[0].dC.length; i++) {
     expect(find.text(diningHalls[0].dC[i]), findsWidgets);
   }
 
@@ -1646,20 +1650,27 @@ Future<void> _mainDiningTests(WidgetTester tester)async{
 
 //Campus Control Staff
 
-Future<void> _campusControlTest(WidgetTester tester) async{
+Future<void> _campusControlTest(WidgetTester tester) async {
   const username = 'Sabelo Mabena';
   const email = 'a2355285@wits.ac.za';
 
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.setString('username', username);
   preferences.setString('email', email);
-  preferences.setString('department','Campus Control');
+  preferences.setString('department', 'Campus Control');
 
   await main_globals.getSharedPreferences();
+  String url = "https://sdpwitsservices-production.up.railway.app";
+
+  await http.get(Uri.parse("$url/tempRoutes/AddStudents"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8"
+      });
 
   await tester.pump(const Duration(seconds: 1));
 
-  await tester.pumpWidget( const MaterialApp(home: CampusControl()));
+  await tester.pumpWidget(const MaterialApp(home: CampusControl()));
 
   await localGlobals.GetVehicles();
   // debugPrint("hh ${localGlobals.vehicles}");
@@ -1673,7 +1684,6 @@ Future<void> _campusControlTest(WidgetTester tester) async{
   final findUserName = find.text("S");
   final findIcon = find.byIcon(Icons.security);
 
-
   expect(findCardItem, findsOneWidget);
   expect(findSelectDH, findsOneWidget);
   expect(findUserName, findsOneWidget);
@@ -1682,29 +1692,28 @@ Future<void> _campusControlTest(WidgetTester tester) async{
   await tester.pump(const Duration(seconds: 3));
 
   final findNumPlate = find.text("- KSD 731 GP");
-  expect(findNumPlate,findsOneWidget);
+  expect(findNumPlate, findsOneWidget);
   final findCarName = find.text("Avanza");
-  expect(findCarName,findsWidgets);
-
+  expect(findCarName, findsWidgets);
 
   await tester.tap(find.byKey(const Key("KSD 731 GP")));
   await tester.pumpAndSettle(const Duration(seconds: 3));
 
   final floatingActionBtn = find.byIcon(Icons.send);
-  expect(floatingActionBtn,findsOneWidget);
+  expect(floatingActionBtn, findsOneWidget);
 
   await tester.tap(floatingActionBtn);
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
   final findCampusName = find.text("Business School");
-  expect(findCampusName,findsOneWidget);
+  expect(findCampusName, findsOneWidget);
 
   await tester.tap(find.text("Health Campus"));
   await tester.pumpAndSettle(const Duration(seconds: 2));
   await tester.tap(findCampusName);
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
-  expect(floatingActionBtn,findsOneWidget);
+  expect(floatingActionBtn, findsOneWidget);
 
   await tester.tap(floatingActionBtn);
   await tester.pumpAndSettle();
@@ -1721,13 +1730,13 @@ Future<void> _campusControlTest(WidgetTester tester) async{
   final findStudent3Name = find.text("Student One");
   final findStudent3res = find.text("- J-One");
 
-  expect(findStudent1Name,findsWidgets);
-  expect(findStudent1res,findsWidgets);
+  expect(findStudent1Name, findsWidgets);
+  expect(findStudent1res, findsWidgets);
 
-  expect(findStudent2Name,findsWidgets);
+  expect(findStudent2Name, findsWidgets);
 
-  expect(findStudent3Name,findsWidgets);
-  expect(findStudent3res,findsWidgets);
+  expect(findStudent3Name, findsWidgets);
+  expect(findStudent3res, findsWidgets);
 
   await tester.tap(find.byKey(const Key("student1@abc.com")));
   await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -1738,7 +1747,7 @@ Future<void> _campusControlTest(WidgetTester tester) async{
 
   final findStart = find.byKey(const Key("start"));
 
-  expect(findStart,findsOneWidget);
+  expect(findStart, findsOneWidget);
 
   await tester.tap(findStart);
   await tester.pumpAndSettle(const Duration(seconds: 2));
@@ -1746,37 +1755,41 @@ Future<void> _campusControlTest(WidgetTester tester) async{
   final findStudentDigz = find.text("Student Digz");
   final findJOne = find.text("J-One");
 
-  expect(findStudentDigz,findsWidgets);
-  expect(findJOne,findsWidgets);
+  expect(findStudentDigz, findsWidgets);
+  expect(findJOne, findsWidgets);
 
   await tester.tap(findStudentDigz);
   await tester.pumpAndSettle(const Duration(seconds: 1));
   await tester.tap(findJOne);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
-  expect(floatingActionBtn,findsWidgets);
+  expect(floatingActionBtn, findsWidgets);
 
   await tester.tap(floatingActionBtn);
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
   //End Shift
   final findEndShiftBtn = find.byIcon(Icons.exit_to_app);
-  expect(findEndShiftBtn,findsWidgets);
+  expect(findEndShiftBtn, findsWidgets);
 
   //Open bottom sheet
   await tester.tap(findEndShiftBtn);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
   final conText = find.text("Are you sure you want to end shift?");
-  expect(conText,findsWidgets);
+  expect(conText, findsWidgets);
 
   final endShiftBtn = find.text("End Shift");
-  expect(endShiftBtn,findsWidgets);
-  expect(find.text("Cancel"),findsWidgets);
+  expect(endShiftBtn, findsWidgets);
+  expect(find.text("Cancel"), findsWidgets);
 
   await tester.tap(endShiftBtn);
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
+  await http.get(Uri.parse("$url/tempRoute/RemoveStudents"), headers: <String, String>{
+    "Accept": "application/json",
+    "Content-Type": "application/json; charset=UTF-8",
+  });
 
   // await tester.pump(const Duration(seconds: 0));
   preferences.clear();
@@ -1784,7 +1797,6 @@ Future<void> _campusControlTest(WidgetTester tester) async{
 
 //
 Future<void> _selectDepTest(WidgetTester tester) async {
-
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   sharedPreferences.setString("email", "a2355285@wits.ac.za");
   sharedPreferences.setString("username", "Sabelo Mabena");
@@ -1796,11 +1808,11 @@ Future<void> _selectDepTest(WidgetTester tester) async {
 
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
-  expect(find.byKey(const Key("logoImg")),findsOneWidget);
-  expect(find.text("Departments"),findsOneWidget);
+  expect(find.byKey(const Key("logoImg")), findsOneWidget);
+  expect(find.text("Departments"), findsOneWidget);
 
   final findDining = find.text("Dining Services");
-  expect(findDining,findsWidgets);
+  expect(findDining, findsWidgets);
 
   await tester.tap(findDining);
   await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -1809,19 +1821,19 @@ Future<void> _selectDepTest(WidgetTester tester) async {
   await tester.pumpAndSettle();
 
   final editIcon = find.byKey(const Key("Option A breakfast Edit"));
-  expect(editIcon,findsWidgets);
+  expect(editIcon, findsWidgets);
 
   await tester.tap(editIcon);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
   final item = find.text("Corn Flakes");
-  expect(item,findsOneWidget);
+  expect(item, findsOneWidget);
 
   await tester.tap(item);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
   final confirmBtn = find.byIcon(Icons.check);
-  expect(confirmBtn,findsOneWidget);
+  expect(confirmBtn, findsOneWidget);
 
   await tester.tap(confirmBtn);
   await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -1834,24 +1846,24 @@ Future<void> _selectDepTest(WidgetTester tester) async {
   //Lunch
 
   final lunchTab = find.byKey(const Key('lunchTab'));
-  expect(lunchTab,findsOneWidget);
+  expect(lunchTab, findsOneWidget);
 
   await tester.tap(lunchTab);
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
   final editIcon2 = find.byKey(const Key("Option A lunch Edit"));
-  expect(editIcon2,findsWidgets);
+  expect(editIcon2, findsWidgets);
 
   await tester.tap(editIcon2);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
   final item2 = find.text("Pizza");
-  expect(item2,findsWidgets);
+  expect(item2, findsWidgets);
 
   await tester.tap(item2);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
-  expect(confirmBtn,findsOneWidget);
+  expect(confirmBtn, findsOneWidget);
 
   await tester.tap(confirmBtn);
   await tester.pumpAndSettle(const Duration(seconds: 5));
@@ -1861,30 +1873,29 @@ Future<void> _selectDepTest(WidgetTester tester) async {
   await tester.pumpAndSettle();
 
   final dinnerTab = find.byKey(const Key('dinnerTab'));
-  expect(dinnerTab,findsOneWidget);
+  expect(dinnerTab, findsOneWidget);
 
   await tester.tap(dinnerTab);
   await tester.pumpAndSettle(const Duration(seconds: 2));
 
   final editIcon3 = find.byKey(const Key("Option A dinner Edit"));
-  expect(editIcon3,findsWidgets);
+  expect(editIcon3, findsWidgets);
 
   await tester.tap(editIcon3);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
   final item3 = find.text("Ham");
-  expect(item3,findsWidgets);
+  expect(item3, findsWidgets);
 
   await tester.tap(item3);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
-  expect(confirmBtn,findsOneWidget);
+  expect(confirmBtn, findsOneWidget);
 
   await tester.tap(confirmBtn);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
   sharedPreferences.clear();
-
 }
 
 Future<void> _checkBuses(WidgetTester tester) async {
@@ -1900,15 +1911,14 @@ Future<void> _checkBuses(WidgetTester tester) async {
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
   final card = find.text("Bus Services");
-  expect(card,findsOneWidget);
+  expect(card, findsOneWidget);
 
   await tester.tap(card);
   await tester.pumpAndSettle(const Duration(seconds: 3));
-  expect(find.text("Buses"),findsWidgets);
+  expect(find.text("Buses"), findsWidgets);
 
   await tester.pumpAndSettle();
   sharedPreferences.clear();
-
 }
 
 Future<void> _checkCampusControl(WidgetTester tester) async {
@@ -1924,11 +1934,11 @@ Future<void> _checkCampusControl(WidgetTester tester) async {
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
   final card = find.text("Campus Control");
-  expect(card,findsOneWidget);
+  expect(card, findsOneWidget);
 
   await tester.tap(card);
   await tester.pumpAndSettle(const Duration(seconds: 3));
-  expect(find.text("Vehicles"),findsWidgets);
+  expect(find.text("Vehicles"), findsWidgets);
 
   await tester.pumpAndSettle();
   sharedPreferences.clear();
@@ -1965,14 +1975,15 @@ Future<void> _campusControlSubscribedTest(WidgetTester tester) async {
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    builder: (context, child){
-      set() async{
+    builder: (context, child) {
+      set() async {
         await Future.delayed(const Duration(seconds: 1));
         context.read<Subscriptions>().addSub('campus_control');
-      }set();
+      }
 
-      return const MaterialApp(
-          home: Protection());
+      set();
+
+      return const MaterialApp(home: Protection());
     },
   );
 
@@ -2046,20 +2057,15 @@ Future<void> _ccduSubscribedTest(WidgetTester tester) async {
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
     builder: (context, child) {
-      set()async{
+      set() async {
         await Future.delayed(const Duration(seconds: 1));
         CCDUObject session = CCDUObject();
-        session.setAppointment(
-            '',
-            'Pending',
-            '12:30-13:30',
-            '06/10/2022',
-            'Meeting',
-            't2375736@wits.ac.za',
-            'Dr AP Chuma',
-            'Online');
+        session.setAppointment('', 'Pending', '12:30-13:30', '06/10/2022',
+            'Meeting', 't2375736@wits.ac.za', 'Dr AP Chuma', 'Online');
         context.read<Subscriptions>().addCCDUBooking(session);
-      }set();
+      }
+
+      set();
       return const MaterialApp(home: CCDU());
     },
   );
@@ -2126,6 +2132,98 @@ Future<void> _ccduSubscribedTest(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 2));
 }
 
+Future<void> _ccduStaffTests(WidgetTester tester) async {
+  const username = 'Sabelo Mabena';
+  const email = 'a2355285@wits.ac.za';
+
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  preferences.setString('username', username);
+  preferences.setString('email', email);
+  preferences.setString('department', 'CCDU');
+
+  await main_globals.getSharedPreferences();
+  String url = "https://sdpwitsservices-production.up.railway.app";
+
+  await http.get(Uri.parse("$url/ccdu/TestSetup/Init"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8"
+      });
+
+  await tester.pumpWidget(const MaterialApp(home: CCDU()));
+  expect(find.text("No Upcoming Appointments"), findsOneWidget);
+  await tester.pump(const Duration(seconds: 1));
+
+  final ccduIcon = find.byIcon(Icons.psychology_outlined);
+  final ccduText = find.text("CCDU");
+  final profile = find.text("S");
+  final allTab = find.text("All");
+  final acceptedTab = find.text("Accepted");
+
+  expect(ccduIcon, findsOneWidget);
+  expect(ccduText, findsOneWidget);
+  expect(profile, findsOneWidget);
+  expect(allTab, findsOneWidget);
+  expect(acceptedTab, findsOneWidget);
+
+  await tester.tap(allTab);
+  await tester.pump(const Duration(seconds: 4));
+
+  //All card
+  expect(find.text("Lindokuhle Mabena"), findsWidgets);
+  expect(find.text("Date: 07/11/2022"), findsWidgets);
+  expect(find.text("Time: 08:00-09:00"), findsWidgets);
+  expect(find.text("Platform: Online"), findsWidgets);
+  expect(find.text("Description"), findsWidgets);
+  expect(find.text("Some description"), findsWidgets);
+  expect(find.text("ACCEPT"), findsWidgets);
+  expect(find.text("Other Bookings"), findsOneWidget);
+
+  await tester.tap(find.byKey(const Key("test1btn")));
+  await tester.pump(const Duration(seconds: 2));
+
+  expect(find.text("Link"), findsWidgets);
+  final submitBtn = find.text("Submit");
+  expect(submitBtn, findsOneWidget);
+
+  await tester.enterText(find.byKey(const Key("linkTextField")), "Some link");
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.tap(submitBtn);
+  await tester.pump(const Duration(milliseconds: 500));
+  await tester.pump(const Duration(seconds: 4));
+
+  expect(find.byIcon(Icons.check_circle_outline), findsOneWidget);
+  expect(find.text("Appointment confirmed"), findsOneWidget);
+  expect(find.text("Close"), findsOneWidget);
+
+  await tester.tap(find.text("Close"));
+  await tester.pump(const Duration(seconds: 3));
+
+  await tester.tap(acceptedTab);
+  await tester.pump(const Duration(seconds: 4));
+
+  expect(find.text("Lindokuhle Mabena"), findsWidgets);
+  expect(find.text("Date: 07/11/2022"), findsWidgets);
+  expect(find.text("Time: 08:00-09:00"), findsWidgets);
+  expect(find.text("Platform: Online"), findsWidgets);
+  expect(find.text("Description"), findsWidgets);
+  expect(find.text("Some description"), findsWidgets);
+
+  await tester.pump(const Duration(seconds: 1));
+
+  await tester.tap(profile);
+  await tester.pump(const Duration(seconds: 1));
+
+
+  await http.get(Uri.parse("$url/ccdu/TestSetup/Cleanup"),
+      headers: <String, String>{
+        "Accept": "application/json",
+        "Content-Type": "application/json; charset=UTF-8"
+      });
+  await tester.pump(const Duration(seconds: 1));
+  preferences.clear();
+}
+
 // Start
 
 Future<void> _start(WidgetTester tester) async {
@@ -2134,7 +2232,11 @@ Future<void> _start(WidgetTester tester) async {
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: MaterialApp(home: Start(email: '2375736@students.wits.ac.za', username: 'Nathi',)),
+    child: MaterialApp(
+        home: Start(
+      email: '2375736@students.wits.ac.za',
+      username: 'Nathi',
+    )),
   );
 
   await tester.pumpWidget(widget);
