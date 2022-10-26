@@ -47,16 +47,16 @@ class _EventsState extends State<Events> {
     super.initState();
   }
 
-  addText() async{
+  addText() async {
     await Future.delayed(const Duration(milliseconds: 400));
-    setState(()=>fabChild = initFabChild);
+    setState(() => fabChild = initFabChild);
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: ()async{
-        setState(()=>fabWidth = 200.0);
+      onWillPop: () async {
+        setState(() => fabWidth = 200.0);
         await Future.delayed(const Duration(milliseconds: 100));
         return true;
       },
@@ -78,7 +78,6 @@ class _EventsState extends State<Events> {
                 addText();
               }
             });
-
             return true;
           },
           child: Obx(
@@ -90,16 +89,18 @@ class _EventsState extends State<Events> {
                     key: const PageStorageKey<String>('page'),
                     itemCount: eventsController.events.length,
                     itemBuilder: (context, index) {
-                      String img =
-                          getImageForType(eventsController.events[index]['type']);
+                      String img = getImageForType(
+                          eventsController.events[index]['type']);
                       String date = eventsController.events[index]['date'];
-                      String? imgUrl = eventsController.events[index]['imageUrl'];
+                      String? imgUrl =
+                          eventsController.events[index]['imageUrl'];
                       String time = eventsController.events[index]['time'];
                       String title = eventsController.events[index]['title'];
                       String venue = eventsController.events[index]['venue'];
                       String type = eventsController.events[index]['type'];
                       String id = eventsController.events[index]['id'];
-                      List likes = eventsController.events[index]['likes'].toList();
+                      List likes =
+                          eventsController.events[index]['likes'].toList();
                       bool isLiked = eventsController.events[index]['likes']
                           .toList()
                           .contains(email);
@@ -123,9 +124,12 @@ class _EventsState extends State<Events> {
                                           child: Image.asset(img),
                                         )
                                       : GestureDetector(
+                                          key: Key('image$index'),
                                           onTap: () {
-                                            showImageViewer(context,
-                                                CachedNetworkImageProvider(imgUrl),
+                                            showImageViewer(
+                                                context,
+                                                CachedNetworkImageProvider(
+                                                    imgUrl),
                                                 swipeDismissible: true,
                                                 useSafeArea: true);
                                           },
@@ -137,9 +141,9 @@ class _EventsState extends State<Events> {
                                                   1.7,
                                             ),
                                             decoration: BoxDecoration(
-                                                borderRadius:
-                                                    const BorderRadius.vertical(
-                                                        top: Radius.circular(20.0)),
+                                                borderRadius: const BorderRadius
+                                                        .vertical(
+                                                    top: Radius.circular(20.0)),
                                                 image: DecorationImage(
                                                     fit: BoxFit.cover,
                                                     image:
@@ -204,19 +208,23 @@ class _EventsState extends State<Events> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
-                                                const Text(
+                                                Text(
                                                   'Interested on the event',
-                                                  style: TextStyle(
+                                                  key: Key('like$index'),
+                                                  style: const TextStyle(
                                                       color: Colors.white,
-                                                      fontWeight: FontWeight.w600),
+                                                      fontWeight:
+                                                          FontWeight.w600),
                                                 ),
                                                 const SizedBox(
                                                   width: 10.0,
                                                 ),
                                                 Icon(
                                                   !isLiked
-                                                      ? Icons.thumb_up_alt_outlined
-                                                      : Icons.thumb_up_alt_rounded,
+                                                      ? Icons
+                                                          .thumb_up_alt_outlined
+                                                      : Icons
+                                                          .thumb_up_alt_rounded,
                                                   color: Colors.white,
                                                 )
                                               ],
@@ -234,8 +242,10 @@ class _EventsState extends State<Events> {
                                                   child: addOns("INTERESTED",
                                                       likes.length.toString())),
                                               Expanded(
-                                                  child: addOns("VENUE", venue)),
-                                              Expanded(child: addOns("TYPE", type))
+                                                  child:
+                                                      addOns("VENUE", venue)),
+                                              Expanded(
+                                                  child: addOns("TYPE", type))
                                             ],
                                           ),
                                         ),
