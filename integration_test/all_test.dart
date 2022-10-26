@@ -120,10 +120,9 @@ Future<void> _logInAsStudentTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
   await tester.tap(continueAsStudentButton, warnIfMissed: false);
-  await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
 
-  await tester.pumpAndSettle();
+  await tester.pumpAndSettle(const Duration(seconds: 10));
   await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
