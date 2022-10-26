@@ -10,6 +10,7 @@ import {
   arrayRemove,
   setDoc,
   deleteDoc,
+  deleteField
 } from "firebase/firestore";
 import {data} from './tempData.js';
 
@@ -25,7 +26,6 @@ router.post("/addVehicles", async (req, res) => {
 
 router.post("/addRes", async (req, res) => {
   const { residents } = req.body;
-
   await updateDoc(doc(db, "CampusControl", "Original"), { residents });
 
   res.send("Done");
@@ -39,25 +39,31 @@ router.post("/addCampus", async (req, res) => {
   res.send("Done");
 });
 
-router.post("/AddStudents", async (req, res) => {
-  const { campusName, students } = req.body;
-  const ref = doc(db, "CampusControl", campusName);
-
-  if (students.length > 0) {
+router.get("/AddStudents", async (req, res) => {
+ 
+    const {students,campusName} = data;
+    const ref = doc(db, "CampusControl", campusName);
     for (const student of students) {
       var email = student.email.split("@")[0];
       await updateDoc(ref, { [`students.${email}`]: student });
+      const ridesRef = doc(db,"Rides",student.email);
+      await setDoc(ridesRef,student);
     }
     res.send("");
-  } else {
-    const {students} = data;
-
-    for (const student of students) {
-      var email = student.email.split("@")[0];
-      await updateDoc(ref, { [`students.${email}`]: student });
-      // console.log(student);
-    }
-    res.send("");
-  }
+  
 });
+
+router.get("/RemoveStudents", async (req, res) => {
+  const {students,campusName} = data;
+
+    const ref = doc(db, "CampusControl", campusName);
+    for (const student of students) {
+      var email = student.email.split("@")[0];
+      await updateDoc(ref, { [`students.${email}`]:deleteField() });
+      const ridesRef = doc(db,"Rides",student.email);
+      await deleteDoc(ridesRef);
+  }
+  res.send("");
+});
+
 export default router;

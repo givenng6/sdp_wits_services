@@ -5,7 +5,6 @@ import 'ccduGlobals.dart' as localGlobals;
 
 class All extends StatefulWidget {
   const All({Key? key}) : super(key: key);
-
   @override
   State<All> createState() => AllState();
 }
@@ -13,40 +12,55 @@ class All extends StatefulWidget {
 class AllState extends State<All> {
   TextEditingController linkController = TextEditingController();
   bool dialogLoading = false;
+  bool first = true;
+  String bottomSheetState = "initial";
 
-
-  Future<void> acceptBooking(setState,Booking booking)async{
+  Future<void> acceptBooking(setState, Booking booking) async {
     await localGlobals.HandleBooking(booking);
     // await Future.delayed(const Duration(seconds: 5));
     localGlobals.GetAllBookings();
     dialogLoading = false;
-    setState(() {});
+    first = false;
+    setState(() {
+
+    });
   }
 
-  Future<void> confirmationDialog(Booking booking)async{
+  Future<void> confirmationDialog(Booking booking) async {
     showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            acceptBooking(setState,booking);
+            if (first) acceptBooking(setState, booking);
             return AlertDialog(
               content: SingleChildScrollView(
                 child: Container(
-                  child: dialogLoading? const LoadingIndicator(indicatorType: Indicator.ballClipRotate):Column(
-                    children: const [
-                     Icon(Icons.check_circle_outline,size: 60,color: Colors.green,),
-                      SizedBox(height: 10,),
-                      Text("Appointment confirmed")
-                    ],
-                  ),
+                  child: dialogLoading
+                      ? const LoadingIndicator(
+                          indicatorType: Indicator.ballClipRotate)
+                      : Column(
+                          children: const [
+                            Icon(
+                              Icons.check_circle_outline,
+                              size: 60,
+                              color: Colors.green,
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text("Appointment confirmed")
+                          ],
+                        ),
                 ),
               ),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     dialogLoading = true;
+                    first = true;
                     Navigator.pop(context);
+
                   },
                   child: const Text("Close"),
                 ),
@@ -61,14 +75,16 @@ class AllState extends State<All> {
   Future<void> handleOnPressed(Booking booking) async {
     if (booking.location == "Online") {
       showModalBottomSheet(
-          context: context,
-          builder: (builder) => Container(
+        context: context,
+        builder: (context) => StatefulBuilder(builder: (context, setState) {
+          return Container(
             padding: const EdgeInsets.all(15),
             height: 200,
             child: Column(
               children: [
                 const Text("Link"),
                 TextField(
+                  key: const Key("linkTextField"),
                   controller: linkController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
@@ -76,22 +92,23 @@ class AllState extends State<All> {
                   ),
                 ),
                 ElevatedButton(
-                    onPressed: () async{
-                      // submit(booking);
+                    onPressed: () async {
                       booking.setLink(linkController.text);
+                      linkController.text = "";
                       dialogLoading = true;
+                      Navigator.pop(context);
                       await confirmationDialog(booking);
-                      // Navigator.pop(context);
                     },
                     child: const Text("Submit"))
               ],
             ),
-          ));
+          );
+        }),
+      );
     } else {
       // localGlobals.HandleBooking(booking);
       dialogLoading = true;
       await confirmationDialog(booking);
-
     }
   }
 
@@ -117,7 +134,6 @@ class AllState extends State<All> {
             },
             child: Container(child: makeList())));
   }
-
 
   Widget DividerCard(String text) => Card(
       elevation: 7,
@@ -184,19 +200,20 @@ class AllState extends State<All> {
             Text("Platform: ${booking.location}"),
             if (booking.description != "") const Text("Description"),
             if (booking.description != "") Text(booking.description),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                      style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all(
-                              const Color(0xFF013152))),
-                      onPressed: () async{
-                        await handleOnPressed(booking);
-                      },
-                      child: const Text('ACCEPT')),
-                ],
-              )
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                    key: Key("${booking.id}btn"),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(const Color(0xFF013152))),
+                    onPressed: () async {
+                      await handleOnPressed(booking);
+                    },
+                    child: const Text('ACCEPT')),
+              ],
+            )
           ],
         ),
       ),
