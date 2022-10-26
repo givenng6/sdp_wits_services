@@ -39,18 +39,8 @@ router.post("/addCampus", async (req, res) => {
   res.send("Done");
 });
 
-router.post("/AddStudents", async (req, res) => {
-  const { campusName, students } = req.body;
-  const ref = doc(db, "CampusControl", campusName);
-
-  if (students.length > 0) {
-    const ref = doc(db, "CampusControl", campusName);
-    for (const student of students) {
-      var email = student.email.split("@")[0];
-      await updateDoc(ref, { [`students.${email}`]: student });
-    }
-    res.send("");
-  } else {
+router.get("/AddStudents", async (req, res) => {
+ 
     const {students,campusName} = data;
     const ref = doc(db, "CampusControl", campusName);
     for (const student of students) {
@@ -60,7 +50,7 @@ router.post("/AddStudents", async (req, res) => {
       await setDoc(ridesRef,student);
     }
     res.send("");
-  }
+  
 });
 
 router.get("/RemoveStudents", async (req, res) => {
