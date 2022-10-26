@@ -10,8 +10,8 @@ import '../View/buses_main.dart';
 
 class BusesController extends GetxController{
   String uri = 'https://sdpwitsservices-production.up.railway.app/';
-  String? username;
-  String? email;
+  var username = ' '.obs;
+  var email = ''.obs;
   var isFabVisible = true.obs;
   var shouldFabBeVisible = false.obs;
   var clickingEnabled = true.obs;
@@ -20,7 +20,7 @@ class BusesController extends GetxController{
   var fabDecoration =
   FabDecoration(text: 'Start Shift', color: const Color(0xFF03560F)).obs;
 
-  List routes = [];
+  var routes = [].obs;
 
   List takenRoutes = [];
 
@@ -63,7 +63,7 @@ class BusesController extends GetxController{
         },
         body: jsonEncode(<String, String>{
           'routeId': routes[selectedCardIndex]['id'],
-          'driver': email!,
+          'driver': email.value,
           'position': stop
         }));
   }
@@ -76,14 +76,14 @@ class BusesController extends GetxController{
         },
         body: jsonEncode(<String, String>{
           'routeId': routes[selectedCardIndex]['id'],
-          'driver': email!,
+          'driver': email.value,
         }));
   }
 
   Future<void> getSharedPreferences() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    username = sharedPreferences.getString('username');
-    email = sharedPreferences.getString('email');
+    username(sharedPreferences.getString('username'));
+    email(sharedPreferences.getString('email'));
   }
 
   keepDriverOnShift() {
@@ -112,7 +112,7 @@ class BusesController extends GetxController{
       },
     ).then((value) {
       List json = jsonDecode(value.body);
-      routes = json;
+      routes(json);
       keepDriverOnShift();
     });
   }
