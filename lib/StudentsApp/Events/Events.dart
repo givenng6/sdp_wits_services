@@ -59,7 +59,7 @@ class _Events extends State<Events> {
     );
   }
 
-  Widget eventCard(String eventTitle, String date, String time, List<String> likes, String venue, String type, String eventID, String? imageUrl) {
+  Widget eventCard(String eventTitle, String date, String time, List<String> likes, String venue, String type, String eventID, String? imageUrl, int i) {
     String img = "";
     Color buttonColor;
     bool isDark;
@@ -108,8 +108,7 @@ class _Events extends State<Events> {
         isDark = false;
         break;
     }
-    
-    
+
     return Container(
       margin: const EdgeInsets.fromLTRB(0, 8, 0, 10),
       child: Card(
@@ -124,6 +123,7 @@ class _Events extends State<Events> {
                   topRight: Radius.circular(20), topLeft: Radius.circular(20)),
               child:  imageUrl == null? Image.asset(img)
                   : GestureDetector(
+                key: Key('image$i'),
                 onTap: () {
                   showImageViewer(context,
                       CachedNetworkImageProvider(imageUrl),
@@ -202,24 +202,25 @@ class _Events extends State<Events> {
                         String timeNow = DateFormat('kk:mm').format(now);
                         String dateNow = DateFormat('dd/MM/yyyy').format(now);
 
-                        if(!scheduledEvents!.contains(eventID) && date == dateNow){
-                          int nowTimeInSec = (int.parse(timeNow.split(":")[0]) * 3600) + (int.parse(timeNow.split(":")[1]) * 60);
-                          int timeInSec = (int.parse(time.split(":")[0]) * 3600) + (int.parse(time.split(":")[1]) * 60);
+                        if(scheduledEvents != null){
+                          if(!scheduledEvents.contains(eventID) && date == dateNow){
+                            int nowTimeInSec = (int.parse(timeNow.split(":")[0]) * 3600) + (int.parse(timeNow.split(":")[1]) * 60);
+                            int timeInSec = (int.parse(time.split(":")[0]) * 3600) + (int.parse(time.split(":")[1]) * 60);
 
-                          int timeToNotify = timeInSec - 3600 - nowTimeInSec;
+                            int timeToNotify = timeInSec - 3600 - nowTimeInSec;
 
-                          scheduledEvents.add(eventID);
-                          prefs.setStringList("scheduledEvents", scheduledEvents);
+                            scheduledEvents.add(eventID);
+                            prefs.setStringList("scheduledEvents", scheduledEvents);
 
-                          if(timeToNotify > 0){
-                            pushNotification.scheduleNotification(id: 4, title: "Wits Events", body: "$eventTitle happening in an hour", seconds: timeToNotify);
+                            if(timeToNotify > 0){
+                              pushNotification.scheduleNotification(id: 4, title: "Wits Events", body: "$eventTitle happening in an hour", seconds: timeToNotify);
+                            }
+                            // To Empty the list
+                            //prefs.setStringList("scheduledEvents", []);
+                            print(timeToNotify);
+                            print(prefs.getStringList("scheduledEvents"));
                           }
-                          // To Empty the list
-                          //prefs.setStringList("scheduledEvents", []);
-                          print(timeToNotify);
-                          print(prefs.getStringList("scheduledEvents"));
                         }
-
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -229,12 +230,13 @@ class _Events extends State<Events> {
                                   children: [
                                     Text(
                                       'Interested on the event',
-                                      style: TextStyle(
+                                      key: Key('like$i'),
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w600),
                                     ),
                                     Padding(
-                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Icon(
                                         !isLiked? Icons.thumb_up_off_alt_outlined
                                         :Icons.thumb_up,
@@ -247,13 +249,14 @@ class _Events extends State<Events> {
                                   children: [
                                     Text(
                                       'Interested on the event',
-                                      style: TextStyle(
+                                      key: Key('like$i'),
+                                      style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.w600),
                                     ),
 
                                     Padding(
-                                      padding: EdgeInsets.fromLTRB(5, 0, 0, 0),
+                                      padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                                       child: Icon(
                                         !isLiked? Icons.thumb_up_off_alt_outlined
                                             :Icons.thumb_up,
@@ -309,9 +312,9 @@ class _Events extends State<Events> {
   Widget showEvents() {
     List<Widget> items = [];
 
-    for (EventObject event in events) {
-      items.add(eventCard(event.eventTitle, event.date, event.time, event.likes,
-          event.venue, event.type, event.eventID, event.url));
+    for(int i = 0; i < events.length; i++){
+      items.add(eventCard(events[i].eventTitle, events[i].date, events[i].time, events[i].likes,
+          events[i].venue, events[i].type, events[i].eventID, events[i].url, i));
     }
 
     return Column(children: items);

@@ -70,8 +70,7 @@ class _BusesMainState extends State<BusesMain> {
                         child: CircleAvatar(
                           backgroundColor: const Color(0xff003b5c),
                           radius: 22.0,
-                          child: Text(
-                            busesController.username![0],
+                          child: Text(busesController.username.value[0],
                             style: const TextStyle(color: Colors.white),
                           ),
                         ),
@@ -81,8 +80,8 @@ class _BusesMainState extends State<BusesMain> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => Profile(
-                                    busesController.email,
-                                    busesController.username)));
+                                    busesController.email.value,
+                                    busesController.username.value)));
                       },
                     ),
                   ],
