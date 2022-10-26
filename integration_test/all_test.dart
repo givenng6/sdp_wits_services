@@ -43,13 +43,11 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end app test", () {
     // App Student
-    testWidgets("continue as student", _continueAsStudentTests);
     testWidgets("login as student", _logInAsStudentTests);
     testWidgets("signIn as student", _signInAsStudentTests);
     testWidgets("_recover email student", _recoverStudentTests);
 
     // App Staff
-    testWidgets("continue as staff", _continueAsStaffTests);
     testWidgets("login as staff", _logInAsStaffTests);
     testWidgets("signIn as staff", _signInAsStaffTests);
     testWidgets("_recover email staff", _recoverStaffTests);
@@ -109,106 +107,6 @@ void main() {
 
 // App Student
 
-Future<void> _continueAsStudentTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
-  app.main();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(milliseconds: 5000));
-  await tester.pumpAndSettle();
-  final continueAsStudent = find.text('Continue as Student');
-  expect(continueAsStudent, findsWidgets);
-  final continueAsStaff = find.text('Continue as Staff');
-  expect(continueAsStaff, findsWidgets);
-
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(continueAsStudentButton);
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.pumpAndSettle();
-  final witsServices = find.text('Wits Services');
-  expect(witsServices, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
-  await tester.pumpAndSettle();
-  final confirmPassword = find.text('Confirm Password');
-  expect(confirmPassword, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('Forgot Password?'));
-  await tester.pumpAndSettle();
-  final resetYourPasswordHere = find.text('Reset your password here');
-  expect(resetYourPasswordHere, findsWidgets);
-  final weWillSendALinkToTheEmailAccount =
-  find.text('We will send a link to the email account.');
-  expect(weWillSendALinkToTheEmailAccount, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('RECOVER'));
-  await tester.pumpAndSettle();
-  final invalidEmail = find.text('Invalid email!');
-  expect(invalidEmail, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('BACK'));
-  await tester.pumpAndSettle();
-  final email = find.text('Email');
-  expect(email, findsWidgets);
-  final password = find.text('Password');
-  expect(password, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
-  await tester.pumpAndSettle();
-  expect(invalidEmail, findsWidgets);
-  await Future.delayed(const Duration(seconds: 1));
-  final passwordIsTooShort = find.text('Password is too short!');
-  expect(passwordIsTooShort, findsWidgets);
-  // await tester.tap(find.text('LOGIN'));
-  await tester.pumpAndSettle();
-  await tester.enterText(findNameTextField(), '23123456@students.wits.ac.za');
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.enterText(findPasswordTextField(), '1234567890');
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.enterText(findConfirmPasswordTextField(), '1234567890');
-  await tester.pumpAndSettle();
-  // FocusScope.of(context).unfocus();
-  FocusManager.instance.primaryFocus?.unfocus();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
-  await tester.pumpAndSettle();
-
-  await Future.delayed(const Duration(seconds: 3));
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.pumpAndSettle();
-  final enterUsernameToCompleteSignup = find.text('Enter your username in this form to complete signup');
-  await tester.tap(find.text('SUBMIT'));
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  expect(enterUsernameToCompleteSignup, findsWidgets);
-  final username = find.text('Username');
-  expect(username, findsWidgets);
-  final usernameIsRequired = find.text('Username is required!');
-  expect(usernameIsRequired, findsWidgets);
-  final submit = find.text('SUBMIT');
-  expect(submit, findsWidgets);
-  final back = find.text('BACK');
-  expect(back, findsWidgets);
-  await tester.enterText(findNthField(0), 'Nathi');
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('BACK'));
-  await tester.pumpAndSettle();
-  expect(find.text('Email'), findsWidgets);
-}
-
 Future<void> _logInAsStudentTests(WidgetTester tester)async{
   final continueAsStudentButton =
   find.byKey(const Key('Continue as Student'));
@@ -225,7 +123,7 @@ Future<void> _logInAsStudentTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(continueAsStudentButton);
+  await tester.tap(continueAsStudentButton, warnIfMissed: false);
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   final witsServices = find.text('Wits Services');
@@ -241,7 +139,7 @@ Future<void> _logInAsStudentTests(WidgetTester tester)async{
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('LOGIN'));
+  await tester.tap(find.text('LOGIN'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
@@ -263,14 +161,14 @@ Future<void> _signInAsStudentTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(continueAsStudentButton);
+  await tester.tap(continueAsStudentButton, warnIfMissed: false);
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   final witsServices = find.text('Wits Services');
   expect(witsServices, findsWidgets);
 
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
+  await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
   await tester.pumpAndSettle();
   await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
   await tester.pumpAndSettle();
@@ -284,14 +182,14 @@ Future<void> _signInAsStudentTests(WidgetTester tester)async{
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
+  await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 1));
   await tester.enterText(findNthField(0), 'Nathi');
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SUBMIT'));
+  await tester.tap(find.text('SUBMIT'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
@@ -313,7 +211,7 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(continueAsStudentButton);
+  await tester.tap(continueAsStudentButton, warnIfMissed: false);
   await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   final witsServices = find.text('Wits Services');
@@ -324,12 +222,12 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
   FocusManager.instance.primaryFocus?.unfocus();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('Forgot Password?'));
+  await tester.tap(find.text('Forgot Password?'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
 
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('RECOVER'));
+  await tester.tap(find.text('RECOVER'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 1));
@@ -337,223 +235,7 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
 
 // App Staff
 
-Future<void> _continueAsStaffTests(WidgetTester tester) async{
-  final continueAsStaffButton = find.byKey(const Key('Continue as Staff'));
-  app.main();
-  SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(milliseconds: 5000));
-  await tester.pumpAndSettle();
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(continueAsStaffButton);
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.pumpAndSettle();
-  final witsServices = find.text('Wits Services');
-  expect(witsServices, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
-  await tester.pumpAndSettle();
-  final confirmPassword = find.text('Confirm Password');
-  expect(confirmPassword, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('Forgot Password?'));
-  await tester.pumpAndSettle();
-  final resetYourPasswordHere = find.text('Reset your password here');
-  expect(resetYourPasswordHere, findsWidgets);
-  final weWillSendALinkToTheEmailAccount =
-  find.text('We will send a link to the email account.');
-  expect(weWillSendALinkToTheEmailAccount, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('RECOVER'));
-  await tester.pumpAndSettle();
-  final invalidEmail = find.text('Invalid email!');
-  expect(invalidEmail, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('BACK'));
-  await tester.pumpAndSettle();
-  final email = find.text('Email');
-  expect(email, findsWidgets);
-  final password = find.text('Password');
-  expect(password, findsWidgets);
-
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
-  await tester.pumpAndSettle();
-  expect(invalidEmail, findsWidgets);
-  final passwordIsTooShort = find.text('Password is too short!');
-  expect(passwordIsTooShort, findsWidgets);
-
-  await tester.pumpAndSettle();
-  await tester.enterText(findNameTextField(), 'a23123456@wits.ac.za');
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.enterText(findPasswordTextField(), '1234567890');
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.enterText(findConfirmPasswordTextField(), '1234567890');
-  await tester.pumpAndSettle();
-  FocusManager.instance.primaryFocus?.unfocus();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'))
-  ;await tester.pumpAndSettle();
-
-  await Future.delayed(const Duration(seconds: 3));
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.pumpAndSettle();
-  final enterUsernameToCompleteSignup = find.text('Enter your username in this form to complete signup');
-  await tester.tap(find.text('SUBMIT'));
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  expect(enterUsernameToCompleteSignup, findsWidgets);
-  final username = find.text('Username');
-  expect(username, findsWidgets);
-  final usernameIsRequired = find.text('Username is required!');
-  expect(usernameIsRequired, findsWidgets);
-  final submit = find.text('SUBMIT');
-  expect(submit, findsWidgets);
-  final back = find.text('BACK');
-  expect(back, findsWidgets);
-  await tester.enterText(findNthField(0), 'Nathi');
-  await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('BACK'));
-  await tester.pumpAndSettle();
-  expect(find.text('Email'), findsWidgets);
-
-  //Recovery
-
-  // final btn = find.text("Forgot Password?");
-  // expect(btn,findsWidgets);
-  // await tester.tap(btn);
-  // await tester.pumpAndSettle();
-  //
-  // await Future.delayed(const Duration(seconds: 2));
-  //
-  // await tester.enterText(findNameTextField(), "a2355285@wits.ac.za");
-  // FocusManager.instance.primaryFocus?.unfocus();
-  // final recoverBtn = find.text("RECOVER");
-  // expect(recoverBtn,findsWidgets);
-  // await tester.tap(recoverBtn);
-  // await tester.pumpAndSettle(const Duration(seconds: 1));
-  // await tester.pump();
-  //
-  // //SignUp
-  //
-  // await Future.delayed(const Duration(seconds: 2));
-  //
-  // final emailTextField = findNameTextField();
-  // final passwordTextField = findPasswordTextField();
-  // final confirmPasswordTextField = findConfirmPasswordTextField();
-  // final signupBtnTextField = find.text("SIGNUP");
-
-
-
-  // expect(emailTextField,findsWidgets);
-  // expect(passwordTextField,findsWidgets);
-  // expect(confirmPasswordTextField,findsWidgets);
-  // // expect(signupBtn,findsWidgets);
-  //
-  // await tester.tap(signupBtnTextField);
-  // await tester.pumpAndSettle();
-  //
-  // await tester.enterText(emailTextField, "");
-  // await tester.enterText(emailTextField, "23552855@students.wits.ac.za");
-  // await tester.enterText(passwordTextField, "23552855");
-  // await tester.enterText(confirmPasswordTextField, "23552855");
-  // await tester.tap(signupBtnTextField);
-  // await tester.pumpAndSettle(const Duration(seconds: 4));
-  //
-  // await tester.enterText(findNameTextField(), "Tester");
-  // await tester.tap(find.text("SUBMIT"));
-  // await tester.pumpAndSettle();
-  // await tester.tap(find.text("BACK"));
-  // await tester.pumpAndSettle();
-  //
-  // //Wrong email
-  // await tester.tap(signupBtnTextField);
-  // await tester.pumpAndSettle();
-  //
-  // await tester.enterText(emailTextField, "");
-  // await tester.enterText(emailTextField, "2355285@gmail.com");
-  // await tester.enterText(passwordTextField, "");
-  // await tester.enterText(passwordTextField, "23552855");
-  // await tester.enterText(confirmPasswordTextField, "");
-  // await tester.enterText(confirmPasswordTextField, "23552855");
-  // await tester.tap(signupBtnTextField);
-  // await tester.pumpAndSettle(const Duration(seconds: 2));
-  //
-  // await tester.enterText(findNameTextField(), "Tester");
-  // await tester.tap(find.text("SUBMIT"));
-  // await tester.pumpAndSettle();
-  // await tester.tap(find.text("BACK"));
-  // await tester.pumpAndSettle();
-  //
-  // //Good
-  //
-  // await tester.tap(signupBtnTextField);
-  // await tester.pumpAndSettle();
-  //
-  // await tester.enterText(emailTextField, "");
-  // await tester.enterText(emailTextField, "2355285@wits.ac.za");
-  // await tester.enterText(passwordTextField, "");
-  // await tester.enterText(passwordTextField, "2355285");
-  // await tester.enterText(confirmPasswordTextField, "");
-  // await tester.enterText(confirmPasswordTextField, "2355285");
-  // await tester.tap(signupBtnTextField);
-  //
-  // await tester.pumpAndSettle();
-  //
-  // await tester.enterText(findNameTextField(), "Sabelo Mabena");
-  // await tester.tap(find.text("SUBMIT"));
-  // await tester.pumpAndSettle();
-  //
-  // //Login
-  // final loginbtn = find.text("LOGIN");
-  //
-  //
-  //
-  // // //student email
-  // await tester.enterText(emailTextField, "");
-  // await tester.enterText(emailTextField, "23552855@students.wits.ac.za");
-  // await tester.enterText(passwordTextField, "23552855");
-  // await tester.tap(loginbtn);
-  // await tester.pumpAndSettle();
-  //
-  // //Incorrect password
-  // await tester.enterText(emailTextField, "");
-  // await tester.enterText(emailTextField, "a2355285@wits.ac.za");
-  // await tester.enterText(passwordTextField, "23555");
-  // await tester.tap(loginbtn);
-  // await tester.pumpAndSettle();
-  //
-  // //Wrong email extension
-  // await tester.enterText(emailTextField, "");
-  // await tester.enterText(emailTextField, "23552855@gmail.com");
-  // await tester.enterText(passwordTextField, "235552855");
-  // await tester.tap(loginbtn);
-  // await tester.pumpAndSettle();
-  //
-  // //Should work
-  // await tester.enterText(emailTextField, "");
-  // await tester.enterText(emailTextField, "a2355285@wits.ac.za");
-  // await tester.enterText(passwordTextField, "2355285");
-  // await tester.tap(loginbtn);
-  // await tester.pumpAndSettle();
-
-  await Future.delayed(const Duration(seconds: 1));
-}
-
 Future<void> _logInAsStaffTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -567,7 +249,7 @@ Future<void> _logInAsStaffTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(continueAsStaff);
+  await tester.tap(continueAsStaff, warnIfMissed: false);
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   final witsServices = find.text('Wits Services');
@@ -583,15 +265,13 @@ Future<void> _logInAsStaffTests(WidgetTester tester)async{
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('LOGIN'));
+  await tester.tap(find.text('LOGIN'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
 }
 
 Future<void> _signInAsStaffTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -605,14 +285,14 @@ Future<void> _signInAsStaffTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(continueAsStaff);
+  await tester.tap(continueAsStaff, warnIfMissed: false);
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   final witsServices = find.text('Wits Services');
   expect(witsServices, findsWidgets);
 
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
+  await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
   await tester.pumpAndSettle();
   await tester.enterText(findNameTextField(), 'a2375736@wits.ac.za');
   await tester.pumpAndSettle();
@@ -626,22 +306,20 @@ Future<void> _signInAsStaffTests(WidgetTester tester)async{
   await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SIGNUP'));
+  await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 1));
   await tester.enterText(findNthField(0), 'Nathi');
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
-  await tester.tap(find.text('SUBMIT'));
+  await tester.tap(find.text('SUBMIT'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
 }
 
 Future<void> _recoverStaffTests(WidgetTester tester)async{
-  final continueAsStudentButton =
-  find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -655,7 +333,7 @@ Future<void> _recoverStaffTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(continueAsStaff);
+  await tester.tap(continueAsStaff, warnIfMissed: false);
   await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   final witsServices = find.text('Wits Services');
@@ -666,12 +344,12 @@ Future<void> _recoverStaffTests(WidgetTester tester)async{
   FocusManager.instance.primaryFocus?.unfocus();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('Forgot Password?'));
+  await tester.tap(find.text('Forgot Password?'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
 
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('RECOVER'));
+  await tester.tap(find.text('RECOVER'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 1));
