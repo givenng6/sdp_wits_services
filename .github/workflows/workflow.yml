@@ -2,7 +2,7 @@ name: Run integration tests
 on: 
   push:
     paths:
-      -'integration_test/**'
+      - 'integration_test/**'
 
 
 jobs:
