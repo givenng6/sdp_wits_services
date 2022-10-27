@@ -1,5 +1,9 @@
 name: Run integration tests
-on: push
+on: 
+  push:
+    paths:
+      -'integration_test/**'
+
 
 jobs:
   integration-tests:
