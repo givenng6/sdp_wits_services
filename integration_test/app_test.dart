@@ -315,9 +315,6 @@ Future<void> _staffTest(WidgetTester tester) async {
   await tester.pumpAndSettle();
   FlutterError.onError = null;
   disableOverflowErrors();
-  await login("a2355285@wits.ac.za", "2355285", tester);
-
-  //CCDU
   String url = "https://sdpwitsservices-production.up.railway.app";
 
   await http.get(Uri.parse("$url/ccdu/TestSetup/Init"),
@@ -325,6 +322,11 @@ Future<void> _staffTest(WidgetTester tester) async {
         "Accept": "application/json",
         "Content-Type": "application/json; charset=UTF-8"
       });
+
+  await login("a2355285@wits.ac.za", "2355285", tester);
+
+  //CCDU
+
 
   await tester.pump(const Duration(seconds: 1));
 
