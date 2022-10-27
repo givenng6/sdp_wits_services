@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/main.dart' as app;
@@ -27,14 +28,15 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   disableOverflowErrors();
   await preferences.clear();
   await tester.pumpAndSettle();
-  await tester.pump(const Duration(milliseconds: 7500));
+  await tester.pump(const Duration(seconds: 10));
+  await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
 
   await _login(tester);
   await _buses(tester);
   await _diningHall(tester);
   await _protection(tester);
-//   await _events(tester);
+  await _events(tester);
   await _ccdu(tester);
   await _campusHealth(tester);
   await _profile(tester);
@@ -94,7 +96,7 @@ Future<void> _buses(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('status3')), warnIfMissed: false);
+  await tester.tap(find.byType(Buses), warnIfMissed: false);
   await tester.pumpAndSettle();
 }
 
@@ -189,7 +191,6 @@ Future<void> _protection(WidgetTester tester) async {
 }
 
 Future<void> _events(WidgetTester tester) async {
-  await tester.pump(const Duration(seconds: 5));
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('Menu'), warnIfMissed: false);
@@ -200,24 +201,25 @@ Future<void> _events(WidgetTester tester) async {
   await tester.tap(find.text('Events'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
-  await tester.scrollUntilVisible(find.byKey(const Key('like0')), 10.0);
+  await tester.pump(const Duration(seconds: 5));
+  await tester.scrollUntilVisible(find.byKey(const Key('like0')), 10.0).then((_) async{
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+    await tester.tap(find.byKey(const Key('like0')), warnIfMissed: false);
+    await tester.pumpAndSettle();
+  });
 
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('like0')), warnIfMissed: false);
-  await tester.pumpAndSettle();
+  await tester.scrollUntilVisible(find.byKey(const Key('image1')), 10.0).then((value) async {
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+    await tester.tap(find.byKey(const Key('image1')), warnIfMissed: false);
+    await tester.pumpAndSettle();
 
-  await tester.scrollUntilVisible(find.byKey(const Key('image1')), 10.0);
-
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('image1')), warnIfMissed: false);
-  await tester.pumpAndSettle();
-
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byIcon(Icons.close), warnIfMissed: false);
-  await tester.pumpAndSettle();
+    await tester.pumpAndSettle();
+    await tester.pump(const Duration(seconds: 1));
+    await tester.tap(find.byIcon(Icons.close), warnIfMissed: false);
+    await tester.pumpAndSettle();
+  });
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -228,7 +230,7 @@ Future<void> _events(WidgetTester tester) async {
 Future<void> _ccdu(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('Menu'), warnIfMissed: false);
+  // await tester.tap(find.text('Menu'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
@@ -310,6 +312,7 @@ Future<void> _profile(WidgetTester tester) async {
 Future<void> _staffTest(WidgetTester tester) async {
 
   app.main();
+  await tester.pumpAndSettle();
   await login("a2355285@wits.ac.za", "2355285", tester);
 
   //CCDU
@@ -634,7 +637,8 @@ Future<void> login(String email, String password, tester) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
   await tester.pumpAndSettle();
-  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pump(const Duration(seconds: 10));
+  await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   final continueAsStaff = find.text('Continue as Staff');
 
