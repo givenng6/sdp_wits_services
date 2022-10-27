@@ -19,6 +19,8 @@ void main() {
     testWidgets("Stuff app", _staffTest);
     testWidgets("students app", _studentsAppTest);
     testWidgets("staffs app", _signInAsStaffTests);
+    testWidgets("_recover email student", _recoverStudentTests);
+    testWidgets("_recover email staff", _recoverStaffTests);
   });
 }
 
@@ -773,6 +775,72 @@ Future<void> _signInAsStaffTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
   await tester.tap(find.text('SUBMIT'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
+}
+
+// Recover
+Future<void> _recoverStudentTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
+  await tester.tap(continueAsStudentButton, warnIfMissed: false);
+  await tester.pump(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+
+  await tester.enterText(findNameTextField(), '23123456@students.wits.ac.za');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Forgot Password?'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('RECOVER'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
+}
+
+Future<void> _recoverStaffTests(WidgetTester tester)async{
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStaff = find.text('Continue as Staff');
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
+  await tester.tap(continueAsStaff, warnIfMissed: false);
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+
+  await tester.enterText(findNameTextField(), 'a23123456@wits.ac.za');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Forgot Password?'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('RECOVER'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
