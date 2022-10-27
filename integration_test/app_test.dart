@@ -14,7 +14,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end app test", () {
     testWidgets("students app", _studentsAppTest);
-    testWidgets("Stuff app", _staffTest);
+    // testWidgets("Stuff app", _staffTest);
   });
 }
 
@@ -31,7 +31,7 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   await _buses(tester);
   await _diningHall(tester);
 //   await _protection(tester);
-  await _events(tester);
+//   await _events(tester);
   await _ccdu(tester);
   await _campusHealth(tester);
   await _profile(tester);
