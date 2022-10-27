@@ -524,18 +524,27 @@ Future<void> _staffTest(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 2));
 
   // Events
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text("Events"));
   await tester.pumpAndSettle();
 
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.byKey(const Key("like0")));
   await tester.pumpAndSettle();
 
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.byKey(const Key("like0")));
   await tester.pumpAndSettle();
 
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text("Add Event"));
   await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
+
 
   await tester.enterText(find.byKey(const Key("titleTextField")), "Test Title");
   await tester.pumpAndSettle();
@@ -544,26 +553,43 @@ Future<void> _staffTest(WidgetTester tester) async {
 
   FocusManager.instance.primaryFocus?.unfocus();
 
+  await tester.pumpAndSettle();
   await tester.pumpAndSettle(const Duration(seconds: 3));
   await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text("Event Type"),warnIfMissed: false);
   await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text("Event Type"),warnIfMissed: false);
   await tester.pumpAndSettle();
 
 
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text("Event Date"));
   await tester.pumpAndSettle();
 
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text("OK"));
   await tester.pumpAndSettle();
 
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text("Event Time"));
   await tester.pumpAndSettle();
 
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text("OK"));
   await tester.pumpAndSettle();
 
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
   await tester.tap(find.text("Post"));
   await tester.pump(const Duration(seconds: 5));
   await tester.pumpAndSettle();
