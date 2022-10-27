@@ -24,7 +24,10 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   await _login(tester);
   // await _buses(tester);
   // await _diningHall(tester);
-  await _protection(tester);
+  // await _protection(tester);
+  // await _events(tester);
+  // await _ccdu(tester);
+  await _campusHealth(tester);
 
   await tester.pump(const Duration(seconds: 10));
   await preferences.clear();
@@ -174,26 +177,95 @@ Future<void> _events(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 5));
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Menu'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('Events'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('follow0')), warnIfMissed: false);
+  await tester.tap(find.byKey(const Key('like0')), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('follow1')), warnIfMissed: false);
+  await tester.tap(find.byKey(const Key('image0')), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('card0')), warnIfMissed: false);
+  await tester.tap(find.byIcon(Icons.close), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byType(Icon), warnIfMissed: false);
+  await tester.tap(find.byIcon(Icons.arrow_back), warnIfMissed: false);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _ccdu(WidgetTester tester) async {
+  await tester.pump(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Menu'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Counselling Careers Development Unit'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('New Session'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Submit'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byIcon(Icons.arrow_back), warnIfMissed: false);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _campusHealth(WidgetTester tester) async {
+  await tester.pump(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Menu'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Campus Health'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byIcon(Icons.arrow_back), warnIfMissed: false);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _profile(WidgetTester tester) async {
+  await tester.pump(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Menu'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('G'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byIcon(Icons.arrow_back), warnIfMissed: false);
   await tester.pumpAndSettle();
 }
