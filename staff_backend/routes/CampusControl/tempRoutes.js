@@ -10,9 +10,9 @@ import {
   arrayRemove,
   setDoc,
   deleteDoc,
-  deleteField
+  deleteField,
 } from "firebase/firestore";
-import {data} from './tempData.js';
+import { data } from "./tempData.js";
 
 const router = express.Router();
 
@@ -40,44 +40,45 @@ router.post("/addCampus", async (req, res) => {
 });
 
 router.get("/AddStudents", async (req, res) => {
+  const workingRef = doc(db, "CampusControl", "Working");
+  await updateDoc(workingRef, {
+    unavailableCars: arrayRemove("KSD 731 GP"),
+    takenCampus: arrayRemove("Business School"),
+  });
 
-    const workingRef = doc(db, "CampusControl", "Working");
-    await updateDoc(workingRef, {
-      unavailableCars: arrayRemove("KSD 731 GP"),
-      takenCampus: arrayRemove("Business School"),
-    });
- 
-    const {students,campusName} = data;
-    const ref = doc(db, "CampusControl", campusName);
-    for (const student of students) {
-      var email = student.email.split("@")[0];
-      await updateDoc(ref, { [`students.${email}`]: student });
-      const ridesRef = doc(db,"Rides",student.email);
-      await setDoc(ridesRef,student);
-    }
-    res.send("");
-  
-});
-
-router.get("/RemoveStudents", async (req, res) => {
-  const {students,campusName} = data;
-
-    const ref = doc(db, "CampusControl", campusName);
-    for (const student of students) {
-      var email = student.email.split("@")[0];
-      await updateDoc(ref, { [`students.${email}`]:deleteField() });
-      const ridesRef = doc(db,"Rides",student.email);
-      await deleteDoc(ridesRef);
+  const { students, campusName } = data;
+  const ref = doc(db, "CampusControl", campusName);
+  for (const student of students) {
+    var email = student.email.split("@")[0];
+    await updateDoc(ref, { [`students.${email}`]: student });
+    const ridesRef = doc(db, "Rides", student.email);
+    await setDoc(ridesRef, student);
   }
   res.send("");
 });
 
+router.get("/RemoveStudents", async (req, res) => {
+  const { students, campusName } = data;
+
+  const ref = doc(db, "CampusControl", campusName);
+  for (const student of students) {
+    var email = student.email.split("@")[0];
+    await updateDoc(ref, { [`students.${email}`]: deleteField() });
+    const ridesRef = doc(db, "Rides", student.email);
+    await deleteDoc(ridesRef);
+  }
+  await updateDoc(doc(db, "Users", "a2355285@wits.ac.za"), {
+    department: "CCDU",
+  });
+  res.send("");
+});
+
 router.post("/RemoveDep", async (req, res) => {
-  const {email} = req.body;
+  const { email } = req.body;
 
   const ref = doc(db, "Users", email);
-  await updateDoc(ref,{department:deleteField()});
-    
+  await updateDoc(ref, { department: deleteField() });
+
   res.send("");
 });
 
