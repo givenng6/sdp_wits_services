@@ -183,6 +183,7 @@ Future<void> _protection(WidgetTester tester) async {
 }
 
 Future<void> _events(WidgetTester tester) async {
+  await tester.pump(const Duration(seconds: 5));
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('Menu'), warnIfMissed: false);
@@ -673,7 +674,7 @@ void disableOverflowErrors() {
                 (e) => e.value.toString().startsWith("A RenderFlex overflowed by"));
 
     if (isOverflowError) {
-      print(details);
+      print("A RenderFlex overflowed by");
     } else {
       FlutterError.presentError(details);
     }
