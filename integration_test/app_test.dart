@@ -13,8 +13,8 @@ import 'utils.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end app test", () {
-    testWidgets("students app", _studentsAppTest);
     testWidgets("Stuff app", _staffTest);
+    testWidgets("students app", _studentsAppTest);
   });
 }
 
