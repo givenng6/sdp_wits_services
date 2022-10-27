@@ -18,11 +18,11 @@ class Health extends HookWidget{
     data = [email, title, service];
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Campus Health'), backgroundColor: Color(0xff003b5c),),
+      appBar: AppBar(title: const Text('Campus Health'), backgroundColor: const Color(0xff003b5c),),
       body: isSubscribed.value
           ? SingleChildScrollView(
         child: Column(
-          children: [
+          children: const [
             Text('Sub'),
           ],
         ),

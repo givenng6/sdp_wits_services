@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/main.dart' as app;
 import 'package:http/http.dart' as http;
@@ -157,14 +158,8 @@ Future<void> _protection(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('Book'), warnIfMissed: false);
+  await tester.tap(find.byType(Protection), warnIfMissed: false);
   await tester.pumpAndSettle();
-
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('About Protection Services')), warnIfMissed: false);
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
 
   // await tester.pumpAndSettle();
   // await tester.pump(const Duration(seconds: 1));

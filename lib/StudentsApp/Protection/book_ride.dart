@@ -18,7 +18,7 @@ class BookRide extends StatefulWidget {
 
 class _BookRideState extends State<BookRide> {
   double initialChildSize = 0.3;
-  double minChildSize = 0.2;
+  double minChildSize = 0.3;
   double maxChildSize = 0.95;
 
   String? from;
@@ -45,6 +45,7 @@ class _BookRideState extends State<BookRide> {
     username = context.watch<UserData>().username;
     return makeDismissible(
       child: DraggableScrollableSheet(
+        key: const Key('BottomSheet'),
         initialChildSize: initialChildSize,
         minChildSize: minChildSize,
         maxChildSize: maxChildSize,
