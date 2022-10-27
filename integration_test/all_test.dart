@@ -178,18 +178,17 @@ Future<void> _logInAsStudentTests(WidgetTester tester)async{
   find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
+  await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 5000));
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
-  await tester.pumpAndSettle(const Duration(seconds: 10));
+  await tester.pumpAndSettle(const Duration(seconds: 5));
   await tester.tap(continueAsStudentButton, warnIfMissed: false);
-  await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
 
-  await tester.pumpAndSettle(const Duration(seconds: 10));
+  await tester.pumpAndSettle(const Duration(seconds: 5));
   await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
@@ -203,6 +202,7 @@ Future<void> _logInAsStudentTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _signInAsStudentTests(WidgetTester tester)async{
@@ -210,17 +210,18 @@ Future<void> _signInAsStudentTests(WidgetTester tester)async{
   find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
+  await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 5000));
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
+  await tester.pump(const Duration(milliseconds: 5000));
   await tester.tap(continueAsStudentButton, warnIfMissed: false);
   await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
 
-  await Future.delayed(const Duration(seconds: 1));
   await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
   await tester.pumpAndSettle();
   await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
@@ -246,6 +247,7 @@ Future<void> _signInAsStudentTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _recoverStudentTests(WidgetTester tester)async{
@@ -253,15 +255,15 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
   find.byKey(const Key('Continue as Student'));
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
+  await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 5000));
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
   await tester.tap(continueAsStudentButton, warnIfMissed: false);
-  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
   await tester.pumpAndSettle();
 
   await tester.enterText(findNameTextField(), '23123456@students.wits.ac.za');
@@ -277,7 +279,8 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
   await tester.tap(find.text('RECOVER'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 // App Staff
@@ -285,17 +288,18 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
 Future<void> _logInAsStaffTests(WidgetTester tester)async{
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
+  await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 5000));
   await tester.pumpAndSettle();
   final continueAsStaff = find.text('Continue as Staff');
 
   await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
   await tester.tap(continueAsStaff, warnIfMissed: false);
-  await Future.delayed(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
   await tester.pumpAndSettle();
+
 
   await tester.pumpAndSettle();
   await tester.enterText(findNameTextField(), 'a2375736@wits.ac.za');
@@ -311,21 +315,21 @@ Future<void> _logInAsStaffTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _signInAsStaffTests(WidgetTester tester)async{
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
+  await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 5000));
   await tester.pumpAndSettle();
   final continueAsStaff = find.text('Continue as Staff');
 
   await tester.pumpAndSettle();
-  await Future.delayed(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
   await tester.tap(continueAsStaff, warnIfMissed: false);
-  await Future.delayed(const Duration(seconds: 1));
   await tester.pumpAndSettle();
 
   await Future.delayed(const Duration(seconds: 1));
@@ -354,19 +358,20 @@ Future<void> _signInAsStaffTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
 
   await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _recoverStaffTests(WidgetTester tester)async{
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  preferences.clear();
+  await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 5000));
   await tester.pumpAndSettle();
   final continueAsStaff = find.text('Continue as Staff');
 
   await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
   await tester.tap(continueAsStaff, warnIfMissed: false);
   await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
@@ -384,7 +389,8 @@ Future<void> _recoverStaffTests(WidgetTester tester)async{
   await tester.tap(find.text('RECOVER'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 // Buses
@@ -412,17 +418,14 @@ Future<void> _unSubbedBusesTests(WidgetTester tester)async{
     ChangeNotifierProvider(create: (_) => Subscriptions()),
     ChangeNotifierProvider(create: (_) => UserData()),
   ],
-    child: const MaterialApp(home: Buses()),
+    child: const GetMaterialApp(home: Buses()),
   );
 
   await tester.pumpWidget(widget);
 
   await tester.pumpAndSettle();
-
-  await tester.pumpAndSettle();
-
-  await tester.pump(const Duration(seconds: 3));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _subbedBusesTests(WidgetTester tester)async{
@@ -473,14 +476,14 @@ Future<void> _subbedBusesTests(WidgetTester tester)async{
           context.read<Subscriptions>().updateBusFollowing(busFollowing);
         });
       }set();
-      return const MaterialApp(home: Buses());
+      return const GetMaterialApp(home: Buses());
     },
   );
 
   await tester.pumpWidget(widget);
   await tester.pumpAndSettle(const Duration(seconds: 3));
 
-  await tester.pump(const Duration(seconds: 15));
+  await tester.pump(const Duration(seconds: 5));
 }
 
 Future<void> _busesTests(WidgetTester tester) async{
@@ -493,7 +496,7 @@ Future<void> _busesTests(WidgetTester tester) async{
   preferences.setBool('onShift', onShift);
   await tester.pump();
 
-  Widget widget = MaterialApp(
+  Widget widget = GetMaterialApp(
     builder: (_,__){
       final busesController = Get.put(BusesController());
       busesController.getSharedPreferences();
@@ -516,7 +519,7 @@ Future<void> _busesTests(WidgetTester tester) async{
   await Future.delayed(const Duration(seconds: 1));
   await tester.tap(find.text("End Shift"), warnIfMissed: false);
   await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 2));
+  await tester.pump(const Duration(seconds: 5));
 }
 
 // Dashboard
@@ -609,7 +612,7 @@ Future<void> _dashboardTests(WidgetTester tester) async {
         context.read<Subscriptions>().setDiningHalls(diningHalls);
       }set();
       Get.put(EventsController());
-      return const MaterialApp(home: Dashboard(),);
+      return const GetMaterialApp(home: Dashboard(),);
     },
   );
 
@@ -617,8 +620,8 @@ Future<void> _dashboardTests(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 0));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _diningBreakfastTests(WidgetTester tester) async {
@@ -674,7 +677,7 @@ Future<void> _diningBreakfastTests(WidgetTester tester) async {
         context.read<Subscriptions>().setDiningHalls(diningHalls);
       }set();
       Get.put(EventsController());
-      return const MaterialApp(home: Dashboard(),);
+      return const GetMaterialApp(home: Dashboard(),);
     },
   );
 
@@ -682,8 +685,8 @@ Future<void> _diningBreakfastTests(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 0));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _diningLunchTests(WidgetTester tester)async{
@@ -739,7 +742,7 @@ Future<void> _diningLunchTests(WidgetTester tester)async{
         context.read<Subscriptions>().setDiningHalls(diningHalls);
       }set();
       Get.put(EventsController());
-      return const MaterialApp(home: Dashboard(),);
+      return const GetMaterialApp(home: Dashboard(),);
     },
   );
 
@@ -747,8 +750,8 @@ Future<void> _diningLunchTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 0));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 // Dining
@@ -797,12 +800,13 @@ Future<void> _studentDiningTests(WidgetTester tester) async{
         context.read<Subscriptions>().setDiningHalls(diningHalls);
         context.read<Subscriptions>().updateDHFollowing('DH4');
       }set();
-      return const MaterialApp(home: Dining(),);
+      return const GetMaterialApp(home: Dining(),);
     },
   );
 
   await tester.pumpWidget(widget);
   await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
 }
 
 Future<void> _staffDiningTests(WidgetTester tester) async{
@@ -815,7 +819,7 @@ Future<void> _staffDiningTests(WidgetTester tester) async{
   preferences.setString('dhName', dhName);
   await tester.pump();
 
-  Widget widget = const MaterialApp(
+  Widget widget = const GetMaterialApp(
     home: mealSelecionPage(),
   );
   debugPrint('here');
@@ -831,7 +835,8 @@ Future<void> _staffDiningTests(WidgetTester tester) async{
   await tester.tap(findDinnerText);
   await tester.pumpAndSettle();
 
-  preferences.clear();
+  await preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
 }
 
 // Profile
@@ -861,7 +866,7 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
         }
       }set();
 
-      return const MaterialApp(
+      return const GetMaterialApp(
           home: students.Profile());
     },
   );
@@ -892,9 +897,9 @@ Future<void> _studentsProfileTests(WidgetTester tester)async{
   await tester.tap(find.text('Sign Out'));
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
 
-  preferences.clear();
+  await preferences.clear();
 }
 
 Future<void> _staffProfileTests(WidgetTester tester)async{
@@ -906,7 +911,7 @@ Future<void> _staffProfileTests(WidgetTester tester)async{
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
 
-  Widget widget = MaterialApp(
+  Widget widget = GetMaterialApp(
     home: staff.Profile(email, username),
   );
   await tester.pumpWidget(widget);
@@ -933,8 +938,8 @@ Future<void> _staffProfileTests(WidgetTester tester)async{
   await tester.tap(find.text('Sign Out'));
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 1));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 // Staff Dining
@@ -952,15 +957,15 @@ Future<void> _selectDHtest(WidgetTester tester)async{
 
   await tester.pumpWidget(HookBuilder(builder: (context) {
 
-    return const MaterialApp(home: SelectDH());
+    return const GetMaterialApp(home: SelectDH());
   }));
 
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 0));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _selectItems(WidgetTester tester) async {
@@ -988,8 +993,7 @@ Future<void> _selectItems(WidgetTester tester) async {
 
   await globals.getMenus();
 
-
-  await tester.pumpWidget(MaterialApp(
+  await tester.pumpWidget(GetMaterialApp(
     home: SelectOptionItems(
       package: package,
       type: "breakfast",
@@ -998,8 +1002,8 @@ Future<void> _selectItems(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 3));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 // Students Dining
@@ -1042,7 +1046,7 @@ Future<void> _unSubbedDiningTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: const MaterialApp(
+    child: const GetMaterialApp(
         home: Dining()),
   );
 
@@ -1052,8 +1056,8 @@ Future<void> _unSubbedDiningTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 3));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _subbedDiningTests(WidgetTester tester)async{
@@ -1094,8 +1098,8 @@ Future<void> _subbedDiningTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: MaterialApp(
-        home: Dining(isTesting: true, email: email, diningHalls: diningHalls,)),
+    child: GetMaterialApp(
+        home: Dining()),
   );
 
   await tester.pumpWidget(widget);
@@ -1103,8 +1107,8 @@ Future<void> _subbedDiningTests(WidgetTester tester)async{
 
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 3));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 Future<void> _mainDiningTests(WidgetTester tester)async{
@@ -1141,15 +1145,15 @@ Future<void> _mainDiningTests(WidgetTester tester)async{
   await tester.pump(const Duration(seconds: 1));
 
   await tester.pumpWidget(HookBuilder(builder: (context) {
-    return MaterialApp(home: ViewDH(diningHalls[0]));
+    return GetMaterialApp(home: ViewDH(diningHalls[0]));
   }));
 
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 10));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 //Campus Control Staff
@@ -1174,7 +1178,7 @@ Future<void> _campusControlTest(WidgetTester tester) async {
 
   await tester.pump(const Duration(seconds: 1));
 
-  await tester.pumpWidget(const MaterialApp(home: CampusControl()));
+  await tester.pumpWidget(const GetMaterialApp(home: CampusControl()));
 
   await localGlobals.GetVehicles();
 
@@ -1244,8 +1248,8 @@ Future<void> _campusControlTest(WidgetTester tester) async {
     "Content-Type": "application/json; charset=UTF-8",
   });
 
-  // await tester.pump(const Duration(seconds: 0));
-  preferences.clear();
+  await preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
 }
 
 //
@@ -1257,7 +1261,7 @@ Future<void> _selectDepTest(WidgetTester tester) async {
   await main_globals.getSharedPreferences();
 
   await tester.pumpWidget(HookBuilder(builder: (context) {
-    return const MaterialApp(home: StaffPage());
+    return const GetMaterialApp(home: StaffPage());
   }));
 
   await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -1332,8 +1336,8 @@ Future<void> _selectDepTest(WidgetTester tester) async {
   await tester.tap(confirmBtn);
   await tester.pumpAndSettle(const Duration(seconds: 1));
 
-  sharedPreferences.clear();
-
+  await sharedPreferences.clear();
+  await tester.pump(const Duration(seconds: 5));
 }
 
 Future<void> _checkBuses(WidgetTester tester) async {
@@ -1343,7 +1347,7 @@ Future<void> _checkBuses(WidgetTester tester) async {
   await main_globals.getSharedPreferences();
 
   await tester.pumpWidget(HookBuilder(builder: (context) {
-    return const MaterialApp(home: StaffPage());
+    return const GetMaterialApp(home: StaffPage());
   }));
 
   await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -1354,8 +1358,8 @@ Future<void> _checkBuses(WidgetTester tester) async {
   await tester.pumpAndSettle(const Duration(seconds: 3));
 
   await tester.pumpAndSettle();
-  sharedPreferences.clear();
-
+  await sharedPreferences.clear();
+  await tester.pump(const Duration(seconds: 5));
 }
 
 Future<void> _checkCampusControl(WidgetTester tester) async {
@@ -1365,7 +1369,7 @@ Future<void> _checkCampusControl(WidgetTester tester) async {
   await main_globals.getSharedPreferences();
 
   await tester.pumpWidget(HookBuilder(builder: (context) {
-    return const MaterialApp(home: StaffPage());
+    return const GetMaterialApp(home: StaffPage());
   }));
 
   await tester.pumpAndSettle(const Duration(seconds: 1));
@@ -1376,7 +1380,8 @@ Future<void> _checkCampusControl(WidgetTester tester) async {
   await tester.pumpAndSettle(const Duration(seconds: 3));
 
   await tester.pumpAndSettle();
-  sharedPreferences.clear();
+  await sharedPreferences.clear();
+  await tester.pump(const Duration(seconds: 5));
 }
 
 // Campus Control Students
@@ -1387,15 +1392,14 @@ Future<void> _campusControlUnsubscribedTest(WidgetTester tester) async {
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: const MaterialApp(home: Protection()),
+    child: const GetMaterialApp(home: Protection()),
   );
 
   await tester.pumpWidget(widget);
 
   await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 2));
 
-  await tester.pump(const Duration(seconds: 2));
+  await tester.pump(const Duration(seconds: 5));
 }
 
 Future<void> _campusControlSubscribedTest(WidgetTester tester) async {
@@ -1413,7 +1417,7 @@ Future<void> _campusControlSubscribedTest(WidgetTester tester) async {
       final busesController = Get.put(BusesController());
       busesController.getSharedPreferences();
       busesController.getRoutes();
-      return const MaterialApp(home: Protection());
+      return const GetMaterialApp(home: Protection());
     },
   );
 
@@ -1440,7 +1444,7 @@ Future<void> _campusControlSubscribedTest(WidgetTester tester) async {
   await tester.tap(find.text('To'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 1));
+  await tester.pump(const Duration(seconds: 5));
 }
 
 // CCDU Students
@@ -1451,7 +1455,7 @@ Future<void> _ccduUnsubscribedTest(WidgetTester tester) async {
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: const MaterialApp(home: CCDU()),
+    child: const GetMaterialApp(home: CCDU()),
   );
 
   await tester.pumpWidget(widget);
@@ -1483,7 +1487,7 @@ Future<void> _ccduSubscribedTest(WidgetTester tester) async {
             'Online');
         context.read<Subscriptions>().addCCDUBooking(session);
       }set();
-      return const MaterialApp(home: CCDU());
+      return const GetMaterialApp(home: CCDU());
     },
   );
 
@@ -1510,7 +1514,7 @@ Future<void> _ccduSubscribedTest(WidgetTester tester) async {
   await tester.tap(find.text('Submit'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 2));
+  await tester.pump(const Duration(seconds: 5));
 }
 
 Future<void> _ccduStaffTests(WidgetTester tester) async {
@@ -1531,7 +1535,7 @@ Future<void> _ccduStaffTests(WidgetTester tester) async {
         "Content-Type": "application/json; charset=UTF-8"
       });
 
-  await tester.pumpWidget(const MaterialApp(home: CCDU()));
+  await tester.pumpWidget(const GetMaterialApp(home: CCDU()));
   await tester.pump(const Duration(seconds: 1));
 
   final profile = find.text("S");
@@ -1571,8 +1575,8 @@ Future<void> _ccduStaffTests(WidgetTester tester) async {
         "Accept": "application/json",
         "Content-Type": "application/json; charset=UTF-8"
       });
-  await tester.pump(const Duration(seconds: 1));
-  preferences.clear();
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 // Start
@@ -1583,15 +1587,13 @@ Future<void> _start(WidgetTester tester) async {
       ChangeNotifierProvider(create: (_) => Subscriptions()),
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
-    child: MaterialApp(home: Start(email: '2375736@students.wits.ac.za', username: 'Nathi',)),
+    child: GetMaterialApp(home: Start(email: '2375736@students.wits.ac.za', username: 'Nathi',)),
   );
 
   await tester.pumpWidget(widget);
 
   await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 20));
-
-  await tester.pump(const Duration(seconds: 2));
+  await tester.pump(const Duration(seconds: 5));
 }
 
 // Events
@@ -1634,7 +1636,7 @@ Future<void> _eventsStudents(WidgetTester tester) async {
       final busesController = Get.put(BusesController());
       busesController.getSharedPreferences();
       busesController.getRoutes();
-      return const MaterialApp(home: studentsEvents.Events());
+      return const GetMaterialApp(home: studentsEvents.Events());
     },
   );
 
@@ -1649,5 +1651,5 @@ Future<void> _eventsStudents(WidgetTester tester) async {
   await tester.tap(find.byKey(const Key('image0')), warnIfMissed: false);
   await tester.pumpAndSettle();
 
-  await tester.pump(const Duration(seconds: 10));
+  await tester.pump(const Duration(seconds: 5));
 }

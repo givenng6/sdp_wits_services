@@ -126,6 +126,8 @@ Future<void> _protection(WidgetTester tester) async {
   await tester.tap(find.text('Book Ride'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
+  await tester.pump(const Duration(seconds: 5));
+
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('From'), warnIfMissed: false);
@@ -151,6 +153,10 @@ Future<void> _protection(WidgetTester tester) async {
   await tester.tap(find.text('Book'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
+  await tester.pump(const Duration(seconds: 5));
+  await Future.delayed(const Duration(seconds: 5));
+  await tester.pump(const Duration(seconds: 5));
+
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('Cancel Ride'), warnIfMissed: false);
@@ -170,6 +176,7 @@ Future<void> _protection(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.byKey(const Key('Cancel Ride')), warnIfMissed: false);
   await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
 }
 
 Future<void> _events(WidgetTester tester) async {
