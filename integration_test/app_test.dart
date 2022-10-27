@@ -22,6 +22,7 @@ void main() {
 Future<void> _studentsAppTest(WidgetTester tester) async {
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
+  FlutterError.onError = null;
   await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 7500));
@@ -77,19 +78,21 @@ Future<void> _buses(WidgetTester tester) async {
   await tester.tap(find.byKey(const Key('follow1')), warnIfMissed: false);
   await tester.pumpAndSettle();
 
+  await tester.scrollUntilVisible(find.byKey(const Key('follow3')), 10.0);
+
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('follow2')), warnIfMissed: false);
+  await tester.tap(find.byKey(const Key('follow3')), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('status0')), warnIfMissed: false);
+  await tester.tap(find.byKey(const Key('status3')), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('status0')), warnIfMissed: false);
+  await tester.tap(find.byKey(const Key('status3')), warnIfMissed: false);
   await tester.pumpAndSettle();
 }
 
@@ -189,14 +192,18 @@ Future<void> _events(WidgetTester tester) async {
   await tester.tap(find.text('Events'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
+  await tester.scrollUntilVisible(find.byKey(const Key('like0')), 10.0);
+
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.byKey(const Key('like0')), warnIfMissed: false);
   await tester.pumpAndSettle();
 
+  await tester.scrollUntilVisible(find.byKey(const Key('image1')), 10.0);
+
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('image0')), warnIfMissed: false);
+  await tester.tap(find.byKey(const Key('image1')), warnIfMissed: false);
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();

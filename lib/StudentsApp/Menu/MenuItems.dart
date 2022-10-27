@@ -105,10 +105,7 @@ class _MenuItems extends State<MenuItems> {
         ),
         child: Row(
           children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 12, 0),
-              child:  Icon(cardNames[index].icon, color: Colors.blue,),
-            ),
+            Icon(cardNames[index].icon, color: Colors.blue,),
             Text(cardNames[index].title, style: const TextStyle(fontWeight: FontWeight.bold),)
           ],
         ),
