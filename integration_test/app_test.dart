@@ -697,7 +697,7 @@ void disableOverflowErrors() {
     if (isOverflowError) {
       debugPrint("A RenderFlex overflowed");
     } else {
-      debugPrint("Some Other Errors Occurred");
+      FlutterError.presentError(details);
     }
   };
 }
