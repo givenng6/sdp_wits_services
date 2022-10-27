@@ -213,6 +213,11 @@ Future<void> _events(WidgetTester tester) async {
 Future<void> _ccdu(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Menu'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('Counselling Careers Development Unit'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
