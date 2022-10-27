@@ -92,7 +92,7 @@ app.use("/CampusControl",Working);
 app.use("/Students",Students);
 
 //CCDU
-main();
+//main();
 app.use("/ccdu",Appointments);
 app.use("/ccdu/TestSetup",TestSetup);
 
