@@ -21,15 +21,18 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   await tester.pump(const Duration(milliseconds: 7500));
   await tester.pumpAndSettle();
 
-  await login(tester);
-  await buses(tester);
+  await _login(tester);
+  // await _buses(tester);
+  // await _diningHall(tester);
+  await _protection(tester);
 
   await tester.pump(const Duration(seconds: 10));
   await preferences.clear();
 }
 
-Future<void> login(WidgetTester tester) async{
+Future<void> _login(WidgetTester tester) async{
   final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
+  await tester.pump(const Duration(seconds: 5));
   await tester.pumpAndSettle();
   await tester.tap(continueAsStudentButton, warnIfMissed: false);
   await tester.pumpAndSettle();
@@ -48,7 +51,7 @@ Future<void> login(WidgetTester tester) async{
   await tester.pumpAndSettle();
 }
 
-Future<void> buses(WidgetTester tester) async {
+Future<void> _buses(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 5));
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -78,5 +81,119 @@ Future<void> buses(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.byKey(const Key('status0')), warnIfMissed: false);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _diningHall(WidgetTester tester) async {
+  await tester.pump(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Dining Hall'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byKey(const Key('follow0')), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byKey(const Key('follow1')), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byKey(const Key('card0')), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byType(Icon), warnIfMissed: false);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _protection(WidgetTester tester) async {
+  // await tester.pump(const Duration(seconds: 2));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Protection'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Book Ride'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('From'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('From'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('To'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('To'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Book'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Cancel Ride'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Go Back'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Cancel Ride'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byKey(const Key('Cancel Ride')), warnIfMissed: false);
+  await tester.pumpAndSettle();
+}
+
+Future<void> _events(WidgetTester tester) async {
+  await tester.pump(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Events'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byKey(const Key('follow0')), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byKey(const Key('follow1')), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byKey(const Key('card0')), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byType(Icon), warnIfMissed: false);
   await tester.pumpAndSettle();
 }

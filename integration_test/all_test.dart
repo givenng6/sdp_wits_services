@@ -1099,7 +1099,7 @@ Future<void> _subbedDiningTests(WidgetTester tester)async{
       ChangeNotifierProvider(create: (_) => UserData()),
     ],
     child: GetMaterialApp(
-        home: Dining(isTesting: true, email: email, diningHalls: diningHalls,)),
+        home: Dining()),
   );
 
   await tester.pumpWidget(widget);
