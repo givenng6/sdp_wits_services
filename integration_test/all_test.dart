@@ -41,57 +41,123 @@ import 'utils.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
-  group("end-to-end app test", () {
-    // App Student
+
+  // App Student
+  group('1', () {
     testWidgets("login as student", _logInAsStudentTests);
+  });
+  group('1', () {
     testWidgets("signIn as student", _signInAsStudentTests);
+  });
+  group('1', () {
     testWidgets("_recover email student", _recoverStudentTests);
+  });
 
-    // App Staff
+  // App Staff
+  group('1', () {
     testWidgets("login as staff", _logInAsStaffTests);
+  });
+  group('1', () {
     testWidgets("signIn as staff", _signInAsStaffTests);
+  });
+  group('1', () {
     testWidgets("_recover email staff", _recoverStaffTests);
+  });
 
-    // Buses
+  // Buses
+  group('1', () {
     testWidgets('unsubscribed student buses main', _unSubbedBusesTests);
+  });
+  group('1', () {
     testWidgets('subscribed student buses main', _subbedBusesTests);
+  });
+  group('1', () {
     testWidgets('staff buses main', _busesTests);
+  });
 
-    // Dashboard
+  // Dashboard
+  group('1', () {
     testWidgets("dashboard", _dashboardTests);
+  });
+  group('1', () {
     testWidgets("dining breakfast", _diningBreakfastTests);
+  });
+  group('1', () {
     testWidgets("dining lunch", _diningLunchTests);
+  });
 
-    // Dining
+  // Dining
+  group('1', () {
     testWidgets("Staff Dining", _staffDiningTests);
+  });
+  group('1', () {
     testWidgets("Student Dining", _studentDiningTests);
+  });
 
-    // Profile
+  // Profile
+  group('1', () {
     testWidgets("Students Profile", _studentsProfileTests);
+  });
+  group('1', () {
     testWidgets("Staff Profile", _staffProfileTests);
+  });
 
-    // Staff Dining
+  // Staff Dining
+  group('1', () {
     testWidgets("selectWidget", _selectDHtest);
+  });
+  group('1', () {
     testWidgets("_selectItems", _selectItems);
+  });
 
-    // Students Dining
+  // Students Dining
+  group('1', () {
     testWidgets("Unsubscribed Students Dining", _unSubbedDiningTests);
+  });
+  group('1', () {
     testWidgets("Subscribed Students Dining", _subbedDiningTests);
+  });
+  group('1', () {
     testWidgets("Main Dining", _mainDiningTests);
+  });
 
-    // Stuff Campus Control
+  // Stuff Campus Control
+  group('1', () {
     testWidgets("Campus Control tests", _campusControlTest);
+  });
 
-    //
+  //
+  group('1', () {
     testWidgets("SelectDepartment", _selectDepTest);
+  });
+  group('1', () {
     testWidgets("Check Buses", _checkBuses);
+  });
+  group('1', () {
     testWidgets("Check Campus Control", _checkCampusControl);
+  });
 
-    // Campus Control Students
+  // Campus Control Students
+  group('1', () {
     testWidgets("Unsubscribed Campus Control", _campusControlUnsubscribedTest);
+  });
+  group('1', () {
     testWidgets("Subscribed Campus Control", _campusControlSubscribedTest);
+  });
 
-    // CCDU Students
+  // CCDU Students
+  group('1', () {
+
+  });group('1', () {
+
+  });group('1', () {
+
+  });group('1', () {
+
+  });
+
+  group("end-to-end app test", () {
+
     testWidgets("Unsubscribed ccdu", _ccduUnsubscribedTest);
     testWidgets("Subscribed ccdu", _ccduSubscribedTest);
     testWidgets("StaffCCDU", _ccduStaffTests);
