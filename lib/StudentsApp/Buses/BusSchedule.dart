@@ -9,39 +9,30 @@ import './BusObject.dart';
 // Uri to the API
 String uri = "https://web-production-a9a8.up.railway.app/";
 
-class BusSchedule extends StatefulWidget{
-
+class BusSchedule extends StatefulWidget {
   @override
   State<BusSchedule> createState() => _BusSchedule();
 }
 
-class _BusSchedule extends State<BusSchedule>{
-
+class _BusSchedule extends State<BusSchedule> {
   List<BusObject> busSchedule = [];
   List<String> busFollowing = [];
   String email = "";
 
-  // constructor...
-  // init data...
-  _BusSchedule(){
-
-  }
-
   // build and show the bus routes...
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     email = context.watch<UserData>().email;
     busSchedule = context.watch<Subscriptions>().busSchedule;
     busFollowing = context.watch<Subscriptions>().busFollowing;
     return Container(
-        padding: const EdgeInsets.all(12),
-        child: showNames(context)
-    );
+        padding: const EdgeInsets.all(12), child: showNames(context));
   }
 
-  Widget BusItem(String route, String id, List<dynamic> stops, bool isFollowing, BuildContext context){
+  Widget BusItem(String route, String id, List<dynamic> stops, bool isFollowing,
+      BuildContext context, int index) {
     return Card(
-      //color: Colors.white70,
+        //color: Colors.white70,
         elevation: 2,
         child: Container(
           width: double.infinity,
@@ -50,75 +41,96 @@ class _BusSchedule extends State<BusSchedule>{
             color: Colors.white,
             //borderRadius: BorderRadius.circular(12.0),
             image: DecorationImage(
-                image: AssetImage('assets/white.jpg'),
-                fit: BoxFit.cover
-            ),
+                image: AssetImage('assets/white.jpg'), fit: BoxFit.cover),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(route, style: const TextStyle(fontWeight: FontWeight.bold, color: Color(0xff003b5c), fontSize: 15)),
-              const Text("", style: TextStyle(fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
+              Text(route,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xff003b5c),
+                      fontSize: 15)),
+              const Text("",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: Color(0xff003b5c))),
               showList(stops),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 12, 0),
-                      child:  ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              primary: Colors.white
-                          ),
-                          onPressed: (){
-
+                      margin: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                      child: ElevatedButton(
+                          style:
+                              ElevatedButton.styleFrom(primary: Colors.white),
+                          onPressed: () {
                             String status = "";
                             String pos = "Not available";
 
                             // search the route from the routes list...
-                            for(BusObject bus in busSchedule){
-                              if(id == bus.getID()){
+                            for (BusObject bus in busSchedule) {
+                              if (id == bus.getID()) {
                                 status = bus.getStatus();
-                                if(bus.getPosition() != ""){
+                                if (bus.getPosition() != "") {
                                   pos = bus.getPosition();
                                 }
                               }
                             }
 
                             // bottom modal with the route data...
-                            showModalBottomSheet(context: context,
+                            showModalBottomSheet(
+                                context: context,
                                 builder: (builder) => Container(
-                                  padding: const EdgeInsets.all(12),
-                                  height: 150,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(route, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                                      Text("Status: $status"),
-                                      Text("Current Position: $pos")
-                                    ],
-                                  ),
-                                ));
+                                      padding: const EdgeInsets.all(12),
+                                      height: 150,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            route,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20),
+                                          ),
+                                          Text("Status: $status"),
+                                          Text("Current Position: $pos")
+                                        ],
+                                      ),
+                                    ));
                           },
-                          child: const Text("Status", style: TextStyle(color: Color(0xff003b5c), fontSize: 14,fontWeight: FontWeight.bold),))
-                  ),
+                          child: Text(
+                            "Status",
+                            key: Key('status$index'),
+                            style: const TextStyle(
+                                color: Color(0xff003b5c),
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
+                          ))),
 
                   // conditional rendering of the buttons...
-                  isFollowing ?
-                  const OutlinedButton(
-                    // if already following this route...
-                    // when pressed should do nothing...
-                      onPressed: null,
-                      child: Text("Following"))
-                      :
-                  ElevatedButton(
-                    // show this button if not following the route...
-                    // when clicked should follow the route...
-                      style: ElevatedButton.styleFrom(
-                          primary: const Color(0xff003b5c)
-                      ),
-                      onPressed: (){
-                        followBus(id, context);
-                      }, child: const Text("Follow", style:  TextStyle(color: Color(0xffbf9b30), fontSize: 14,fontWeight: FontWeight.bold),))
+                  isFollowing
+                      ? OutlinedButton(
+                          // if already following this route...
+                          // when pressed should do nothing...
+                          onPressed: null,
+                          child: Text("Following", key: Key('follow$index'),))
+                      : ElevatedButton(
+                          // show this button if not following the route...
+                          // when clicked should follow the route...
+                          style: ElevatedButton.styleFrom(
+                              primary: const Color(0xff003b5c)),
+                          onPressed: () {
+                            followBus(id, context);
+                          },
+                          child: Text(
+                            "Follow",
+                            key: Key('follow$index'),
+                            style: const TextStyle(
+                                color: Color(0xffbf9b30),
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold),
+                          ))
                 ],
               )
             ],
@@ -127,21 +139,25 @@ class _BusSchedule extends State<BusSchedule>{
   }
 
   // iterate through the stops list and add text
-  Widget showList(List<dynamic> stops){
+  Widget showList(List<dynamic> stops) {
     List<Widget> items = [];
-    for(var location in stops){
-      items.add(Text(location, style: const TextStyle(fontWeight: FontWeight.w600, color: Colors.black54)));
+    for (var location in stops) {
+      items.add(Text(location,
+          style: const TextStyle(
+              fontWeight: FontWeight.w600, color: Colors.black54)));
     }
 
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: items);
+    return Column(
+        crossAxisAlignment: CrossAxisAlignment.start, children: items);
   }
 
   // Iterate the bus routes and create card for each route...
-  Widget showNames(BuildContext context){
+  Widget showNames(BuildContext context) {
     List<Widget> items = [];
-    for(BusObject object in busSchedule){
-      bool isFollowing = busFollowing.contains(object.getID());
-      items.add(BusItem(object.getRouteName(), object.getID(), object.getStops(), isFollowing, context));
+    for (int i = 0; i < busSchedule.length; i++) {
+      bool isFollowing = busFollowing.contains(busSchedule[i].getID());
+      items.add(BusItem(busSchedule[i].getRouteName(), busSchedule[i].getID(),
+          busSchedule[i].getStops(), isFollowing, context, i));
     }
 
     // return a column since it will accommodate many items...
@@ -149,24 +165,25 @@ class _BusSchedule extends State<BusSchedule>{
   }
 
   // API call to follow a bus route...
-  Future<void> followBus(String busID, BuildContext context) async{
-    await http.post(Uri.parse("${uri}db/followBus/"),
-        headers: <String, String>{
-          "Accept": "application/json",
-          "Content-Type": "application/json; charset=UTF-8",
-        },
-        body: jsonEncode(<String, String>{
-          "email": email,
-          "id": busID,
-        })).then((value) {
+  Future<void> followBus(String busID, BuildContext context) async {
+    await http
+        .post(Uri.parse("${uri}db/followBus/"),
+            headers: <String, String>{
+              "Accept": "application/json",
+              "Content-Type": "application/json; charset=UTF-8",
+            },
+            body: jsonEncode(<String, String>{
+              "email": email,
+              "id": busID,
+            }))
+        .then((value) {
       var json = jsonDecode(value.body);
       List<String> update = [];
-      for(String sub in json){
+      for (String sub in json) {
         update.add(sub);
       }
       // update the bus following list...
       context.read<Subscriptions>().updateBusFollowing(update);
     });
   }
-
 }
