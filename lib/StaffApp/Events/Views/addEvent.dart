@@ -231,7 +231,7 @@ class _AddPostState extends State<AddPost> {
               ),
               SizedBox(
                 height: 30.0,
-                child: TextField(onChanged: (text) {
+                child: TextField(key:const Key("titleTextField"),onChanged: (text) {
                   title = text;
                 }),
               ),
@@ -246,7 +246,7 @@ class _AddPostState extends State<AddPost> {
               ),
               SizedBox(
                 height: 30.0,
-                child: TextField(onChanged: (text) {
+                child: TextField(key:const Key("venueTextField"),onChanged: (text) {
                   venue = text;
                 }),
               ),
