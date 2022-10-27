@@ -22,8 +22,8 @@ void main() {
 Future<void> _studentsAppTest(WidgetTester tester) async {
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  disableOverflowErrors();
   FlutterError.onError = null;
+  disableOverflowErrors();
   await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 7500));
