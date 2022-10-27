@@ -30,7 +30,7 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   await _login(tester);
   await _buses(tester);
   await _diningHall(tester);
-  await _protection(tester);
+//   await _protection(tester);
   await _events(tester);
   await _ccdu(tester);
   await _campusHealth(tester);
