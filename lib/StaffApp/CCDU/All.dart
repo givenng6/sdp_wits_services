@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:sdp_wits_services/main.dart';
 import 'Booking.dart';
 import 'ccduGlobals.dart' as localGlobals;
 
@@ -11,13 +12,14 @@ class All extends StatefulWidget {
 
 class AllState extends State<All> {
   TextEditingController linkController = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool dialogLoading = false;
   bool first = true;
   String bottomSheetState = "initial";
 
   Future<void> acceptBooking(setState, Booking booking) async {
     await localGlobals.HandleBooking(booking);
-    // await Future.delayed(const Duration(seconds: 5));
+
     localGlobals.GetAllBookings();
     dialogLoading = false;
     first = false;
@@ -26,9 +28,9 @@ class AllState extends State<All> {
     });
   }
 
-  Future<void> confirmationDialog(Booking booking) async {
+  Future<void> confirmationDialog(Booking booking,BuildContext mainContext) async {
     showDialog(
-      context: context,
+      context: _scaffoldKey.currentContext == null?mainContext:_scaffoldKey.currentContext!,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -72,7 +74,7 @@ class AllState extends State<All> {
     );
   }
 
-  Future<void> handleOnPressed(Booking booking) async {
+  Future<void> handleOnPressed(Booking booking,BuildContext context) async {
     if (booking.location == "Online") {
       showModalBottomSheet(
         context: context,
@@ -97,7 +99,7 @@ class AllState extends State<All> {
                       linkController.text = "";
                       dialogLoading = true;
                       Navigator.pop(context);
-                      await confirmationDialog(booking);
+                      await confirmationDialog(booking,context);
                     },
                     child: const Text("Submit"))
               ],
@@ -108,7 +110,7 @@ class AllState extends State<All> {
     } else {
       // localGlobals.HandleBooking(booking);
       dialogLoading = true;
-      await confirmationDialog(booking);
+      await confirmationDialog(booking,context);
     }
   }
 
@@ -127,6 +129,7 @@ class AllState extends State<All> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         body: RefreshIndicator(
             onRefresh: () async {
               await localGlobals.GetAllBookings();
@@ -209,7 +212,7 @@ class AllState extends State<All> {
                         backgroundColor:
                             MaterialStateProperty.all(const Color(0xFF013152))),
                     onPressed: () async {
-                      await handleOnPressed(booking);
+                      await handleOnPressed(booking,context);
                     },
                     child: const Text('ACCEPT')),
               ],

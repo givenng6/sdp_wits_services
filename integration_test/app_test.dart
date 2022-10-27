@@ -334,24 +334,31 @@ Future<void> _staffTest(WidgetTester tester) async {
 
   await tester.tap(allTab);
   await tester.pump(const Duration(seconds: 4));
+  await tester.pumpAndSettle();
 
   //All card
+  await tester.pumpAndSettle();
   await tester.tap(find.byKey(const Key("test1btn")));
   await tester.pump(const Duration(seconds: 2));
 
   final submitBtn = find.text("Submit");
 
+  await tester.pumpAndSettle();
   await tester.enterText(find.byKey(const Key("linkTextField")), "Some link");
   FocusManager.instance.primaryFocus?.unfocus();
   await tester.tap(submitBtn);
+  await tester.pumpAndSettle();
   await tester.pump(const Duration(milliseconds: 500));
   await tester.pump(const Duration(seconds: 4));
+  await tester.pumpAndSettle();
 
   await tester.tap(find.text("Close"));
   await tester.pump(const Duration(seconds: 3));
+  await tester.pumpAndSettle();
 
   await tester.tap(acceptedTab);
   await tester.pump(const Duration(seconds: 3));
+  await tester.pumpAndSettle();
 
   http.get(Uri.parse("$url/ccdu/TestSetup/Cleanup"), headers: <String, String>{
     "Accept": "application/json",
