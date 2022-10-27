@@ -32,7 +32,7 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   await _login(tester);
   await _buses(tester);
   await _diningHall(tester);
-//   await _protection(tester);
+  await _protection(tester);
 //   await _events(tester);
   await _ccdu(tester);
   await _campusHealth(tester);
@@ -162,24 +162,35 @@ Future<void> _protection(WidgetTester tester) async {
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('Cancel Ride'), warnIfMissed: false);
+  await tester.tap(find.byKey(const Key('About Protection Services')), warnIfMissed: false);
   await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
 
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('Go Back'), warnIfMissed: false);
-  await tester.pumpAndSettle();
+  // await tester.pumpAndSettle();
+  // await tester.pump(const Duration(seconds: 1));
+  // await tester.tap(find.text('Book'), warnIfMissed: false);
+  // await tester.pumpAndSettle();
 
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.text('Cancel Ride'), warnIfMissed: false);
-  await tester.pumpAndSettle();
+  // await tester.pumpAndSettle();
+  // await tester.pump(const Duration(seconds: 1));
+  // await tester.tap(find.text('Cancel Ride'), warnIfMissed: false);
+  // await tester.pumpAndSettle();
 
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
-  await tester.tap(find.byKey(const Key('Cancel Ride')), warnIfMissed: false);
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
+  // await tester.pumpAndSettle();
+  // await tester.pump(const Duration(seconds: 1));
+  // await tester.tap(find.text('Go Back'), warnIfMissed: false);
+  // await tester.pumpAndSettle();
+
+  // await tester.pumpAndSettle();
+  // await tester.pump(const Duration(seconds: 1));
+  // await tester.tap(find.text('Cancel Ride'), warnIfMissed: false);
+  // await tester.pumpAndSettle();
+
+  // await tester.pumpAndSettle();
+  // await tester.pump(const Duration(seconds: 1));
+  // await tester.tap(find.byKey(const Key('Cancel Ride')), warnIfMissed: false);
+  // await tester.pumpAndSettle();
+  // await tester.pump(const Duration(seconds: 1));
 }
 
 Future<void> _events(WidgetTester tester) async {
@@ -674,7 +685,7 @@ void disableOverflowErrors() {
                 (e) => e.value.toString().startsWith("A RenderFlex overflowed by"));
 
     if (isOverflowError) {
-      print("A RenderFlex overflowed by");
+      debugPrint("A RenderFlex overflowed");
     } else {
       FlutterError.presentError(details);
     }
