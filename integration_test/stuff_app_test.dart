@@ -21,8 +21,6 @@ Future<void> _staffTest(WidgetTester tester) async {
   await login("a2355285@wits.ac.za", "2355285", tester);
 
   //CCDU
-
-
   String url = "https://sdpwitsservices-production.up.railway.app";
 
   await http.get(Uri.parse("$url/ccdu/TestSetup/Init"),

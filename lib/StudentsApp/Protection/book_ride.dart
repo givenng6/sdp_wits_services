@@ -43,8 +43,6 @@ class _BookRideState extends State<BookRide> {
   Widget build(BuildContext context) {
     email = context.watch<UserData>().email;
     username = context.watch<UserData>().username;
-    debugPrint(context.watch<Subscriptions>().campuses.toString());
-    debugPrint(context.watch<Subscriptions>().residences.toString());
     return makeDismissible(
       child: DraggableScrollableSheet(
         initialChildSize: initialChildSize,
