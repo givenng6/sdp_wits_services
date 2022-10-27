@@ -151,7 +151,9 @@ Future<void> _protection(WidgetTester tester) async {
   await tester.tap(find.text('Book'), warnIfMissed: false);
   await tester.pumpAndSettle();
 
+  await tester.pump(const Duration(seconds: 5));
   await Future.delayed(const Duration(seconds: 5));
+  await tester.pump(const Duration(seconds: 5));
 
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
