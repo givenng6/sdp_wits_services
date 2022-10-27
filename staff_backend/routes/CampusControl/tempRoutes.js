@@ -72,4 +72,13 @@ router.get("/RemoveStudents", async (req, res) => {
   res.send("");
 });
 
+router.post("/RemoveDep", async (req, res) => {
+  const {email} = req.body;
+
+  const ref = doc(db, "Users", email);
+  await updateDoc(ref,{department:deleteField()});
+    
+  res.send("");
+});
+
 export default router;
