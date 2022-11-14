@@ -25,20 +25,8 @@ import 'dart:convert';
 String uri = "https://web-production-a9a8.up.railway.app/";
 
 class Dashboard extends StatefulWidget {
-  final bool? isTesting;
-  final List<BusObject>? busSchedule;
-  final List<String>? busFollowing;
-  final String? dhFollowing;
-  final String? mealTime;
-  final List<DiningObject>? diningHalls;
-
   const Dashboard({
     super.key,
-    this.isTesting,
-    this.busSchedule,
-    this.busFollowing,
-    this.dhFollowing,
-    this.diningHalls, this.mealTime,
   });
 
   @override
@@ -65,25 +53,6 @@ class _Dashboard extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     email = context.watch<UserData>().email;
-    set(){
-      context.read<Subscriptions>().addSub('bus_service');
-      context.read<Subscriptions>().addSub('dining_service');
-      context.read<Subscriptions>().addSub('campus_control');
-      context.read<Subscriptions>().addSub('health');
-      context.read<Subscriptions>().setBusSchedule(widget.busSchedule!);
-      context.read<Subscriptions>().updateBusFollowing(widget.busFollowing!);
-      context.read<Subscriptions>().updateDHFollowing(widget.dhFollowing!);
-      context.read<Subscriptions>().setMealTime(widget.mealTime!);
-      context.read<Subscriptions>().setDiningHalls(widget.diningHalls!);
-    }
-    setForTesting() async {
-      await Future.delayed(const Duration(seconds: 1));
-      set();
-    }
-
-    if (widget.isTesting != null) {
-      setForTesting();
-    }
     subs = context.watch<Subscriptions>().subs;
 
     // display all the widgets for the services sub to..

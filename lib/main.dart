@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/Controller/buses_controller.dart';
 import 'package:sdp_wits_services/StaffApp/Events/Controllers/events_controller.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
@@ -50,20 +49,6 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   get getTo{
     globals.getSharedPreferences();
-  }
-
-
-  Future<void> initPlatform()async{
-    OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
-    OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
-      debugPrint("Accepted permission: $accepted");
-    });
-    await OneSignal.shared.setAppId("cf748ced-65c8-4d6b-bbb0-8757e694fe3f");
-    await OneSignal.shared.getDeviceState().then(
-            (value) => {
-          debugPrint("Id: ${value!.userId}")
-        }
-    );
   }
 
   @override
