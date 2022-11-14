@@ -196,7 +196,9 @@ class _Protection extends State<Protection> {
                           Get.back();
                           setState(() => isCancelingRide = false);
                         },
-                            child: const Text("Cancel Ride", style: TextStyle(color: Colors.red))
+                            child: const Text("Cancel Ride",
+                                key: Key('Cancel Ride'),
+                                style: TextStyle(color: Colors.red))
                         ),
                         TextButton(onPressed: (){
                           Get.back();
@@ -256,7 +258,6 @@ class _Protection extends State<Protection> {
   }
 
   Future<void> cancelRide() async{
-    debugPrint('cancel ride');
     await http.post(Uri.parse("${uri}db/cancelRide/"),
         headers: <String, String>{
           "Accept": "application/json",

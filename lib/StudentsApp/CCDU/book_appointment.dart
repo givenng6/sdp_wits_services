@@ -342,11 +342,16 @@ class _BookAppointmentState extends State<BookAppointment> {
         .then((value) {
       // TODO check the returned data if is valid
       var data = jsonDecode(value.body);
-      bool isAvailable = data['status'];
+      bool? isAvailable = data['status'];
 
+<<<<<<< HEAD
       if (isAvailable) {
         pushNotification.scheduleNotification(id: 5, title: "CCDU Bookings", body: "New appointment pending", seconds: 2);
         debugPrint("should notofy");
+=======
+      if (isAvailable!= null && isAvailable) {
+        pushNotification.scheduleNotification(id: 5, title: "CCDU Bookings", body: "New appointment pending", seconds: 1);
+>>>>>>> 07fc995abd21b72013e92e27097d2eabb1e49c95
         setState(() {
           // add the session to the list...
           CCDUObject session = CCDUObject();

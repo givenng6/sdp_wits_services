@@ -66,6 +66,7 @@ class _mealSelecionPageState extends State<mealSelecionPage> {
                     child: CircleAvatar(
                       backgroundColor: const Color(0xFF013152),
                       child: Text(
+                        key: const Key("profile"),
                         username[0],
                         style: const TextStyle(
                             fontSize: 20.0, color: Colors.white),

@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/StudentsApp/Home/Home.dart';
 import 'package:sdp_wits_services/StudentsApp/Home/Start.dart';
 import 'package:http/http.dart' as http;
+import 'package:sdp_wits_services/globals.dart' as globals;
 import 'dart:convert';
 
 String? valid;
@@ -173,6 +174,7 @@ class StudentsLoginScreen extends StatelessWidget {
           sharedPreferences.setStringList("scheduledCCDU", []);
           sharedPreferences.setBool('isDailyNotified', false);
           debugPrint('here');
+          globals.getSharedPreferences();
           navigateToHome();
         }
       },

@@ -228,6 +228,7 @@ class StaffLoginScreen extends StatelessWidget {
             debugPrint("here:: ${sharedPreferences.getString("username")}");
             await busesController.getSharedPreferences();
             String? dep = sharedPreferences.getString("department");
+            globals.getSharedPreferences();
             if(dep == null){
               navigateToStaffPage();
             }else{

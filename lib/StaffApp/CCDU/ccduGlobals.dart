@@ -79,7 +79,9 @@ Future<String> HandleBooking(Booking booking) async {
       },
       body: jsonEncode(info));
 
-  debugPrint("Res: ${result.body}");
+  // debugPrint("Res: ${result.body}");
+  AllBookings.remove(booking);
+  MyBookings.remove(booking);
   return result.body;
 
 

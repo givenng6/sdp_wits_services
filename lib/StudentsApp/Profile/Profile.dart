@@ -81,7 +81,7 @@ class _Profile extends State<Profile> {
         });
   }
 
-  Widget subscriptionCard(BuildContext context, String subscription){
+  Widget subscriptionCard(BuildContext context, String subscription, int index){
     String title = "";
     String img = "";
 
@@ -143,7 +143,9 @@ class _Profile extends State<Profile> {
                         onPressed: (){
                           subDialog(context);
                         },
-                        child: const Text("Unsubscribe", style: TextStyle(color: Colors.white, fontWeight: FontWeight.w600),)
+                        child: Text("Unsubscribe",
+                          key: Key('unsubscribe$index'),
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w600),)
                     )
                   ],
                 ),
@@ -158,8 +160,8 @@ class _Profile extends State<Profile> {
   Widget showSubs(BuildContext context){
     List<Widget> items = [];
 
-    for(String name in subs){
-      items.add(subscriptionCard(context, name));
+    for(int i = 0; i < subs.length; i++){
+      items.add(subscriptionCard(context, subs[i], i));
     }
 
     return Column(children: items);

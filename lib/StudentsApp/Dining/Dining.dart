@@ -8,10 +8,7 @@ import '../UtilityWidgets.dart';
 import '../Utilities/AddSub.dart';
 
 class Dining extends StatefulWidget{
-  final List<DiningObject>? diningHalls;
-  final String? email;
-  final bool? isTesting;
-  const Dining({super.key, this.diningHalls, this.email, this.isTesting,});
+  const Dining({super.key,});
 
   @override
   State<Dining> createState() => _Dining();
@@ -34,20 +31,6 @@ class _Dining extends State<Dining> {
 
   @override
   Widget build(BuildContext context) {
-    set(){
-      context.read<UserData>().setEmail(widget.email!);
-      context.read<Subscriptions>().addSub(service);
-      context.read<Subscriptions>().setDiningHalls(widget.diningHalls!);
-      context.read<Subscriptions>().updateDHFollowing('DH4');
-    }
-    setForTesting() async{
-      if(widget.isTesting!=null){
-        await Future.delayed(const Duration(seconds: 1));
-        set();
-      }
-    }
-    setForTesting();
-
     email = context.watch<UserData>().email;
     subs = context.watch<Subscriptions>().subs;
 

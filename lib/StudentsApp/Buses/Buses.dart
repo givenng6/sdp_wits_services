@@ -7,9 +7,7 @@ import '../Utilities/AddSub.dart';
 import './BusObject.dart';
 
 class Buses extends StatefulWidget{
-  final bool? isTesting;
-  final List<BusObject>? busSchedule;
-  const Buses({super.key, this.isTesting, this.busSchedule});
+  const Buses({super.key});
 
   @override
   State<Buses> createState() => _Buses();
@@ -37,19 +35,6 @@ class _Buses extends State<Buses>{
 
   @override
   Widget build(BuildContext context) {
-    set(){
-      context.read<Subscriptions>().addSub(service);
-      context.read<Subscriptions>().setBusSchedule(widget.busSchedule!);
-    }
-    setForTesting()async{
-      if(widget.isTesting != null){
-        await Future.delayed(const Duration(seconds: 2));
-        set();
-      }
-    }
-    setForTesting();
-
-
     debugPrint(context.toString());
     subs = context.watch<Subscriptions>().subs;
     busSchedule = context.watch<Subscriptions>().busSchedule;
