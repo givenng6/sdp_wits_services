@@ -26,8 +26,7 @@ void main() {
 Future<void> _studentsAppTest(WidgetTester tester) async {
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  FlutterError.onError = null;
-  disableOverflowErrors();
+  // disableOverflowErrors();
   await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 10));
@@ -267,8 +266,7 @@ Future<void> _profile(WidgetTester tester) async {
 Future<void> _staffTest(WidgetTester tester) async {
   app.main();
   await tester.pumpAndSettle();
-  FlutterError.onError = null;
-  disableOverflowErrors();
+  // disableOverflowErrors();
   await login("a2355285@wits.ac.za", "2355285", tester);
   //CCDU
   String url = "https://sdpwitsservices-production.up.railway.app";
