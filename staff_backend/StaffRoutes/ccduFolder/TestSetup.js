@@ -12,6 +12,7 @@ import {
   arrayRemove,
   setDoc,
   deleteDoc,
+  deleteField,
 } from "firebase/firestore";
 
 const router = express.Router();
@@ -64,7 +65,10 @@ router.get("/Init",async (req, res)=>{
         await setDoc(ref,curr);
     }
     await updateDoc(doc(db, "Users", "a2355285@wits.ac.za"), {
-        department: "CCDU",
+        department: deleteField(),
+      });
+      await updateDoc(doc(db, "Users", "a2375736@wits.ac.za"), {
+        department: deleteField(),
       });
     res.send({status:"Done"});
 
