@@ -15,6 +15,10 @@ void main() {
   group("end-to-end app test", () {
     testWidgets("Stuff app", _staffTest);
     testWidgets("students app", _studentsAppTest);
+
+    // TODO: dashboard refresh
+    // TODO: protection request ride
+    // TODO: add sub
   });
 }
 
@@ -30,6 +34,7 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   await _login(tester);
+  await _dashboard(tester);
   await _buses(tester);
   await _diningHall(tester);
   await _protection(tester);
@@ -59,6 +64,20 @@ Future<void> _login(WidgetTester tester) async{
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('LOGIN'), warnIfMissed: false);
   await tester.pumpAndSettle();
+}
+
+Future<void> _dashboard(WidgetTester tester) async {
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.fling(find.text('Dining Menu'), const Offset(0.0, 300.0), 1000.0);
+  await tester.pump();
+
+  await tester
+      .pump(const Duration(seconds: 1)); // finish the scroll animation
+  await tester.pump(
+      const Duration(seconds: 1)); // finish the indicator settle animation
+  await tester.pump(
+      const Duration(seconds: 1)); // finish the indicator hide animation
 }
 
 Future<void> _buses(WidgetTester tester) async {
@@ -528,10 +547,11 @@ void disableOverflowErrors() {
     final isOverflowError = exception is FlutterError &&
         !exception.diagnostics.any(
                 (e) => e.value.toString().startsWith("A RenderFlex overflowed by"));
+
     if (isOverflowError) {
-      debugPrint("A RenderFlex overflowed");
+      debugPrint("A RenderFlex overflowed by");
     } else {
-      debugPrint("Some Other Errors Occurred");
+      FlutterError.presentError(details);
     }
   };
 }
