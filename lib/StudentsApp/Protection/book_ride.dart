@@ -171,6 +171,7 @@ class _BookRideState extends State<BookRide> {
       context.read<Subscriptions>().setRide(ride);
       context.read<Subscriptions>().setBooked(true);
       pushNotification.scheduleNotification(id: 3, title: "Campus Control", body: "Ride has been successfully requested", seconds: 2);
+      debugPrint("should notofy");
       Navigator.pop(context);
     });
   }
