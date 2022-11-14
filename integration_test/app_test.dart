@@ -5,7 +5,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
-import 'package:sdp_wits_services/globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/main.dart' as app;
 import 'package:http/http.dart' as http;
@@ -16,20 +15,189 @@ void main() {
   group("end-to-end app test", () {
     testWidgets("Stuff app", _staffTest);
     testWidgets("students app", _studentsAppTest);
+
+    // Signup and recover
+    testWidgets("signIn as student", _signInAsStudentTests);
+    testWidgets("signIn as staff", _signInAsStaffTests);
+    testWidgets("_recover email student", _recoverStudentTests);
+    testWidgets("_recover email staff", _recoverStaffTests);
   });
+}
+
+// Signup and recover
+
+Future<void> _signInAsStudentTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.tap(continueAsStudentButton, warnIfMissed: false);
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
+
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+  await tester.enterText(findNameTextField(), '2375736@students.wits.ac.za');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findConfirmPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findNthField(0), 'Nathi');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('SUBMIT'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
+}
+
+Future<void> _recoverStudentTests(WidgetTester tester)async{
+  final continueAsStudentButton =
+  find.byKey(const Key('Continue as Student'));
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
+  await tester.tap(continueAsStudentButton, warnIfMissed: false);
+  await tester.pump(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+
+  await tester.enterText(findNameTextField(), '23123456@students.wits.ac.za');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Forgot Password?'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('RECOVER'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
+}
+
+Future<void> _signInAsStaffTests(WidgetTester tester)async{
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStaff = find.text('Continue as Staff');
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
+  await tester.tap(continueAsStaff, warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.enterText(findNameTextField(), 'a2375736@wits.ac.za');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findConfirmPasswordTextField(), '2375736');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.tap(find.text('SIGNUP'), warnIfMissed: false);
+  await tester.pumpAndSettle(const Duration(seconds: 5));
+  await tester.pumpAndSettle();
+
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.enterText(findNthField(0), 'Nathi');
+  await tester.pumpAndSettle();
+  await Future.delayed(const Duration(seconds: 1));
+  await tester.tap(find.text('SUBMIT'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
+}
+
+Future<void> _recoverStaffTests(WidgetTester tester)async{
+  app.main();
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(milliseconds: 5000));
+  await tester.pumpAndSettle();
+  final continueAsStaff = find.text('Continue as Staff');
+
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 5));
+  await tester.tap(continueAsStaff, warnIfMissed: false);
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+
+  await tester.enterText(findNameTextField(), 'a23123456@wits.ac.za');
+  await tester.pumpAndSettle();
+  FocusManager.instance.primaryFocus?.unfocus();
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('Forgot Password?'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+
+  await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.text('RECOVER'), warnIfMissed: false);
+  await tester.pumpAndSettle();
+
+  await tester.pump(const Duration(seconds: 5));
+  await preferences.clear();
 }
 
 // Student App
 Future<void> _studentsAppTest(WidgetTester tester) async {
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  // disableOverflowErrors();
+  FlutterError.onError = null;
+  disableOverflowErrors();
   await preferences.clear();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 10));
   await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   await _login(tester);
+  await _dashboard(tester);
   await _buses(tester);
   await _diningHall(tester);
   await _protection(tester);
@@ -59,6 +227,20 @@ Future<void> _login(WidgetTester tester) async{
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('LOGIN'), warnIfMissed: false);
   await tester.pumpAndSettle();
+}
+
+Future<void> _dashboard(WidgetTester tester) async {
+  await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
+  await tester.fling(find.text('Dining Menu'), const Offset(0.0, 300.0), 1000.0);
+  await tester.pump();
+
+  await tester
+      .pump(const Duration(seconds: 1)); // finish the scroll animation
+  await tester.pump(
+      const Duration(seconds: 1)); // finish the indicator settle animation
+  await tester.pump(
+      const Duration(seconds: 1)); // finish the indicator hide animation
 }
 
 Future<void> _buses(WidgetTester tester) async {
@@ -136,6 +318,21 @@ Future<void> _protection(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('Student digz').last, warnIfMissed: false);
+  await tester.pumpAndSettle();
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Book').last, warnIfMissed: false);
+  await tester.pumpAndSettle();
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Cancel Ride').last, warnIfMissed: false);
+  await tester.pumpAndSettle();
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Go Back').last, warnIfMissed: false);
+  await tester.pumpAndSettle();
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Cancel Ride').last, warnIfMissed: false);
+  await tester.pumpAndSettle();
+  await tester.pumpAndSettle();
+  await tester.tap(find.text('Cancel Ride').last, warnIfMissed: false);
   await tester.pumpAndSettle();
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -248,7 +445,8 @@ Future<void> _profile(WidgetTester tester) async {
 Future<void> _staffTest(WidgetTester tester) async {
   app.main();
   await tester.pumpAndSettle();
-  // disableOverflowErrors();
+  FlutterError.onError = null;
+  disableOverflowErrors();
   await login("a2355285@wits.ac.za", "2355285", tester);
   //CCDU
   String url = "https://sdpwitsservices-production.up.railway.app";
@@ -257,12 +455,14 @@ Future<void> _staffTest(WidgetTester tester) async {
         "Accept": "application/json",
         "Content-Type": "application/json; charset=UTF-8"
       });
-  await tester.pump(const Duration(seconds: 1));
+
+  await tester.pumpAndSettle();
   await tester.tap(find.byKey(const Key("CCDU")));
-  await tester.pump(const Duration(seconds: 3));
+  await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   final profile = find.text("S");
   final allTab = find.text("All");
   final acceptedTab = find.text("Accepted");
@@ -345,13 +545,15 @@ Future<void> _staffTest(WidgetTester tester) async {
 
 
   //Buses
+  await tester.pumpAndSettle();
   await login("a2375736@wits.ac.za", "2375736", tester);
-  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
   await tester.tap(find.byIcon(Icons.bus_alert));
   await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
 
   await tester.pumpAndSettle();
+  await tester.pump(const Duration(seconds: 1));
   await Future.delayed(const Duration(seconds: 1));
   await tester.tap(find.text("Route 1 - Full Circuit"), warnIfMissed: false);
   await tester.pumpAndSettle();
@@ -426,7 +628,6 @@ Future<void> _staffTest(WidgetTester tester) async {
   await tester.tap(find.text("S"));
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 2));
-
   // Events
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -540,10 +741,11 @@ void disableOverflowErrors() {
     final isOverflowError = exception is FlutterError &&
         !exception.diagnostics.any(
                 (e) => e.value.toString().startsWith("A RenderFlex overflowed by"));
+
     if (isOverflowError) {
-      debugPrint("A RenderFlex overflowed");
+      debugPrint("A RenderFlex overflowed by");
     } else {
-      debugPrint("Some Other Errors Occurred");
+      FlutterError.presentError(details);
     }
   };
 }
