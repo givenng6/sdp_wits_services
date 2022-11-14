@@ -70,7 +70,7 @@ router.get("/RemoveStudents", async (req, res) => {
     } catch (err) {}
   }
   await updateDoc(doc(db, "Users", "a2355285@wits.ac.za"), {
-    department: "CCDU",
+    department: deleteField(),
   });
   res.send("");
 });
