@@ -345,7 +345,8 @@ class _BookAppointmentState extends State<BookAppointment> {
       bool isAvailable = data['status'];
 
       if (isAvailable) {
-        pushNotification.scheduleNotification(id: 5, title: "CCDU Bookings", body: "New appointment pending", seconds: 1);
+        pushNotification.scheduleNotification(id: 5, title: "CCDU Bookings", body: "New appointment pending", seconds: 2);
+        debugPrint("should notofy");
         setState(() {
           // add the session to the list...
           CCDUObject session = CCDUObject();
