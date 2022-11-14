@@ -63,9 +63,11 @@ router.get("/RemoveStudents", async (req, res) => {
   const ref = doc(db, "CampusControl", campusName);
   for (const student of students) {
     var email = student.email.split("@")[0];
-    await updateDoc(ref, { [`students.${email}`]: deleteField() });
-    const ridesRef = doc(db, "Rides", student.email);
-    await deleteDoc(ridesRef);
+    try {
+      await updateDoc(ref, { [`students.${email}`]: deleteField() });
+      const ridesRef = doc(db, "Rides", student.email);
+      await deleteDoc(ridesRef);
+    } catch (err) {}
   }
   await updateDoc(doc(db, "Users", "a2355285@wits.ac.za"), {
     department: "CCDU",

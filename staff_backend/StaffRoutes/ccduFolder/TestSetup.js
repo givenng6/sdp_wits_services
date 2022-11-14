@@ -63,6 +63,9 @@ router.get("/Init",async (req, res)=>{
         const ref = doc(db,"Appointments",curr.id);
         await setDoc(ref,curr);
     }
+    await updateDoc(doc(db, "Users", "a2355285@wits.ac.za"), {
+        department: "CCDU",
+      });
     res.send({status:"Done"});
 
 });
