@@ -28,7 +28,6 @@ void main() {
 Future<void> _studentsAppTest(WidgetTester tester) async {
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  FlutterError.onError = null;
   disableOverflowErrors();
   await preferences.clear();
   await tester.pumpAndSettle();
@@ -317,7 +316,6 @@ Future<void> _staffTest(WidgetTester tester) async {
 
   app.main();
   await tester.pumpAndSettle();
-  FlutterError.onError = null;
   disableOverflowErrors();
   String url = "https://sdpwitsservices-production.up.railway.app";
 
