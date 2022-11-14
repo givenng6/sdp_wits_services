@@ -1,4 +1,3 @@
-// import 'dart:html';
 import 'Booking.dart';
 import 'ccduGlobals.dart' as localGlobals;
 import 'package:flutter/material.dart';
@@ -28,40 +27,40 @@ class AcceptedState extends State<Accepted> {
   }
 
   Widget makeList() {
-    if(localGlobals.AcceptedBookings.isEmpty){
+    //build the list if it is not empty.
+    if (localGlobals.AcceptedBookings.isEmpty) {
       return const Center(
-        child: Opacity(opacity: 0.9,
-        child: Text("No Upcoming Appointments")),
+        child: Opacity(opacity: 0.9, child: Text("No Upcoming Appointments")),
       );
-    }else{
-      return Column(
-        children: localGlobals.AcceptedBookings.map((booking) => _card(booking))
-            .toList(),
-      );
+    } else {
+      return ListView.builder(
+          itemCount: localGlobals.AcceptedBookings.length,
+          itemBuilder: (context, index) =>
+              _card(localGlobals.AcceptedBookings[index]));
     }
-
   }
 
-  Widget _card(Booking booking) {
+  Widget _card(Booking booking) {//Booking info card
     return Card(
-      elevation: 10,
+        elevation: 10,
         child: Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              booking.name,
-              style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-            ),
-            Text("Date: ${booking.date}"),
-            Text("Time: ${booking.time}"),
-            Text("Platform: ${booking.location}"),
-            if(booking.description!="")const Text("Description"),
-            if(booking.description!="")Text(booking.description),
-          ]),
-    ));
+          width: double.infinity,
+          padding: const EdgeInsets.all(12),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  booking.name,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w500, fontSize: 20),
+                ),
+                Text("Date: ${booking.date}"),
+                Text("Time: ${booking.time}"),
+                Text("Platform: ${booking.location}"),
+                if (booking.description != "") const Text("Description"),
+                if (booking.description != "") Text(booking.description),
+              ]),
+        ));
   }
 }
