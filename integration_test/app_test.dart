@@ -5,6 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:sdp_wits_services/StudentsApp/Buses/Buses.dart';
 import 'package:sdp_wits_services/StudentsApp/Protection/protection.dart';
+import 'package:sdp_wits_services/globals.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sdp_wits_services/main.dart' as app;
 import 'package:http/http.dart' as http;
@@ -15,10 +16,6 @@ void main() {
   group("end-to-end app test", () {
     testWidgets("Stuff app", _staffTest);
     testWidgets("students app", _studentsAppTest);
-
-    // TODO: dashboard refresh
-    // TODO: protection request ride
-    // TODO: add sub
   });
 }
 
@@ -33,7 +30,6 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 1));
   await tester.pumpAndSettle();
   await _login(tester);
-  await _dashboard(tester);
   await _buses(tester);
   await _diningHall(tester);
   await _protection(tester);
@@ -63,20 +59,6 @@ Future<void> _login(WidgetTester tester) async{
   await tester.pump(const Duration(seconds: 1));
   await tester.tap(find.text('LOGIN'), warnIfMissed: false);
   await tester.pumpAndSettle();
-}
-
-Future<void> _dashboard(WidgetTester tester) async {
-  await tester.pumpAndSettle();
-  await tester.pump(const Duration(seconds: 1));
-  await tester.fling(find.text('Dining Menu'), const Offset(0.0, 300.0), 1000.0);
-  await tester.pump();
-
-  await tester
-      .pump(const Duration(seconds: 1)); // finish the scroll animation
-  await tester.pump(
-      const Duration(seconds: 1)); // finish the indicator settle animation
-  await tester.pump(
-      const Duration(seconds: 1)); // finish the indicator hide animation
 }
 
 Future<void> _buses(WidgetTester tester) async {
@@ -276,6 +258,11 @@ Future<void> _staffTest(WidgetTester tester) async {
         "Content-Type": "application/json; charset=UTF-8"
       });
   await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byKey(const Key("CCDU")));
+  await tester.pump(const Duration(seconds: 3));
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
   final profile = find.text("S");
   final allTab = find.text("All");
   final acceptedTab = find.text("Accepted");
@@ -355,9 +342,16 @@ Future<void> _staffTest(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 4));
   await tester.pumpAndSettle();
   await logout(profile, tester);
+
+
   //Buses
   await login("a2375736@wits.ac.za", "2375736", tester);
   await tester.pump(const Duration(seconds: 1));
+  await tester.tap(find.byIcon(Icons.bus_alert));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
   await Future.delayed(const Duration(seconds: 1));
   await tester.tap(find.text("Route 1 - Full Circuit"), warnIfMissed: false);
   await tester.pumpAndSettle();
@@ -432,6 +426,7 @@ Future<void> _staffTest(WidgetTester tester) async {
   await tester.tap(find.text("S"));
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 2));
+
   // Events
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -545,11 +540,10 @@ void disableOverflowErrors() {
     final isOverflowError = exception is FlutterError &&
         !exception.diagnostics.any(
                 (e) => e.value.toString().startsWith("A RenderFlex overflowed by"));
-
     if (isOverflowError) {
-      debugPrint("A RenderFlex overflowed by");
+      debugPrint("A RenderFlex overflowed");
     } else {
-      FlutterError.presentError(details);
+      debugPrint("Some Other Errors Occurred");
     }
   };
 }

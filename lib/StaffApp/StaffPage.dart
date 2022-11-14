@@ -194,6 +194,7 @@ class _StaffPageState extends State<StaffPage> {
                                           backgroundColor: Colors.white,
                                           radius: 60.0,
                                           child: Icon(
+                                            key:Key(departments[index].name),
                                             departments[index].icon,
                                             size: 60.0,
                                             color: const Color(0xff31AFB4),
