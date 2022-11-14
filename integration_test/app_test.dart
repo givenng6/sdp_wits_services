@@ -15,10 +15,10 @@ import 'utils.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end app test", () {
-    testWidgets("signIn as student", _signInAsStudentTests);
     testWidgets("Stuff app", _staffTest);
     testWidgets("students app", _studentsAppTest);
-    testWidgets("staffs app", _signInAsStaffTests);
+    testWidgets("signIn as app", _signInAsStaffTests);
+    testWidgets("signIn as student", _signInAsStudentTests);
     testWidgets("_recover email student", _recoverStudentTests);
     testWidgets("_recover email staff", _recoverStaffTests);
   });
@@ -848,7 +848,6 @@ Future<void> _recoverStaffTests(WidgetTester tester)async{
 }
 
 void disableOverflowErrors() {
-  //TODO MyScreen throws overflow error. Will be investigate in a different ticket.
   FlutterError.onError = (FlutterErrorDetails details) {
     final exception = details.exception;
     final isOverflowError = exception is FlutterError &&
@@ -858,7 +857,7 @@ void disableOverflowErrors() {
     if (isOverflowError) {
       debugPrint("A RenderFlex overflowed");
     } else {
-      debugPrint("Some Other Errors Occurred");
+      FlutterError.dumpErrorToConsole(details, forceReport: false);
     }
   };
 }
