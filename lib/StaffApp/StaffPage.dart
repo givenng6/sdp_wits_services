@@ -31,14 +31,14 @@ class _StaffPageState extends State<StaffPage> {
   ];
 
   void chooseDep(String depName) async {
-    //
+    //Update the users department in the db
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? email = sharedPreferences.getString("email");
 
     String? deviceID;
     await OneSignal.shared.getDeviceState().then((value) {
       deviceID = value!.userId;
-    });
+    }); //Device ID for notification
 
     await http.post(Uri.parse("${globals.url}/Users/AssignDep"),
         headers: <String, String>{
@@ -50,13 +50,13 @@ class _StaffPageState extends State<StaffPage> {
   }
 
   void handleCard(int index) async {
+    //Handles what happens when the department cards are clicked.
     String departmentName = departments[index].name;
     chooseDep(departmentName);
 
     switch (departmentName) {
       case "Bus Services":
         {
-          // debugPrint('here here');
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -69,7 +69,6 @@ class _StaffPageState extends State<StaffPage> {
         break;
       case "Dining Services":
         {
-          // debugPrint('here here');
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -83,8 +82,6 @@ class _StaffPageState extends State<StaffPage> {
         break;
       case "Campus Control":
         {
-          // debugPrint('here here');
-
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -97,7 +94,6 @@ class _StaffPageState extends State<StaffPage> {
         break;
       case "CCDU":
         {
-          debugPrint('here here');
           Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -110,7 +106,6 @@ class _StaffPageState extends State<StaffPage> {
         break;
       case "Events":
         {
-
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -136,7 +131,7 @@ class _StaffPageState extends State<StaffPage> {
 
     @override
     void initState() {
-      getName();
+      getName();//Get the username from the shared preferences
       super.initState();
     }
 

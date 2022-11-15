@@ -12,20 +12,16 @@ class All extends StatefulWidget {
 
 class AllState extends State<All> {
   TextEditingController linkController = TextEditingController();
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool dialogLoading = false;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>(); //Global key needed for the dialog and bottom sheet
+  bool dialogLoading = false; //current state of the dialog, if true it shows the loading animation else the confirmation message.
   bool first = true;
-  String bottomSheetState = "initial";
 
   Future<void> acceptBooking(setState, Booking booking) async {
     await localGlobals.HandleBooking(booking);
-
     localGlobals.GetAllBookings();
     dialogLoading = false;
     first = false;
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   Future<void> confirmationDialog(Booking booking,BuildContext mainContext) async {
@@ -75,6 +71,8 @@ class AllState extends State<All> {
   }
 
   Future<void> handleOnPressed(Booking booking,BuildContext context) async {
+    //Handles the accept button for each card.
+    //if the meeting location is online, show the link dialog else just send the booking to the db
     if (booking.location == "Online") {
       showModalBottomSheet(
         context: context,
@@ -108,7 +106,6 @@ class AllState extends State<All> {
         }),
       );
     } else {
-      // localGlobals.HandleBooking(booking);
       dialogLoading = true;
       await confirmationDialog(booking,context);
     }
@@ -138,7 +135,7 @@ class AllState extends State<All> {
             child: Container(child: makeList())));
   }
 
-  Widget DividerCard(String text) => Card(
+  Widget dividerCard(String text) => Card(
       elevation: 7,
       color: Colors.grey,
       child: Container(
@@ -149,6 +146,8 @@ class AllState extends State<All> {
           )));
 
   Widget makeList() {
+    // the list of all the appointments.
+
     return ListView.builder(
         itemCount: localGlobals.AllBookings.length +
             localGlobals.MyBookings.length +
@@ -159,19 +158,19 @@ class AllState extends State<All> {
 
           if (myBookingsLen > 0 && allBookingsLen == 0) {
             if (index == 0) {
-              return DividerCard("My Bookings");
+              return dividerCard("My Bookings");
             } else {
               return _card(localGlobals.MyBookings[index - 1]);
             }
           } else if (myBookingsLen == 0 && allBookingsLen > 0) {
             if (index == 0) {
-              return DividerCard("Other Bookings");
+              return dividerCard("Other Bookings");
             } else {
               return _card(localGlobals.AllBookings[index - 1]);
             }
           } else {
             if (index == myBookingsLen) {
-              return DividerCard("Other Bookings");
+              return dividerCard("Other Bookings");
             } else {
               if (index < myBookingsLen) {
                 return _card(localGlobals.MyBookings[index]);
@@ -185,6 +184,7 @@ class AllState extends State<All> {
   }
 
   Widget _card(Booking booking) {
+    //Booking card
     return Card(
       elevation: 10,
       child: Container(

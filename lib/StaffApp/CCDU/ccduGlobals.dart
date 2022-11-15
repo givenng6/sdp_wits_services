@@ -13,8 +13,10 @@ List<Booking> AllBookings = [];
 List<Booking> MyBookings = [];
 List<Booking> AcceptedBookings = [];
 
+
+
 Future<void> GetAllBookings() async {
-  debugPrint("Called All bookings");
+  //Fetch all the booking
   http.Response result =
       await http.post(Uri.parse("$url/ccdu/allPendingAppointments"),
           headers: <String, String>{
@@ -33,12 +35,11 @@ Future<void> GetAllBookings() async {
     }else{
       AllBookings.add(Booking(type: 'all',obj: myList[i]));
     }
-
   }
-
 }
 
 Future<void> GetAcceptedBookings() async {
+  //Fetch all the booking I have accepted
   http.Response result =
       await http.post(Uri.parse("$url/ccdu/allAcceptedAppointments"),
           headers: <String, String>{
@@ -55,7 +56,8 @@ Future<void> GetAcceptedBookings() async {
 }
 
 Future<String> HandleBooking(Booking booking) async {
-  Map<String,dynamic> info ;
+  //Accept th booking
+  Map<String,dynamic> info; //in person booking don't have a link
   if(booking.location=="Online"){
     info = {
       "id":booking.id,
@@ -78,12 +80,8 @@ Future<String> HandleBooking(Booking booking) async {
         "Content-Type": "application/json; charset=UTF-8",
       },
       body: jsonEncode(info));
-
-  // debugPrint("Res: ${result.body}");
+  //Remove the current booking from the list off all the booking and my booking after it has been accepted.
   AllBookings.remove(booking);
   MyBookings.remove(booking);
   return result.body;
-
-
-
 }
