@@ -4,6 +4,7 @@ import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:sdp_wits_services/StaffApp/Buses/View/buses_main.dart';
 import 'package:sdp_wits_services/StaffApp/Campus%20Control/CampusControl.dart';
 import 'package:sdp_wits_services/StaffApp/Department.dart';
+import 'package:sdp_wits_services/StaffApp/Events/Views/events.dart';
 import 'package:sdp_wits_services/StaffApp/SelectDH.dart';
 import 'package:sdp_wits_services/StaffApp/CCDU/CCDU.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -11,7 +12,7 @@ import 'package:http/http.dart' as http;
 import 'DiningGlobals.dart' as globals;
 import 'package:sdp_wits_services/globals.dart' as mainGlobals;
 
-// const String url = "http://192.168.42.155:5000";
+//Select department
 
 class StaffPage extends StatefulWidget {
   const StaffPage({Key? key}) : super(key: key);
@@ -26,11 +27,11 @@ class _StaffPageState extends State<StaffPage> {
     Department(name: "Campus Control", icon: Icons.security),
     Department(name: "Dining Services", icon: Icons.fastfood),
     Department(name: "CCDU", icon: Icons.health_and_safety),
-    Department(name: "Campus Health", icon: Icons.health_and_safety),
-    Department(name: "Events", icon: Icons.event)
+    Department(name: "Events", icon: Icons.event),
   ];
 
   void chooseDep(String depName) async {
+    //
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     String? email = sharedPreferences.getString("email");
 
@@ -107,6 +108,16 @@ class _StaffPageState extends State<StaffPage> {
           mainGlobals.getSharedPreferences();
         }
         break;
+      case "Events":
+        {
+
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (BuildContext context) => const Events()));
+
+        }
+        break;
       default:{
         return;
       }
@@ -141,7 +152,7 @@ class _StaffPageState extends State<StaffPage> {
                 margin:
                 const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
                 child: CircleAvatar(
-                  backgroundColor: Color(0xff31AFB4),
+                  backgroundColor: const Color(0xff003b5c),
                   child: Text(
                     username[0],
                     style: const TextStyle(fontSize: 20.0, color: Colors.white),
@@ -197,7 +208,7 @@ class _StaffPageState extends State<StaffPage> {
                                             key:Key(departments[index].name),
                                             departments[index].icon,
                                             size: 60.0,
-                                            color: const Color(0xff31AFB4),
+                                            color: const Color(0xff003b5c),
                                           ),
                                         ),
                                       ),
