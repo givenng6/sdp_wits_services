@@ -13,6 +13,7 @@ import 'utils.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end app test", () {
+    // staff and students app tests
     testWidgets("Stuff app", _staffTest);
     testWidgets("students app", _studentsAppTest);
 
@@ -24,8 +25,7 @@ void main() {
   });
 }
 
-// Signup and recover
-
+// Signup as a student tests
 Future<void> _signInAsStudentTests(WidgetTester tester)async{
   final continueAsStudentButton =
   find.byKey(const Key('Continue as Student'));
@@ -75,6 +75,7 @@ Future<void> _signInAsStudentTests(WidgetTester tester)async{
   await preferences.clear();
 }
 
+// student recover password tests
 Future<void> _recoverStudentTests(WidgetTester tester)async{
   final continueAsStudentButton =
   find.byKey(const Key('Continue as Student'));
@@ -108,6 +109,7 @@ Future<void> _recoverStudentTests(WidgetTester tester)async{
   await preferences.clear();
 }
 
+// signup as a staff member tests
 Future<void> _signInAsStaffTests(WidgetTester tester)async{
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -153,6 +155,7 @@ Future<void> _signInAsStaffTests(WidgetTester tester)async{
   await preferences.clear();
 }
 
+// staff recover password tests
 Future<void> _recoverStaffTests(WidgetTester tester)async{
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -185,7 +188,7 @@ Future<void> _recoverStaffTests(WidgetTester tester)async{
   await preferences.clear();
 }
 
-// Student App
+// Student App tests
 Future<void> _studentsAppTest(WidgetTester tester) async {
   app.main();
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -209,6 +212,7 @@ Future<void> _studentsAppTest(WidgetTester tester) async {
   await preferences.clear();
 }
 
+// login as a student tests
 Future<void> _login(WidgetTester tester) async{
   final continueAsStudentButton = find.byKey(const Key('Continue as Student'));
   await tester.pump(const Duration(seconds: 5));
@@ -229,6 +233,7 @@ Future<void> _login(WidgetTester tester) async{
   await tester.pumpAndSettle();
 }
 
+// dashborad tests
 Future<void> _dashboard(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -243,6 +248,7 @@ Future<void> _dashboard(WidgetTester tester) async {
       const Duration(seconds: 1)); // finish the indicator hide animation
 }
 
+// buses tests
 Future<void> _buses(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -271,6 +277,7 @@ Future<void> _buses(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+// dining hall tests
 Future<void> _diningHall(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -294,6 +301,7 @@ Future<void> _diningHall(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+// campus control tests
 Future<void> _protection(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -340,6 +348,7 @@ Future<void> _protection(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+// events tests
 Future<void> _events(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -372,6 +381,7 @@ Future<void> _events(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+// ccdu tests
 Future<void> _ccdu(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -395,6 +405,7 @@ Future<void> _ccdu(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+// campus health tests
 Future<void> _campusHealth(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -406,6 +417,7 @@ Future<void> _campusHealth(WidgetTester tester) async {
   await tester.pumpAndSettle();
 }
 
+// profile tests
 Future<void> _profile(WidgetTester tester) async {
   await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
@@ -686,6 +698,7 @@ Future<void> _staffTest(WidgetTester tester) async {
   await Future.delayed(const Duration(seconds: 2));
 }
 
+// staff logout tests
 Future<void> logout(accountIcon, tester) async {
   await tester.tap(accountIcon);
   await tester.pump(const Duration(seconds: 2));
@@ -695,6 +708,7 @@ Future<void> logout(accountIcon, tester) async {
   await tester.pump(const Duration(seconds: 2));
 }
 
+// staff login tests
 Future<void> login(String email, String password, tester) async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   preferences.clear();
@@ -723,6 +737,7 @@ Future<void> login(String email, String password, tester) async {
   await tester.pump(const Duration(seconds: 5));
 }
 
+// remove department test
 Future<void> removeDep(String url)async{
   await http.post(Uri.parse("$url/tempRoutes/RemoveDep"),
       headers: <String, String>{
@@ -734,8 +749,8 @@ Future<void> removeDep(String url)async{
       }));
 }
 
+// disable overflow errors
 void disableOverflowErrors() {
-  //TODO MyScreen throws overflow error. Will be investigate in a different ticket.
   FlutterError.onError = (FlutterErrorDetails details) {
     final exception = details.exception;
     final isOverflowError = exception is FlutterError &&

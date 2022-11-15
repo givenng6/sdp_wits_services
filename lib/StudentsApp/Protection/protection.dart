@@ -219,13 +219,17 @@ class _Protection extends State<Protection> {
     );
   }
 
+  // set subscribed boolean
   void setSubscribed() {
     setState(() {
       isSubscribed = true;
     });
   }
 
+  // uri
   String uri = "https://web-production-a9a8.up.railway.app/";
+
+  // get all residences
   Future<void> getResidences(BuildContext context) async{
     // residences = context.watch<Subscriptions>().residences;
     if(context.watch<Subscriptions>().residences.isEmpty){
@@ -243,6 +247,7 @@ class _Protection extends State<Protection> {
 
   }
 
+  // get all campuses
   Future<void> getCampuses(BuildContext context) async{
     if(context.watch<Subscriptions>().campuses.isEmpty){
       await http.get(Uri.parse("${uri}db/getAllCampuses"),
@@ -257,6 +262,7 @@ class _Protection extends State<Protection> {
     }
   }
 
+  // cancel ride function
   Future<void> cancelRide() async{
     await http.post(Uri.parse("${uri}db/cancelRide/"),
         headers: <String, String>{
