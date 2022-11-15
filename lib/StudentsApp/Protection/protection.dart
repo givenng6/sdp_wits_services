@@ -138,7 +138,7 @@ class _Protection extends State<Protection> {
               setSubscribed: setSubscribed),
         ],
       ),
-      floatingActionButton: SizedBox(
+      floatingActionButton: isSubscribed? SizedBox(
         height: 40.0,
         width: 130.0,
         child: FloatingActionButton(
@@ -215,7 +215,7 @@ class _Protection extends State<Protection> {
           ),
           child: fabChild,
         ),
-      ),
+      ):null,
     );
   }
 
