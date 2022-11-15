@@ -13,7 +13,7 @@ import 'utils.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
   group("end-to-end app test", () {
-    // testWidgets("Stuff app", _staffTest);
+    testWidgets("Stuff app", _staffTest);
     testWidgets("students app", _studentsAppTest);
 
     // Signup and recover
@@ -455,6 +455,13 @@ Future<void> _staffTest(WidgetTester tester) async {
         "Accept": "application/json",
         "Content-Type": "application/json; charset=UTF-8"
       });
+
+  await tester.pumpAndSettle();
+  await tester.tap(find.byKey(const Key("CCDU")));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   final profile = find.text("S");
   final allTab = find.text("All");
@@ -535,8 +542,17 @@ Future<void> _staffTest(WidgetTester tester) async {
   await tester.pump(const Duration(seconds: 4));
   await tester.pumpAndSettle();
   await logout(profile, tester);
+
+
   //Buses
+  await tester.pumpAndSettle();
   await login("a2375736@wits.ac.za", "2375736", tester);
+  await tester.pumpAndSettle();
+  await tester.tap(find.byIcon(Icons.bus_alert));
+  await tester.pump(const Duration(seconds: 1));
+  await tester.pumpAndSettle();
+
+  await tester.pumpAndSettle();
   await tester.pump(const Duration(seconds: 1));
   await Future.delayed(const Duration(seconds: 1));
   await tester.tap(find.text("Route 1 - Full Circuit"), warnIfMissed: false);
