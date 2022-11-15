@@ -43,7 +43,6 @@ Future<void> StartShift(String campusNamee)async {
 
 Future<void> OnRoute()async{
   List<String> emails = [];
-  // selectedStudents.map((e) => emails.add(e.email));
   for(Student e in selectedStudents){
     emails.add(e.email);
   }

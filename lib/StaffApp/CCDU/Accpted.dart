@@ -17,7 +17,7 @@ class AcceptedState extends State<Accepted> {
 
   @override
   void initState() {
-    init();
+    init();//Fetch all my bookings.
     super.initState();
   }
 

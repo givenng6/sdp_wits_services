@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:sdp_wits_services/StaffApp/Profile/Profile.dart';
 import 'package:sdp_wits_services/globals.dart' as globals;
-
 import 'Accpted.dart';
 import 'All.dart';
 
+//CCDU landing page.
 class CCDU extends StatefulWidget {
   const CCDU({
     Key? key,
@@ -17,8 +17,6 @@ class CCDU extends StatefulWidget {
 class _CCDUState extends State<CCDU> {
   @override
   Widget build(BuildContext context) {
-    // getName();
-    // debugPrint("In build.... ${globals.ready}");
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -67,11 +65,9 @@ class _CCDUState extends State<CCDU> {
               ],
             ),
           ),
-          body: TabBarView(children: [
+          body: const TabBarView(children: [
             Accepted(),
             All()
-            //AccordionWidget(type: "All"),
-            //AccordionWidget(type: "Accepted")
           ])),
     );
   }

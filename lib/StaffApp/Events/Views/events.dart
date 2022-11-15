@@ -64,6 +64,8 @@ class _EventsState extends State<Events> {
         appBar: AppBar(
           title: const Text('Events'),
           backgroundColor: const Color(0xff003b5c),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
         ),
         body: NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
